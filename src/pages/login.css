@@ -1,0 +1,61 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fce4ec; /* Light Pink Background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+    margin: 0;
+  }
+  
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .login-box {
+    background-color: #ffcccb; /* Pastel Pink */
+    border: 2px solid #ffb6c1; /* Light Pink Border */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-box h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .login-box .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .login-box label {
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .login-box input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .login-box .login-button {
+    background-color: #b3cde0; /* Pastel Blue */
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .login-box .login-button:hover {
+    background-color: #9ec2e1; /* Slightly darker blue for hover */
+  }
+  

@@ -8,6 +8,7 @@ import Profile from './pages/Profile';
 import './App.css';
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Login from "./pages/login";
 function App() {
   return (
     <Router>
@@ -18,6 +19,7 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/info" element={<WebsiteInfo />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>
