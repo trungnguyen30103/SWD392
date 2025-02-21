@@ -1,10 +1,32 @@
-/* App.css */
-body {
-  font-family: Arial, sans-serif;
+/* Reset default margin & padding */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
+/* Ensure the page takes full height */
+html, body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Main app container */
+.app {
+  position: relative; /* Ensure footer respects viewport */
+  min-height: 100vh;
+}
+
+/* Content should expand to push the footer down */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+/* Navbar styling */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -23,8 +45,6 @@ body {
   list-style: none;
   display: flex;
   gap: 1rem;
-  margin: 0;
-  padding: 0;
 }
 
 .navbar-links a {
@@ -37,11 +57,34 @@ body {
   text-decoration: underline;
 }
 
-.app {
-  padding: 2rem;
-}
-
+/* Pages styling */
 .home, .products, .info, .profile {
   text-align: center;
   margin-top: 2rem;
+}
+
+/* Footer */
+.footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  width: 100%;
+  position: fixed; /* Fix the footer at the bottom */
+  bottom: 0; /* Stick to the bottom */
+  left: 0; /* Align to the left edge */
+  z-index: 1000; /* Ensure it stays above other content */
+}
+
+/* Responsive navbar for smaller screens */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .navbar-links {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }
