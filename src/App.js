@@ -7,7 +7,7 @@ import Login from './pages/login/login.jsx';
 import Products from './pages/products/Products.jsx';
 import Profile from './pages/profile/Profile.jsx';
 import WebsiteInfo from './pages/websiteInfor/WebsiteInfo.jsx';
-
+import Footer from './component/footer.jsx';
 
 import './App.css';
 import { useEffect, useState } from "react";
@@ -17,15 +17,18 @@ function App() {
   return (
     <Router>
       <div className="app">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/info" element={<WebsiteInfo />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </div>
+<Navbar />
+<div className="main-content">
+  <Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/products" element={<Products />} />
+    <Route path="/info" element={<WebsiteInfo />} />
+    <Route path="/profile" element={<Profile />} />
+    <Route path="/login" element={<Login />} />
+  </Routes>
+</div>
+<Footer />
+</div>
     </Router>
   );
 }
