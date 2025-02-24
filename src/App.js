@@ -8,7 +8,7 @@ import Products from './pages/products/Products.jsx';
 import Profile from './pages/profile/Profile.jsx';
 import WebsiteInfo from './pages/websiteInfor/WebsiteInfo.jsx';
 import Footer from './component/footer.jsx';
-
+import Register from './pages/register/register.jsx';
 import './App.css';
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -25,6 +25,8 @@ function App() {
     <Route path="/info" element={<WebsiteInfo />} />
     <Route path="/profile" element={<Profile />} />
     <Route path="/login" element={<Login />} />
+    <Route path="/register" element={<Register />} />
+
   </Routes>
 </div>
 <Footer />
