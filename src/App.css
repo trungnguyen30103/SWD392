@@ -20,9 +20,10 @@
 
 /* Main Content */
 .main-content {
-  min-height: 80vh; /* Ensures enough space */
-  display: flex;
-  justify-content: center;
-  align-items: center; /* Centers the login form */
+  min-height: 80vh; /* 80% of viewport height */
   padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
