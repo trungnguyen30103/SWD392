@@ -1,0 +1,240 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "String",
+      "description": "String",
+      "created_at": "ISO Date",
+      "updated_at": "ISO Date | null"
+    }
+  ],
+  
+  "products": [
+    {
+      "id": 1,
+      "name": "String",
+      "description": "String",
+      "imageUrl": "String",
+      "price": 0.00,
+      "stock_quantity": 0,
+      "category_id": 1,
+      "created_at": "ISO Date",
+      "updated_at": "ISO Date | null"
+    }
+  ],
+  
+  "productImages": [
+    {
+      "id": 1,
+      "product_id": 1,
+      "image_url": "String",
+      "alt_text": "String",
+      "created_at": "ISO Date",
+      "updated_at": "ISO Date | null"
+    }
+  ],
+  
+  "blindBoxes": [
+    {
+      "id": 1,
+      "name": "String",
+      "description": "String",
+      "price": 0.00,
+      "stock_quantity": 0,
+      "category_id": 1,
+      "created_at": "ISO Date",
+      "updated_at": "ISO Date | null"
+    }
+  ],
+  
+  "blindBoxImages": [
+    {
+      "id": 1,
+      "blindbox_id": 1,
+      "image_url": "String",
+      "alt_text": "String",
+      "created_at": "ISO Date",
+      "updated_at": "ISO Date | null"
+    }
+  ],
+  
+  "blindBoxItems": [
+    {
+      "id": 1,
+      "blindbox_id": 1,
+      "name": "String",
+      "description": "String",
+      "image_url": "String",
+      "rarity": "String",
+      "drop_rate": 0.00,
+      "created_at": "ISO Date"
+    }
+  ],
+  
+  "users": [
+    {
+      "id": 1,
+      "username": "String",
+      "email": "String",
+      "password": "String (hashed)",
+      "phone": "String",
+      "address": "String",
+      "role_id": 1,
+      "fullname": "String",
+      "created_at": "ISO Date",
+      "updated_at": "ISO Date | null"
+    }
+  ],
+  
+  "roles": [
+    {
+      "id": 1,
+      "role": "String",
+      "created_at": "ISO Date",
+      "updated_at": "ISO Date | null"
+    }
+  ],
+  
+  "reviews": [
+    {
+      "id": 1,
+      "product_id": 1,
+      "blindbox_id": null,
+      "user_id": 1,
+      "rating": 5.0,
+      "review_text": "String",
+      "created_at": "ISO Date",
+      "updated_at": "ISO Date | null"
+    }
+  ],
+  
+  "orders": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "gacha_type": "String",
+      "discount_id": null,
+      "order_date": "ISO Date",
+      "total_amount": 0.00,
+      "status": "String",
+      "payment_status": "String",
+      "shipping_status": "String",
+      "created_at": "ISO Date"
+    }
+  ],
+  
+  "orderDetails": [
+    {
+      "id": 1,
+      "order_id": 1,
+      "product_id": 1,
+      "blindbox_id": null,
+      "quantity": 1,
+      "price": 0.00,
+      "created_at": "ISO Date"
+    }
+  ],
+  
+  "payments": [
+    {
+      "id": 1,
+      "order_id": 1,
+      "user_id": 1,
+      "amount": 0.00,
+      "status": "String",
+      "method": "String",
+      "transaction_id": "String",
+      "created_at": "ISO Date"
+    }
+  ],
+  
+  "shipments": [
+    {
+      "id": 1,
+      "order_id": 1,
+      "address": "String",
+      "method": "String",
+      "status": "String",
+      "created_at": "ISO Date"
+    }
+  ],
+  
+  "results": [
+    {
+      "id": 1,
+      "order_id": 1,
+      "blindbox_id": 1,
+      "blindbox_item_id": 1,
+      "draw_time": "ISO Date"
+    }
+  ],
+  
+  "customerSupport": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "order_id": 1,
+      "message": "String",
+      "response": "String",
+      "created_at": "ISO Date"
+    }
+  ],
+  
+  "wishLists": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "product_id": 1,
+      "blindbox_id": null,
+      "created_at": "ISO Date"
+    }
+  ],
+  
+  "discounts": [
+    {
+      "id": 1,
+      "code": "String",
+      "percentage": 0.00,
+      "valid_from": "ISO Date",
+      "valid_until": "ISO Date",
+      "created_at": "ISO Date"
+    }
+  ],
+  
+  "paymentMethods": [
+    {
+      "id": "String",
+      "name": "String",
+      "description": "String",
+      "icon": "String"
+    }
+  ],
+  
+  "cities": [
+    {
+      "id": "String",
+      "name": "String",
+      "districts": ["String"]
+    }
+  ],
+  
+  "banners": [
+    {
+      "id": 1,
+      "image": "String",
+      "title": "String",
+      "description": "String",
+      "buttonText": "String",
+      "link": "String"
+    }
+  ],
+  
+  "promoContent": {
+    "title": "String",
+    "description": "String",
+    "buttonText": "String",
+    "link": "String",
+    "backgroundColor": "String",
+    "textColor": "String"
+  }
+}
