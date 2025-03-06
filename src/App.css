@@ -1,6 +1,6 @@
 /* Navbar and Footer Size */
 .navbar {
-  height: 10vh; /* 10% of viewport height */
+  height: 5vh; /* 10% of viewport height */
   background-color: #333;
   color: white;
   display: flex;
@@ -20,10 +20,10 @@
 
 /* Main Content */
 .main-content {
-  min-height: 80vh; /* 80% of viewport height */
+  min-height: 85vh; /* 80% of viewport height */
   padding: 2rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
 }

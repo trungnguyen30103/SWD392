@@ -45,9 +45,11 @@ body {
 .product-grid {
   display: flex;
   gap: 1rem;
-  overflow-x: auto;
+  justify-content: center;
+  flex-wrap: wrap; /* Ensures items wrap if needed */
   padding: 1rem 0;
 }
+
 
 .product-card {
   flex: 0 0 auto;
