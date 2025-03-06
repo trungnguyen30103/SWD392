@@ -3,13 +3,13 @@
   width: 100%;
   background-color: #333;
   color: white;
-  padding: 20px 0;
-  position: fixed; /* Fix to bottom */
+  padding: 50px 0;
+  
   bottom: 0;
   left: 0;
   right: 0; /* Ensure full width */
   z-index: 1000;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.6);
 }
 
 /* Add margin to main content to avoid footer overlap */

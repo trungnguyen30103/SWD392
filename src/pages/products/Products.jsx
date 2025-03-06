@@ -70,7 +70,7 @@ function ProductList() {
       <ToastContainer />
       <div className="mx-auto max-w-7xl px-4 py-16">
         <h2 className="text-3xl font-bold text-black mb-8 text-center">Our Latest Products</h2>
-        
+
         {/* Cart Button */}
         <div className="flex justify-end mb-4">
           <button onClick={handleViewCartClick} className="relative">

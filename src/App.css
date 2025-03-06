@@ -10,12 +10,15 @@
 }
 
 .footer {
-  height: 10vh; /* 10% of viewport height */
+  height: 15vh;
+  /* 10% of viewport height */
   background-color: #333;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+ 
 }
 
 /* Main Content */
