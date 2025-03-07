@@ -23,10 +23,6 @@
 
 /* Main Content */
 .main-content {
-  min-height: 85vh; /* 80% of viewport height */
+  min-height: 85vh;
   padding: 2rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
 }
