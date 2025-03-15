@@ -1,97 +1,60 @@
-/* General Styles */
-.info {
-    width: 100vw;  /* Chiều rộng toàn màn hình */
-    min-height: 100vh; /* Đảm bảo chiều cao tối thiểu là toàn màn hình */
-    padding: 40px;
-    background: linear-gradient(135deg, #6EC6FF, #FFB6C1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-family: 'Poppins', sans-serif;
-    color: #333;
-  }
-  
-  /* Headings */
-  .info h1 {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #FFD700;
-    margin-bottom: 20px;
-  }
-  
-  .info h2 {
-    font-size: 2rem;
-    color: #A8E6CF;
-    margin-top: 30px;
-  }
-  
-  /* Paragraphs */
-  .info p {
-    font-size: 1.4rem;
-    line-height: 1.8;
-    color: white;
-    max-width: 80%;
-  }
-  
-  /* Lists */
-  .info ul, .info ol {
-    text-align: left;
-    max-width: 80%;
-  }
-  
-  .info ul li, .info ol li {
-    font-size: 1.4rem;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 12px;
-    margin: 12px 0;
-    border-radius: 10px;
-    transition: 0.3s ease-in-out;
-  }
-  
-  .info ul li:hover, .info ol li:hover {
-    background: rgba(255, 255, 255, 0.4);
-    transform: scale(1.05);
-  }
-  
-  /* Blockquotes */
-  .info blockquote {
-    font-size: 1.4rem;
-    font-style: italic;
-    background: white;
-    color: #FF69B4;
-    padding: 15px;
-    margin: 20px auto;
-    border-left: 6px solid #FFD700;
-    width: fit-content;
-    border-radius: 10px;
-  }
-  
-  /* Social Media Links */
-  .info ul li strong {
-    color: #FFD700;
-    cursor: pointer;
-  }
-  
-  .info ul li strong:hover {
-    text-decoration: underline;
-  }
-  .social-links {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 10px;
-  }
-  
-  .social-links span {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #FFD700;
-    cursor: pointer;
-  }
-  
-  .social-links span:hover {
-    text-decoration: underline;
-  }
-    
+.info-container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  font-size: 2em;
+  text-align: center;
+  color: #333;
+}
+
+.description {
+  text-align: center;
+  font-size: 1.1em;
+  color: #666;
+}
+
+h2 {
+  font-size: 1.5em;
+  color: #333;
+  margin-top: 20px;
+}
+
+ul, ol {
+  margin-left: 20px;
+  font-size: 1.1em;
+  color: #444;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+.social-links {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.social-links a {
+  margin: 0 10px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.social-links a:hover {
+  text-decoration: underline;
+}
+
+.title {
+  font-size: 2.5em;
+  text-align: center;
+  color: white; /* Màu chữ */
+  background-color: #ff5500; /* Màu nền khối */
+  padding: 10px; /* Khoảng cách giữa chữ và viền khối */
+  margin-bottom: 10px;
+  border-radius: 5px; /* Bo góc cho khối màu */
+}
