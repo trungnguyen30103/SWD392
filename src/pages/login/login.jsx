@@ -12,7 +12,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const validateInputs = () => {
-    // Example validation rules (adjust based on backend requirements)
+    
     if (!username || username.length < 3) {
       toast.error("Username must be at least 3 characters long.");
       return false;
