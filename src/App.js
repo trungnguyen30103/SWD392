@@ -6,6 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import Navbar from "./component/navbar";
+import Register from "./pages/register/register.jsx";
 import Home from "./pages/home/Home.jsx";
 import Cart from "./pages/cart/Cart.jsx";
 import Login from "./pages/login/login.jsx";
@@ -13,6 +14,7 @@ import WebsiteInfo from "./pages/websiteInfor/WebsiteInfo.jsx";
 import Footer from "./component/footer.jsx";
 import AdminsProductList from "./pages/products/AdminsProducts.jsx";
 import CustomerProductList from "./pages/products/CustomerProduct.jsx";
+
 import "./App.css";
 function App() {
   const [role, setRole] = useState("");
@@ -32,8 +34,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/info" element={<WebsiteInfo />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/login" element={<Login setRole={setRole} />} />
-
+            <Route pa th="/login" element={<Login setRole={setRole} />} />
+              <Route path="/register" element={<Register />} />
             <Route path="/products" element={<CustomerProductList />} />
 
             <Route
