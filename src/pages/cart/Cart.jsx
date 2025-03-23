@@ -1,82 +1,71 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { FaTrash, FaClipboardList } from "react-icons/fa"; // Thùng rác nhỏ và biểu tượng theo dõi đơn hàng
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./Cart.css";
 
 function Cart({ cart, setCart }) {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]); // Giỏ hàng trống ban đầu
+  const [products, setProducts] = useState([]); // Danh sách sản phẩm để thêm vào giỏ hàng
   const navigate = useNavigate(); // Initialize useNavigate
 
-  // Pseudo cart items for testing
-  const pseudoCartItems = [
-    {
-      id: 1,
-      name: "BlindBox1",
-      price: 500,
-      quantity: 2,
-      img: "https://via.placeholder.com/150",
-    },
-    {
-      id: 2,
-      name: "BlindBox2",
-      price: 200,
-      quantity: 1,
-      img: "https://via.placeholder.com/150",
-    },
-    {
-      id: 3,
-      name: "BlindBox3",
-      price: 1000,
-      quantity: 3,
-      img: "https://via.placeholder.com/150",
-    },
-  ];
-
-  // Fetch cart items from API
+  // Fetch danh sách sản phẩm từ API
   useEffect(() => {
-    const fetchCartItems = async () => {
+    const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/cart");
-        setCartItems(response.data);
+        const response = await axios.get("https://fakestoreapi.com/products");
+        setProducts(response.data);
       } catch (error) {
-        console.error("Error fetching cart items:", error);
-        toast.error("Failed to fetch cart items. Using pseudo cart items for testing.");
-        setCartItems(pseudoCartItems); // Fallback to pseudo cart items
+        console.error("Error fetching products:", error);
+        toast.error("Failed to fetch products.");
       }
     };
-    fetchCartItems();
+    fetchProducts();
   }, []);
 
-  // Remove item from cart
+  // Thêm sản phẩm vào giỏ hàng
+  const addToCart = (product) => {
+    const newCartItems = [...cartItems];
+    const existingProduct = newCartItems.find((item) => item.id === product.id);
+
+    if (existingProduct) {
+      existingProduct.quantity += 1;
+    } else {
+      newCartItems.push({ ...product, quantity: 1 });
+    }
+
+    setCartItems(newCartItems);
+    toast.success(`${product.title} has been added to your cart.`);
+  };
+
+  // Remove item from cart with confirmation
   const removeFromCart = async (productId) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/cart/${productId}`);
-      const updatedCart = cartItems.filter((item) => item.id !== productId);
-      setCartItems(updatedCart);
-      toast.success("Item removed from cart.");
-    } catch (error) {
-      console.error("Error removing item from cart:", error);
-      toast.error("Failed to remove item from cart.");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to remove this item from your cart?"
+    );
+
+    if (confirmDelete) {
+      try {
+        const updatedCart = cartItems.filter((item) => item.id !== productId);
+        setCartItems(updatedCart);
+        toast.success("Item removed from cart.");
+      } catch (error) {
+        console.error("Error removing item from cart:", error);
+        toast.error("Failed to remove item from cart.");
+      }
+    } else {
+      toast.info("Item removal canceled.");
     }
   };
 
   // Update item quantity in cart
   const updateQuantity = async (productId, quantity) => {
-    if (quantity < 1) return;
-    try {
-      const response = await axios.put(
-        `http://localhost:5000/api/cart/${productId}`,
-        { quantity }
-      );
-      const updatedCart = cartItems.map((item) =>
-        item.id === productId ? response.data : item
-      );
-      setCartItems(updatedCart);
-    } catch (error) {
-      console.error("Error updating quantity:", error);
-      toast.error("Failed to update quantity.");
-    }
+    if (quantity < 1) return; // Kiểm tra số lượng phải lớn hơn 0
+    const updatedCart = cartItems.map((item) =>
+      item.id === productId ? { ...item, quantity } : item
+    );
+    setCartItems(updatedCart);
   };
 
   // Calculate total price
@@ -95,6 +84,11 @@ function Cart({ cart, setCart }) {
     navigate("/checkout"); // Navigate to the checkout page
   };
 
+  // Handle Track Order
+  const handleTrack = () => {
+    navigate("/orders"); // Navigate to the orders page
+  };
+
   return (
     <div className="cart-container">
       <ToastContainer />
@@ -105,9 +99,13 @@ function Cart({ cart, setCart }) {
         <div className="cart-items">
           {cartItems.map((item) => (
             <div key={item.id} className="cart-item">
-              <img src={item.img} alt={item.name} className="cart-item-image" />
+              <img
+                src={item.image}
+                alt={item.title}
+                className="cart-item-image"
+              />
               <div className="cart-item-details">
-                <h3>{item.name}</h3>
+                <h3>{item.title}</h3>
                 <p>${item.price.toLocaleString("en-US")}</p>
                 <div className="quantity-controls">
                   <button
@@ -126,20 +124,45 @@ function Cart({ cart, setCart }) {
                   onClick={() => removeFromCart(item.id)}
                   className="remove-button"
                 >
-                  Remove
+                  <FaTrash /> {/* Thùng rác nhỏ */}
                 </button>
               </div>
             </div>
           ))}
         </div>
       )}
+
       <div className="total-price">
         <h2>Total: ${totalPrice.toLocaleString("en-US")}</h2>
       </div>
-      {/* Checkout Button */}
+
       <button className="checkout-button" onClick={handleCheckout}>
         Proceed to Checkout
       </button>
+
+      {/* Track order button */}
+      <div className="track-order">
+        <button className="track-order-button" onClick={handleTrack}>
+          <FaClipboardList /> Track Your Order
+        </button>
+      </div>
+
+      {/* Sản phẩm có sẵn để thêm vào giỏ hàng */}
+      <div className="product-list">
+        <h2>Products Available</h2>
+        {products.map((product) => (
+          <div key={product.id} className="product-card">
+            <img
+              src={product.image}
+              alt={product.title}
+              className="product-image"
+            />
+            <h3>{product.title}</h3>
+            <p>${product.price}</p>
+            <button onClick={() => addToCart(product)}>Add to Cart</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
