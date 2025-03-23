@@ -6,7 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import Navbar from "./component/navbar";
-import Register from "./pages/register/register.jsx";
+import Register from "./pages/register/Register.jsx";
 import Home from "./pages/home/Home.jsx";
 import Cart from "./pages/cart/Cart.jsx";
 import Login from "./pages/login/login.jsx";
@@ -14,7 +14,7 @@ import WebsiteInfo from "./pages/websiteInfor/WebsiteInfo.jsx";
 import Footer from "./component/footer.jsx";
 import AdminsProductList from "./pages/products/AdminsProducts.jsx";
 import CustomerProductList from "./pages/products/CustomerProduct.jsx";
-
+import UserList from "./pages/UserManagement/UserList.jsx";
 import "./App.css";
 function App() {
   const [role, setRole] = useState("");
@@ -37,7 +37,7 @@ function App() {
             <Route pa th="/login" element={<Login setRole={setRole} />} />
               <Route path="/register" element={<Register />} />
             <Route path="/products" element={<CustomerProductList />} />
-
+            <Route path="/userlist" element={<UserList />} />
             <Route
               path="/admin/products"
               element={role === "admin" ? <AdminsProductList /> : <Login />}

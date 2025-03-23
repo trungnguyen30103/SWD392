@@ -8,10 +8,14 @@ const Register = () => {
 
   // State for form data
   const [formData, setFormData] = useState({
-    username: '',
+    userName: '',
     password: '',
+    phone: '',
     address: '',
-    phoneNumber: '',
+    email: '',
+    fullName: '',
+    role: { roleID: 1 }, // Default role ID, adjust as needed
+    status: 'active',
   });
 
   // State for loading and error handling
@@ -20,9 +24,10 @@ const Register = () => {
 
   // Handle input changes
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
@@ -33,11 +38,12 @@ const Register = () => {
     setError('');
 
     try {
-      const response = await axios.post('https://your-api-url.com/register', formData);
+      const response = await axios.post('http://localhost:8080/users', formData); // Replace with your backend URL
       console.log('Registration successful:', response.data);
       navigate('/login'); // Redirect to login page after success
     } catch (err) {
       setError('Registration failed. Please try again.');
+      console.error('Error during registration:', err);
     } finally {
       setLoading(false);
     }
@@ -57,9 +63,9 @@ const Register = () => {
           <div className="form-group">
             <input
               type="text"
-              name="username"
+              name="userName"
               placeholder="Username"
-              value={formData.username}
+              value={formData.userName}
               onChange={handleChange}
               required
             />
@@ -80,6 +86,30 @@ const Register = () => {
 
           <div className="form-group">
             <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+            <span className="input-icon">📧</span>
+          </div>
+
+          <div className="form-group">
+            <input
+              type="text"
+              name="phone"
+              placeholder="Phone Number"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+            />
+            <span className="input-icon">📱</span>
+          </div>
+
+          <div className="form-group">
+            <input
               type="text"
               name="address"
               placeholder="Street Address"
@@ -92,15 +122,14 @@ const Register = () => {
 
           <div className="form-group">
             <input
-              type="tel"
-              name="phoneNumber"
-              placeholder="Phone Number"
-              value={formData.phoneNumber}
+              type="text"
+              name="fullName"
+              placeholder="Full Name"
+              value={formData.fullName}
               onChange={handleChange}
               required
-              pattern="[0-9]{10}"
             />
-            <span className="input-icon">📱</span>
+            <span className="input-icon">👪</span>
           </div>
 
           <button type="submit" className="register-button" disabled={loading}>
