@@ -9,10 +9,10 @@ import {
 } from "react-icons/fa";
 import { MdToys, MdEmail, MdLocationOn, MdPhone } from "react-icons/md";
 
-const Footer: React.FC = () => {
+const Footer = () => {
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     // Here you would normally handle the newsletter subscription
     alert(`Thank you for subscribing with: ${email}`);

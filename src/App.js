@@ -14,6 +14,12 @@ import "./App.scss";
 import History from "./pages/History/History";
 import Track from "./pages/Track/Track";
 import Admin from './pages/Admin';
+import Login from './pages/login/login';
+import Register from './pages/register/register';
+import Products from './pages/products/CustomerProduct';
+import Profile from './pages/profile/Profile';
+import WebsiteInfo from './pages/websiteInfor/WebsiteInfo.jsx';
+
 
 // Layout component to conditionally render Header and Footer
 const AppLayout = () => {
@@ -32,6 +38,11 @@ const AppLayout = () => {
           <Route path="/order-success/:orderId" element={<OrderSuccess />} />
           <Route path="/history" element={<History />} />
           <Route path="/track/:trackingId" element={<Track />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/info" element={<WebsiteInfo />} />
           <Route path="/admin/*" element={<Admin />} />
           {/* Add more routes as needed */}
         </Routes>

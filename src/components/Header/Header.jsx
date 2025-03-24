@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import "./Header.scss";
 import {
@@ -14,10 +14,12 @@ import {
   FaRegUserCircle,
   FaSignOutAlt,
   FaLock,
+  FaHistory,
 } from "react-icons/fa";
 
 const Header = () => {
   const { getCartItemCount } = useCart();
+  const navigate = useNavigate();
   const cartItemCount = getCartItemCount();
   const [searchQuery, setSearchQuery] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -107,22 +109,23 @@ const Header = () => {
     };
   }, []);
 
-  // For demo purposes only
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setIsLoggedIn(true);
+  const handleLogin = () => {
+    navigate('/login');
   };
 
-  const handleLogout = (e) => {
-    e.preventDefault();
+  const handleRegister = () => {
+    navigate('/register');
+  };
+
+  const handleLogout = () => {
     setIsLoggedIn(false);
     setUserDropdownOpen(false);
+    // In a real app, you would call logout API or clear authentication state
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log("Search query:", searchQuery);
-    // Here you would usually redirect to search results page
+    navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
   };
 
   const toggleMenu = () => {
@@ -182,26 +185,29 @@ const Header = () => {
                   <ul className="dropdown-menu">
                     {categories.map((category, index) => (
                       <li key={index}>
-                        <a href={`/category/${index}`}>{category}</a>
+                        <Link to={`/products?category=${index}`}>{category}</Link>
                       </li>
                     ))}
+                    <li>
+                      <Link to="/products">All Products</Link>
+                    </li>
                   </ul>
                 )}
               </li>
               <li>
-                <a href="/promotion">
+                <Link to="/products?promotion=true">
                   <FaGift className="nav-icon" /> Khuyến mãi
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/posts">
-                  <FaNewspaper className="nav-icon" /> Blog
-                </a>
+                <Link to="/info">
+                  <FaNewspaper className="nav-icon" /> Information
+                </Link>
               </li>
               <li>
-                <a href="/contact">
+                <Link to="/info#contact">
                   <FaPhoneAlt className="nav-icon" /> Liên hệ
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>
@@ -227,14 +233,14 @@ const Header = () => {
                   {userDropdownOpen && (
                     <ul className="dropdown-menu user-menu">
                       <li>
-                        <a href="/profile">
+                        <Link to="/profile">
                           <FaRegUserCircle /> Hồ sơ
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a href="/password">
-                          <FaLock /> Mật khẩu
-                        </a>
+                        <Link to="/history">
+                          <FaHistory /> Đơn hàng
+                        </Link>
                       </li>
                       <li>
                         <button onClick={handleLogout}>
@@ -249,7 +255,9 @@ const Header = () => {
                   <button className="login-btn" onClick={handleLogin}>
                     Đăng nhập
                   </button>
-                  <button className="register-btn">Đăng ký</button>
+                  <button className="register-btn" onClick={handleRegister}>
+                    Đăng ký
+                  </button>
                 </div>
               )}
             </div>
