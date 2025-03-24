@@ -1,0 +1,312 @@
+@import '../../../styles/variables.scss';
+
+.delete-confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(51, 48, 95, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  animation: fadeIn 0.2s ease-out;
+  backdrop-filter: blur(3px);
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+.delete-confirmation-modal {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .delete-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.4);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(244, 67, 54, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(244, 67, 54, 0);
+      }
+    }
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+    margin: 0 0 15px 0;
+  }
+
+  p {
+    color: #666;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 25px 0;
+  }
+
+  .delete-confirmation-actions {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+
+    .cancel-btn, .confirm-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .cancel-btn {
+      background-color: #f5f5f5;
+      color: #555;
+
+      &:hover {
+        background-color: #e8e8e8;
+      }
+    }
+
+    .confirm-btn {
+      background-color: #f44336;
+      color: white;
+
+      &:hover {
+        background-color: #d32f2f;
+      }
+    }
+  }
+}
+
+.delete-confirmation-container {
+  background: white;
+  width: 100%;
+  max-width: 450px;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(255, 107, 107, 0.35);
+  animation: shakeWarning 0.5s cubic-bezier(.36,.07,.19,.97) both;
+  overflow: hidden;
+  border: 1px solid rgba(255, 107, 107, 0.2);
+
+  @keyframes shakeWarning {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+  }
+}
+
+.delete-confirmation-header {
+  display: flex;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 2px dashed rgba(255, 107, 107, 0.3);
+  background: linear-gradient(145deg, rgba(255, 107, 107, 0.1), white);
+  position: relative;
+  
+  .warning-icon {
+    width: 46px;
+    height: 46px;
+    background-color: rgba(255, 107, 107, 0.12);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    animation: pulse 2s infinite;
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+      }
+    }
+    
+    svg {
+      color: #FF6B6B;
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #33305F;
+    margin: 0;
+    flex-grow: 1;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    color: #5e5a9a;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    
+    &:hover {
+      background-color: rgba(255, 107, 107, 0.1);
+      color: #FF6B6B;
+      transform: rotate(90deg);
+    }
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.delete-confirmation-body {
+  padding: 30px 24px;
+  
+  p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #33305F;
+    text-align: center;
+  }
+}
+
+.delete-confirmation-footer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 10px 24px 30px;
+  
+  button {
+    min-width: 140px;
+    padding: 14px 20px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'Nunito', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    border: none;
+  }
+  
+  .btn-secondary {
+    background-color: #f2f1ff;
+    border: 2px solid #e8e7ff;
+    color: #5e5a9a;
+    
+    &:hover {
+      background-color: #e8e7ff;
+      color: #4F4CB0;
+      transform: translateY(-2px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  .btn-danger {
+    background-color: #FF6B6B;
+    color: white;
+    box-shadow: 0 6px 15px rgba(255, 107, 107, 0.25);
+    
+    &:hover {
+      background-color: darken(#FF6B6B, 5%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 107, 107, 0.35);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .delete-confirmation-footer {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
+      margin-bottom: 8px;
+    }
+    
+    .btn-secondary {
+      order: 2;
+    }
+    
+    .btn-danger {
+      order: 1;
+      margin-bottom: 10px;
+    }
+  }
+  
+  .delete-confirmation-modal {
+    padding: 25px 20px;
+    
+    .delete-confirmation-actions {
+      flex-direction: column;
+      
+      .cancel-btn, .confirm-btn {
+        width: 100%;
+      }
+    }
+  }
+  
+  .delete-confirmation-container {
+    width: 90%;
+    margin: 0 20px;
+  }
+}

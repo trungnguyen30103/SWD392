@@ -1,21 +1,29 @@
 {
-  "name": "swd392",
+  "name": "toy-store",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+<<<<<<< HEAD
     "@mui/icons-material": "^6.4.7",
     "@mui/material": "^6.4.7",
+=======
+    "@mui/material": "^6.4.8",
+>>>>>>> minh
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^13.5.0",
-    "antd": "^5.24.1",
-    "axios": "^1.7.9",
+    "axios": "^1.8.1",
+    "date-fns": "^4.1.0",
+    "express-validator": "^6.14.2",
+    "json-server": "^1.0.0-beta.3",
+    "multer": "^1.4.5-lts.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
+<<<<<<< HEAD
     "react-router-dom": "^7.1.5",
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.5",
@@ -23,11 +31,20 @@
     "toastify-js": "^1.12.0",
     "web-vitals": "^2.1.4",
     "webpack": "^5.98.0"
+=======
+    "react-router-dom": "^7.2.0",
+    "react-scripts": "5.0.1",
+    "react-toastify": "^11.0.5",
+    "sass": "^1.85.1",
+    "uuid": "^9.0.0",
+    "web-vitals": "^2.1.4"
+>>>>>>> minh
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "db": "json-server --watch src/db/db.json --port 3001",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
