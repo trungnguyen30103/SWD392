@@ -1,0 +1,28 @@
+/* Navbar and Footer Size */
+.navbar {
+  height: 5vh; /* 10% of viewport height */
+  background-color: #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+.footer {
+  height: 15vh;
+  /* 10% of viewport height */
+  background-color: #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+ 
+}
+
+/* Main Content */
+.main-content {
+  min-height: 85vh;
+  
+}
