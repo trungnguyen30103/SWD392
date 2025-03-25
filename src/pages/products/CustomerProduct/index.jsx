@@ -72,9 +72,10 @@ function CustomerProduct() {
   };
 
   // Điều hướng đến chi tiết sản phẩm
-  const handleProductClick = (id) => {
-    navigate(`/productdetail/${id}`);
-  };
+ // Update the handleProductClick function to use the correct route
+const handleProductClick = (id) => {
+  navigate(`/productdetail/${id}`);
+};
 
   // Điều hướng đến giỏ hàng
   const handleCartClick = () => {

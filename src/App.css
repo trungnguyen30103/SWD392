@@ -1,30 +1,32 @@
 /* Navbar and Footer Size */
 .navbar {
-  height: 5vh; /* 10% of viewport height */
+  height: 8vh; /* Use fixed pixels instead of vh */
   background-color: #333;
   color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
 .footer {
-  height: 15vh; /* Chiều cao là 15% chiều cao màn hình */
+  height: 15vh; /* Use fixed pixels */
   background-color: #333;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  width: 100vw; /* Sử dụng 100% chiều rộng của viewport */
-  left: 0; /* Đảm bảo nó bắt đầu từ mép trái màn hình */
-  margin: 0; /* Đảm bảo không có margin làm lệch phần tử */
+  width: 100%;
 }
-
 
 /* Main Content */
 .main-content {
-  min-height: 85vh;
-  
+  min-height: calc(100vh - 8vh - 15vh); /* Full viewport - navbar - footer */
+  padding-top: 8vh; /* Space for fixed navbar */
+  box-sizing: border-box;
 }

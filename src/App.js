@@ -13,7 +13,9 @@ import Login from "./pages/login/index.jsx";
 import WebsiteInfo from "./pages/Infor/WebsiteInfor/index.jsx";
 import Footer from "./component/Footer/index.jsx";
 import AdminsProductList from "./pages/products/AdminsProduct/index.jsx";
+
 import CustomerProductList from "./pages/products/CustomerProduct/index.jsx";
+import ProductDetail from "./pages/products/CustomerProduct/ProductDetail.jsx";
 import UserList from "./pages/UserManagement/index.jsx";
 import AdminOrder from "./pages/order/AdminOrder/index.jsx";
 import CustomerOrder from "./pages/order/CustomerOrder/index.jsx";
@@ -39,12 +41,16 @@ function App() {
             <Route pa th="/login" element={<Login setRole={setRole} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/products" element={<CustomerProductList />} />
+            <Route path="/productdetail/:productId" element={<ProductDetail />} />
             <Route path="/userlist" element={<UserList />} />
             <Route path="/admin/orders" element={<AdminOrder />} />
             <Route path="/orders" element={<CustomerOrder />} />
+
+            
             <Route
               path="/admin/products"
-              element={role === "admin" ? <AdminsProductList /> : <Login />}
+              element={<AdminsProductList />}
+
             />
 
             <Route
