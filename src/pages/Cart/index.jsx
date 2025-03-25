@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaTrash, FaClipboardList, FaArrowLeft } from "react-icons/fa"; // Thêm biểu tượng quay lại
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import "./Cart.css";
+import "./index.css";
 import axios from "axios"; // Thêm axios để gọi API của bạn
 
 function Cart({ cart, setCart }) {

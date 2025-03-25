@@ -1,5 +1,5 @@
 import React from "react";
-import "./WebsiteInfo.css";
+import "./index.css";
 import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 
 const WebsiteInfo = () => {

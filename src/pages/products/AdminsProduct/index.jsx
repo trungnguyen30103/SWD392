@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaClipboardList } from "react-icons/fa"; // Import icon Track Order
 import { useNavigate } from "react-router-dom";
-import "./AdminsProduct.css";
+import "./index.css";
 
 // Tạo một hàm chung để gọi API
 const fetchApi = async (url, method = "GET", body = null) => {

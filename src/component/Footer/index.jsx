@@ -1,6 +1,6 @@
 import React from "react";
 import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
-import "./footer.css";
+import "./index.css";
 
 const Footer = () => {
   return (
@@ -67,6 +67,9 @@ const Footer = () => {
           </ul>
         </div>
       </div>
+      <p className="footer-bottom">
+        &copy; 2025 BlindBox. All Rights Reserved.
+      </p>
     </footer>
   );
 };

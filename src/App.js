@@ -5,18 +5,18 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import Navbar from "./component/navbar";
-import Register from "./pages/register/register.jsx";
-import Home from "./pages/home/Home.jsx";
-import Cart from "./pages/cart/Cart.jsx";
-import Login from "./pages/login/login.jsx";
-import WebsiteInfo from "./pages/websiteInfor/WebsiteInfo.jsx";
-import Footer from "./component/footer.jsx";
-import AdminsProductList from "./pages/products/AdminsProducts.jsx";
-import CustomerProductList from "./pages/products/CustomerProduct.jsx";
-import UserList from "./pages/UserManagement/UserList.jsx";
-import AdminOrder from "./pages/order/AdminOrder.jsx";
-import CustomerOrder from "./pages/order/CustomerOrder.jsx";
+import Navbar from "./component/Navbar/index.jsx";
+import Register from "./pages/register/index.jsx";
+import Home from "./pages/home/index.jsx";
+import Cart from "./pages/cart/index.jsx";
+import Login from "./pages/login/index.jsx";
+import WebsiteInfo from "./pages/Infor/WebsiteInfor/index.jsx";
+import Footer from "./component/Footer/index.jsx";
+import AdminsProductList from "./pages/products/AdminsProduct/index.jsx";
+import CustomerProductList from "./pages/products/CustomerProduct/index.jsx";
+import UserList from "./pages/UserManagement/index.jsx";
+import AdminOrder from "./pages/order/AdminOrder/index.jsx";
+import CustomerOrder from "./pages/order/CustomerOrder/index.jsx";
 import "./App.css";
 function App() {
   const [role, setRole] = useState("");

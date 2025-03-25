@@ -1,0 +1,65 @@
+/* Footer Styles */
+.footer {
+  width: 100%; /* Chiếm toàn bộ chiều rộng của trang */
+  background-color: #333; /* Màu nền của footer là xám đậm */
+  color: white; /* Màu chữ trong footer là trắng */
+  padding: 50px 0; /* Khoảng đệm trên và dưới footer là 50px */
+  bottom: 0; left: 0; right: 0; /* Đặt footer luôn ở dưới cùng và chiếm toàn bộ chiều rộng */
+  z-index: 1000; /* Đảm bảo footer nằm trên các phần tử khác */
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.6); /* Thêm bóng đổ mờ phía trên footer */
+}
+
+.main-content {
+  margin-bottom: 150px; /* Thêm khoảng cách dưới cùng để tránh nội dung bị đè lên bởi footer */
+}
+
+.footer-container {
+  display: flex; /* Sử dụng flexbox để bố trí các phần tử con */
+  justify-content: space-around; /* Căn giữa và phân bố đều các phần tử con */
+  max-width: 1200px; /* Giới hạn chiều rộng tối đa của container */
+  margin: 0 auto; /* Căn giữa container */
+  padding: 0 20px; /* Thêm khoảng đệm trái và phải */
+}
+
+.footer-column {
+  flex: 1; /* Mỗi cột chiếm một phần không gian đều trong container */
+  margin: 0 15px; /* Thêm khoảng cách giữa các cột */
+  text-align: left; /* Căn lề trái cho văn bản */
+}
+
+.footer-column h4 {
+  margin-bottom: 10px; /* Khoảng cách dưới mỗi tiêu đề cột */
+  font-size: 18px; text-transform: uppercase; /* Chữ hoa và kích thước font */
+  border-bottom: 2px solid white; /* Thêm đường viền dưới cho tiêu đề */
+  display: inline-block; padding-bottom: 5px; /* Tiêu đề inline-block và khoảng cách dưới */
+}
+
+.footer-column ul {
+  list-style: none; /* Bỏ dấu chấm cho danh sách */
+  padding: 0; /* Bỏ padding cho ul */
+}
+
+.footer-column ul li {
+  margin: 8px 0; /* Khoảng cách giữa các mục trong danh sách */
+}
+
+.footer-column ul li a {
+  color: white; font-size: 14px; /* Màu trắng và kích thước font cho liên kết */
+  text-decoration: none; /* Bỏ gạch dưới */
+  transition: 0.3s ease-in-out; /* Hiệu ứng chuyển tiếp mượt mà */
+}
+
+.footer-column ul li a:hover {
+  color: #ff6f61; /* Màu sắc khi di chuột vào liên kết */
+}
+
+.social-links {
+  display: flex; gap: 10px; /* Sử dụng flexbox và khoảng cách giữa các liên kết */
+  justify-content: flex-start; /* Căn trái các liên kết mạng xã hội */
+}
+
+.footer-bottom {
+  margin-top: 20px; font-size: 14px; /* Khoảng cách và kích thước font cho footer dưới cùng */
+  border-top: 1px solid white; /* Thêm đường viền trên */
+  padding-top: 10px; text-align: center; /* Khoảng cách trên và căn giữa nội dung */
+}

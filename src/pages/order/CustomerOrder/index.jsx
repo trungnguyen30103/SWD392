@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./CustomerOrder.css";
+import "./index.css";
 
 function OrderHistory({ customerId }) {
   const [orders, setOrders] = useState([]);

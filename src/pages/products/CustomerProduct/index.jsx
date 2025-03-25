@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaShoppingCart, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import "./CustomerProduct.css";
+import "./index.css";
 
 function CustomerProduct() {
   const [products, setProducts] = useState([]); // Dữ liệu sản phẩm động
