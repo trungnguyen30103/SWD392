@@ -5,7 +5,7 @@ import "./CustomerProduct.css";
 
 function CustomerProduct() {
   const [products, setProducts] = useState([]); // Dữ liệu sản phẩm động
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState([]); // Giỏ hàng
   const [searchQuery, setSearchQuery] = useState(""); // Lưu từ khóa tìm kiếm
   const navigate = useNavigate();
 
@@ -23,6 +23,21 @@ function CustomerProduct() {
 
     fetchProducts(); // Gọi hàm fetch khi component mount
   }, []);
+
+  // Lấy giỏ hàng từ localStorage nếu có khi trang tải lại
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cart")); // Lấy giỏ hàng từ localStorage
+    if (storedCart) {
+      setCart(storedCart); // Cập nhật giỏ hàng từ localStorage vào state
+    }
+  }, []);
+
+  // Lưu giỏ hàng vào localStorage mỗi khi giỏ hàng thay đổi
+  useEffect(() => {
+    if (cart.length > 0) {
+      localStorage.setItem("cart", JSON.stringify(cart)); // Lưu giỏ hàng vào localStorage
+    }
+  }, [cart]);
 
   // Hàm lọc sản phẩm dựa trên tên hoặc id
   const filteredProducts = products.filter(

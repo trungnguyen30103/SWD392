@@ -68,14 +68,12 @@ body {
   }
   
   .remove-button {
-    background-color: #dc3545;
+    
     padding: 8px 10px;
     border-radius: 50%;
   }
   
-  .remove-button:hover {
-    background-color: #c82333;
-  }
+
   
   /* No Orders Message */
   p {
