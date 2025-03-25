@@ -1,28 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { FaTrash, FaClipboardList } from "react-icons/fa"; // Thùng rác nhỏ và biểu tượng theo dõi đơn hàng
+import { FaTrash, FaClipboardList, FaArrowLeft } from "react-icons/fa"; // Thêm biểu tượng quay lại
 import { ToastContainer, toast } from "react-toastify";
-import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./Cart.css";
+import axios from "axios"; // Thêm axios để gọi API của bạn
 
 function Cart({ cart, setCart }) {
   const [cartItems, setCartItems] = useState([]); // Giỏ hàng trống ban đầu
   const [products, setProducts] = useState([]); // Danh sách sản phẩm để thêm vào giỏ hàng
   const navigate = useNavigate(); // Initialize useNavigate
 
-  // Fetch danh sách sản phẩm từ API
+  // Thay đổi API ở đây
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("https://fakestoreapi.com/products");
-        setProducts(response.data);
+        // Gọi API của bạn để lấy danh sách sản phẩm
+        const response = await axios.get("https://yourapi.com/products");
+        setProducts(response.data); // Cập nhật state với dữ liệu từ API của bạn
       } catch (error) {
         console.error("Error fetching products:", error);
         toast.error("Failed to fetch products.");
       }
     };
-    fetchProducts();
+
+    fetchProducts(); // Gọi hàm fetch khi component mount
   }, []);
+
+  // Lưu giỏ hàng vào localStorage mỗi khi giỏ hàng thay đổi
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      localStorage.setItem("cartItems", JSON.stringify(cartItems)); // Lưu giỏ hàng vào localStorage
+    }
+  }, [cartItems]);
 
   // Thêm sản phẩm vào giỏ hàng
   const addToCart = (product) => {
@@ -62,6 +71,13 @@ function Cart({ cart, setCart }) {
   // Update item quantity in cart
   const updateQuantity = async (productId, quantity) => {
     if (quantity < 1) return; // Kiểm tra số lượng phải lớn hơn 0
+    const product = cartItems.find((item) => item.id === productId);
+
+    if (quantity > product.stock) {
+      toast.error("Cannot exceed stock quantity!");
+      return;
+    }
+
     const updatedCart = cartItems.map((item) =>
       item.id === productId ? { ...item, quantity } : item
     );
@@ -93,8 +109,19 @@ function Cart({ cart, setCart }) {
     <div className="cart-container">
       <ToastContainer />
       <h1>Your Cart</h1>
+
+      {/* Nút quay lại cửa hàng luôn hiển thị */}
+      <div>
+        <button onClick={() => navigate("/products")} className="back-button">
+          <FaArrowLeft /> Go back to shopping
+        </button>
+      </div>
+
+      {/* Kiểm tra và hiển thị giỏ hàng nếu có sản phẩm */}
       {cartItems.length === 0 ? (
-        <p className="empty-cart">Your cart is empty.</p>
+        <div>
+          <p className="empty-cart">Your cart is empty.</p>
+        </div>
       ) : (
         <div className="cart-items">
           {cartItems.map((item) => (

@@ -10,6 +10,7 @@ body {
     text-align: center;
     color: #333;
     margin: 20px 0;
+    margin-top: 50px;
   }
   
   table {
@@ -67,14 +68,12 @@ body {
   }
   
   .remove-button {
-    background-color: #dc3545;
+    
     padding: 8px 10px;
     border-radius: 50%;
   }
   
-  .remove-button:hover {
-    background-color: #c82333;
-  }
+
   
   /* No Orders Message */
   p {

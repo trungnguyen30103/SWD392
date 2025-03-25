@@ -1,41 +1,40 @@
-/* Search Bar Styles */
+/* Cải thiện thanh tìm kiếm */
 .search-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 30px;
-    position: relative;
-    width: 100%;
-  }
-  
-  .search-input {
-    padding: 12px 15px; /* Tạo khoảng cách cho biểu tượng đã xóa */
-    width: 50%;
-    border-radius: 30px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    outline: none;
-    transition: all 0.3s ease;
-    background-color: #f9f9f9; /* Màu nền nhạt cho thanh tìm kiếm */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng nhẹ */
-  }
-  
-  .search-input:focus {
-    border-color: #d84c06; /* Màu viền khi focus vào */
-    background-color: #ffffff; /* Màu nền khi focus */
-    box-shadow: 0 4px 10px rgba(241, 168, 125, 0.3); /* Hiệu ứng bóng khi focus */
-  }
-  
-  /* Hover effect on search bar */
-  .search-input:hover {
-    border-color: #d84c06; /* Thay đổi viền khi hover */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Tăng hiệu ứng bóng */
-  }
-  
-  .search-input::placeholder {
-    color: #999; /* Màu của placeholder */
-    font-style: italic;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; /* Giảm khoảng cách dưới thanh tìm kiếm */
+  position: relative;
+  width: 100%;
+}
+
+.search-input {
+  padding: 12px 20px;
+  width: 60%; /* Giảm chiều rộng thanh tìm kiếm để dễ tiếp cận hơn */
+  border-radius: 25px; /* Cải thiện bo tròn */
+  border: 1px solid #d84c06;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-input:focus {
+  border-color: #d84c06;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(241, 168, 125, 0.3);
+}
+
+.search-input:hover {
+  border-color: #d84c06;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.search-input::placeholder {
+  color: #999;
+  font-style: italic;
+}
   
   /* Container chứa các sản phẩm */
   .product-list {
@@ -47,59 +46,57 @@
   }
   
   /* Styling the Product Cards */
-  .product-card {
-    display: flex;
-    flex-direction: column; /* Đặt các phần tử trong thẻ sản phẩm theo chiều dọc */
-    width: 220px; /* Chiều rộng của mỗi sản phẩm */
-    padding: 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: center;
-    height: 100%; /* Đảm bảo chiều cao của thẻ sản phẩm đầy đủ */
-    justify-content: space-between; /* Đảm bảo các phần tử được phân bổ đều trong thẻ */
-    cursor: pointer;
-  }
-  
-  .product-card:hover {
-    transform: translateY(-5px); /* Hiệu ứng khi hover */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Đảm bảo hình ảnh trong sản phẩm có kích thước phù hợp */
-  .product-card img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
-  /* Tiêu đề sản phẩm */
-  .product-card h3 {
-    margin-top: 15px;
-    font-size: 18px;
-    color: #333;
-    font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; /* Giới hạn tiêu đề trong 1 dòng */
-  }
-  
-  /* Mô tả sản phẩm */
-  .product-card p {
-    margin: 8px 0;
-    font-size: 16px;
-    color: #555;
-    height: 18px; /* Giới hạn chiều cao cho mô tả */
-    overflow: hidden; /* Ẩn phần mô tả thừa */
-    text-overflow: ellipsis; /* Hiển thị dấu "..." nếu mô tả bị cắt */
-    line-height: 1.4em; /* Cải thiện dòng mô tả */
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2; /* Giới hạn tối đa 2 dòng cho mô tả */
-  }
+  /* Cải thiện thẻ sản phẩm */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  transform: translateY(-5px); /* Tăng hiệu ứng di chuyển lên khi hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Tăng bóng đổ */
+}
+
+.product-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.product-card h3 {
+  margin-top: 15px;
+  font-size: 18px;
+  color: #333;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-card p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #555;
+  height: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
   /* Đảm bảo hình ảnh trong sản phẩm có kích thước phù hợp */
   .product-card img {
     width: 100%;
@@ -151,35 +148,32 @@
   }
   
   /* Cart Icon Styles */
-  .cart-icon-container {
-    background-color: #d84c06;
-    padding: 18px;
-    border-radius: 50%;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
-    right: 20px; /* Điều chỉnh vị trí giỏ hàng theo chiều ngang */
-    cursor: pointer;
-   
-  }
-  
-  /* Hover effect khi di chuột qua giỏ hàng */
-  .cart-icon-container:hover {
-    background-color: #ba8165;
-  }
-  
-  /* Cart count bubble */
-  .cart-count {
-    position: absolute;
-    top: -5px; /* Điều chỉnh vị trí của thông báo số lượng giỏ hàng */
-    right: -5px;
-    background-color: red;
-    color: white;
-    border-radius: 50%;
-    padding: 8px 12px;
-    font-size: 14px;
-    font-weight: bold;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-  }
-  
-  
-  
+  /* Giỏ hàng */
+.cart-icon-container {
+  position: fixed;
+  top: 15px; /* Điều chỉnh lên một chút */
+  right: 20px; /* Điều chỉnh lại vị trí */
+
+  padding: 16px;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.cart-icon-container:hover {
+  background-color: #ba8165; /* Tăng độ nổi bật khi hover */
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
