@@ -19,7 +19,10 @@ import ProductDetail from "./pages/products/CustomerProduct/ProductDetail.jsx";
 import UserList from "./pages/UserManagement/index.jsx";
 import AdminOrder from "./pages/order/AdminOrder/index.jsx";
 import CustomerOrder from "./pages/order/CustomerOrder/index.jsx";
+
 import "./App.css";
+import PoliciesPage from "./pages/Infor/PoliciesPage/index.jsx";
+import TermsUse from "./pages/Infor/TermsUse/index.jsx";
 function App() {
   const [role, setRole] = useState("");
 
@@ -38,7 +41,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/info" element={<WebsiteInfo />} />
             <Route path="/cart" element={<Cart />} />
-            <Route pa th="/login" element={<Login setRole={setRole} />} />
+            <Route path="/login" element={<Login setRole={setRole} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/products" element={<CustomerProductList />} />
             <Route path="/productdetail/:productId" element={<ProductDetail />} />
@@ -46,7 +49,13 @@ function App() {
             <Route path="/admin/orders" element={<AdminOrder />} />
             <Route path="/orders" element={<CustomerOrder />} />
 
+
             
+
+            <Route path="/policy/:type" element={<PoliciesPage />} />
+            <Route path="/termsofuse" element={<TermsUse />} />
+
+
             <Route
               path="/admin/products"
               element={<AdminsProductList />}

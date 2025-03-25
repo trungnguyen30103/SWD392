@@ -1,60 +1,44 @@
-.info-container {
-  width: 80%;
-  margin: 0 auto;
+/* Căn lề trái cho toàn bộ */
+.website-info {
+  text-align: left;
   padding: 20px;
-  font-family: Arial, sans-serif;
 }
 
-.title {
+.website-info-title {
   font-size: 2em;
-  text-align: center;
-  color: #333;
+  font-weight: bold;
+  text-align: left;
 }
 
-.description {
-  text-align: center;
-  font-size: 1.1em;
-  color: #666;
+.website-info-description,
+.website-info-review,
+.website-info-contact {
+  font-size: 1.2em;
+  text-align: left;
 }
 
-h2 {
+.website-info-heading {
   font-size: 1.5em;
-  color: #333;
   margin-top: 20px;
+  text-align: left;
 }
 
-ul, ol {
-  margin-left: 20px;
+.website-info-list,
+.website-info-steps {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.website-info-list li,
+.website-info-steps li {
+  margin: 10px 0;
   font-size: 1.1em;
-  color: #444;
-}
-
-li {
-  margin-bottom: 10px;
-}
-
-.social-links {
-  margin-top: 20px;
-  text-align: center;
 }
 
 .social-links a {
-  margin: 0 10px;
-  color: #007bff;
-  text-decoration: none;
-  font-weight: bold;
+  margin-right: 10px;
 }
 
-.social-links a:hover {
-  text-decoration: underline;
-}
-
-.title {
-  font-size: 2.5em;
-  text-align: center;
-  color: white; /* Màu chữ */
-  background-color: #ff5500; /* Màu nền khối */
-  padding: 10px; /* Khoảng cách giữa chữ và viền khối */
-  margin-bottom: 10px;
-  border-radius: 5px; /* Bo góc cho khối màu */
+.website-info-contact {
+  font-size: 1.1em;
 }

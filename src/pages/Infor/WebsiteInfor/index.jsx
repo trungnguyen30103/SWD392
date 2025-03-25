@@ -4,93 +4,90 @@ import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 
 const WebsiteInfo = () => {
   return (
-    <div className="info-container">
-      <h1 className="title">Giới thiệu về BlindBox</h1>
-      <p className="description">
-        Tìm hiểu thêm về sứ mệnh của chúng tôi và cách chúng tôi mang lại niềm
-        vui cho khách hàng.
+    <div className="website-info">
+      <h1 className="website-info-title">About BlindBox</h1>
+      <p className="website-info-description">
+        Learn more about our mission and how we bring joy to our customers.
       </p>
 
-      <h2>Cách thức hoạt động</h2>
-      <ul>
+      <h2 className="website-info-heading">How it Works</h2>
+      <ul className="website-info-list">
         <li>
-          <strong>Chọn hộp Blind Box của bạn</strong> – Duyệt qua bộ sưu tập hộp
-          blind box theo chủ đề của chúng tôi.
+          <strong>Choose your Blind Box</strong> – Browse our collection of
+          themed blind boxes.
         </li>
         <li>
-          <strong>Mua hàng và chờ giao hàng</strong> – Hoàn tất đơn hàng và tận
-          hưởng sự mong chờ.
+          <strong>Purchase and wait for delivery</strong> – Complete your order
+          and enjoy the anticipation.
         </li>
         <li>
-          <strong>Mở hộp và khám phá bất ngờ</strong> – Nhận gói hàng và khám
-          phá các món đồ bí ẩn!
-        </li>
-      </ul>
-
-      <h2>Tại sao chọn chúng tôi?</h2>
-      <ul>
-        <li>
-          Niềm vui & Hứng thú – Tận hưởng cảm giác bất ngờ với mỗi lần mua.
-        </li>
-        <li>
-          Sản phẩm chất lượng cao – Các hộp blind box của chúng tôi chứa những
-          sản phẩm chất lượng và được chọn lọc kỹ lưỡng.
-        </li>
-        <li>
-          Ưu đãi độc quyền – Nhận các sản phẩm phiên bản giới hạn và đặc biệt
-          không có ở nơi khác.
-        </li>
-        <li>
-          Hài lòng khách hàng – Chúng tôi coi trọng khách hàng và cam kết mang
-          đến dịch vụ tốt nhất.
+          <strong>Unbox and discover the surprise</strong> – Receive your
+          package and discover the mystery items!
         </li>
       </ul>
 
-      <h2>Cách mua</h2>
-      <ol>
+      <h2 className="website-info-heading">Why Choose Us?</h2>
+      <ul className="website-info-list">
         <li>
-          Đăng ký / Đăng nhập – Tạo tài khoản hoặc đăng nhập để bắt đầu mua sắm.
+          Fun & Excitement – Enjoy the thrill of surprises with every purchase.
         </li>
         <li>
-          Chọn hộp của bạn – Lựa chọn một hộp blind box theo sở thích của bạn.
+          High-quality products – Our blind boxes contain carefully selected,
+          high-quality products.
         </li>
         <li>
-          Thanh toán an toàn – Hoàn tất thanh toán với các phương thức tin cậy
-          của chúng tôi.
+          Exclusive offers – Get limited edition and special products not
+          available elsewhere.
         </li>
         <li>
-          Theo dõi đơn hàng – Cập nhật chi tiết giao hàng theo thời gian thực.
+          Customer satisfaction – We value our customers and are committed to
+          providing the best service.
         </li>
-        <li>Mở hộp và tận hưởng!</li>
+      </ul>
+
+      <h2 className="website-info-heading">How to Buy</h2>
+      <ol className="website-info-steps">
+        <li>
+          Register / Log in – Create an account or log in to start shopping.
+        </li>
+        <li>
+          Choose your box – Pick a blind box according to your preferences.
+        </li>
+        <li>
+          Secure payment – Complete the payment with our trusted payment
+          methods.
+        </li>
+        <li>Track your order – Get real-time shipping updates.</li>
+        <li>Unbox and enjoy!</li>
       </ol>
 
-      <h2>Đánh giá từ khách hàng</h2>
-      <p>
-        "Tôi rất thích cảm giác không biết mình sẽ nhận được gì! Rất đáng thử!"
+      <h2 className="website-info-heading">Customer Reviews</h2>
+      <p className="website-info-review">
+        "I love the feeling of not knowing what I'll get! Definitely worth
+        trying!"
       </p>
-      <p>"Sản phẩm chất lượng và giao hàng nhanh chóng!"</p>
-      <p>
-        "BlindBox Web chưa bao giờ làm tôi thất vọng. Thật vui khi được tham
-        gia!"
+      <p className="website-info-review">
+        "Quality products and fast delivery!"
+      </p>
+      <p className="website-info-review">
+        "BlindBox Web has never disappointed me. It's a joy to be a part of!"
       </p>
 
-      <h2>Chính sách & Hỗ trợ</h2>
-      <ul>
+      <h2 className="website-info-heading">Policies & Support</h2>
+      <ul className="website-info-list">
+        <li>Secure payments – Multiple payment methods with high security.</li>
         <li>
-          Thanh toán an toàn – Nhiều phương thức thanh toán với bảo mật cao.
+          Shipping & Returns – Transparent shipping policies and easy return
+          processes.
         </li>
         <li>
-          Vận chuyển & Đổi trả – Chính sách vận chuyển minh bạch và quy trình
-          đổi trả dễ dàng.
-        </li>
-        <li>
-          Hỗ trợ khách hàng – Cần giúp đỡ? Liên hệ với chúng tôi qua chat trực
-          tiếp, email hoặc điện thoại.
+          Customer support – Need help? Contact us via live chat, email, or
+          phone.
         </li>
       </ul>
 
-      <h2>Liên hệ với chúng tôi</h2>
-      <p>Theo dõi chúng tôi trên các mạng xã hội:</p>
+      <h2 className="website-info-heading">Contact Us</h2>
+      <p className="website-info-contact">Follow us on social media:</p>
       <div className="social-links">
         <a
           href="https://www.facebook.com"
@@ -110,8 +107,8 @@ const WebsiteInfo = () => {
           <FaWhatsapp size={30} />
         </a>
       </div>
-      <p>
-        Để giải đáp thắc mắc, vui lòng gửi email đến{" "}
+      <p className="website-info-contact">
+        For inquiries, please email us at{" "}
         <strong>support@blindboxweb.com</strong>.
       </p>
     </div>
