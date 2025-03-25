@@ -72,10 +72,10 @@ function CustomerProduct() {
   };
 
   // Điều hướng đến chi tiết sản phẩm
- // Update the handleProductClick function to use the correct route
-const handleProductClick = (id) => {
-  navigate(`/productdetail/${id}`);
-};
+  // Update the handleProductClick function to use the correct route
+  const handleProductClick = (id) => {
+    navigate(`/productdetail/${id}`);
+  };
 
   // Điều hướng đến giỏ hàng
   const handleCartClick = () => {
@@ -149,6 +149,7 @@ const handleProductClick = (id) => {
             top: "140px",
             right: "80px",
             cursor: "pointer",
+            zIndex: 1000, // Đảm bảo icon giỏ hàng luôn hiển thị
           }}
         />
         {cart.length > 0 && (
@@ -158,18 +159,18 @@ const handleProductClick = (id) => {
               top: "5px",
               right: "5px",
               backgroundColor: "red",
-              color: "white",
+              color: "Black",
               borderRadius: "50%",
               padding: "5px 10px",
               fontSize: "14px",
             }}
           >
-            {cart.reduce((total, item) => total + item.quantity, 0)}
+            {cart.reduce((total, item) => total + item.quantity, 0)}{" "}
+            {/* Hiển thị tổng số lượng sản phẩm trong giỏ */}
           </span>
         )}
       </div>
     </div>
   );
 }
-
 export default CustomerProduct;

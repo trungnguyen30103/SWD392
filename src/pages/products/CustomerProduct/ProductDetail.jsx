@@ -1,9 +1,9 @@
 // ProductDetail.jsx
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { FaShoppingCart, FaArrowLeft } from 'react-icons/fa';
-import './ProductDetail.css';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { FaShoppingCart, FaArrowLeft } from "react-icons/fa";
+import "./ProductDetail.css";
 
 const ProductDetail = () => {
   const { productId } = useParams();
@@ -15,21 +15,23 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`https://fakestoreapi.com/products/${productId}`);
+        const response = await axios.get(
+          `https://fakestoreapi.com/products/${productId}`
+        );
         setProduct({
           ...response.data,
           stock: response.data.rating.count,
           series: "Crying Again Series", // Example additional field
           material: "Vinyl", // Example additional field
-          dimensions: "20cm tall" // Example additional field
+          dimensions: "20cm tall", // Example additional field
         });
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error("Error fetching product:", error);
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchProduct();
   }, [productId]);
 
@@ -60,7 +62,9 @@ const ProductDetail = () => {
           <h1 className="product-title">{product.title}</h1>
           <div className="product-meta">
             <span className="product-series">{product.series}</span>
-            <span className="product-stock">{product.stock > 0 ? 'In Stock' : 'Pre-order'}</span>
+            <span className="product-stock">
+              {product.stock > 0 ? "In Stock" : "Pre-order"}
+            </span>
           </div>
 
           <div className="price-container">
@@ -79,7 +83,7 @@ const ProductDetail = () => {
           </div>
 
           <div className="quantity-selector">
-            <button 
+            <button
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
               disabled={quantity === 1}
             >
@@ -90,9 +94,13 @@ const ProductDetail = () => {
               value={quantity}
               min="1"
               max={product.stock}
-              onChange={(e) => setQuantity(Math.max(1, Math.min(product.stock, e.target.value)))}
+              onChange={(e) =>
+                setQuantity(
+                  Math.max(1, Math.min(product.stock, e.target.value))
+                )
+              }
             />
-            <button 
+            <button
               onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
               disabled={quantity === product.stock}
             >
@@ -100,7 +108,7 @@ const ProductDetail = () => {
             </button>
           </div>
 
-          <button 
+          <button
             className="add-to-cart-btn"
             onClick={addToCart}
             disabled={product.stock <= 0}
