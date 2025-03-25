@@ -10,16 +10,18 @@
 }
 
 .footer {
-  height: 15vh;
-  /* 10% of viewport height */
+  height: 15vh; /* Chiều cao là 15% chiều cao màn hình */
   background-color: #333;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
- 
+  width: 100vw; /* Sử dụng 100% chiều rộng của viewport */
+  left: 0; /* Đảm bảo nó bắt đầu từ mép trái màn hình */
+  margin: 0; /* Đảm bảo không có margin làm lệch phần tử */
 }
+
 
 /* Main Content */
 .main-content {

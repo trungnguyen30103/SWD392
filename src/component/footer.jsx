@@ -67,9 +67,6 @@ const Footer = () => {
           </ul>
         </div>
       </div>
-      <p className="footer-bottom">
-        &copy; 2025 BlindBox. All Rights Reserved.
-      </p>
     </footer>
   );
 };
