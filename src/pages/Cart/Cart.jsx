@@ -1,309 +1,170 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useCart } from '../../context/CartContext';
-import { calculateCartSummary } from '../../mock/CartData';
-import './Cart.scss';
+import React, { useState, useEffect } from "react";
+import { FaTrash, FaClipboardList } from "react-icons/fa"; // Thùng rác nhỏ và biểu tượng theo dõi đơn hàng
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import "./Cart.css";
 
-// Import icons (you can use any icon library like FontAwesome, Material Icons, etc.)
-// For this example, I'll use comments to indicate where icons would go
+function Cart({ cart, setCart }) {
+  const [cartItems, setCartItems] = useState([]); // Giỏ hàng trống ban đầu
+  const [products, setProducts] = useState([]); // Danh sách sản phẩm để thêm vào giỏ hàng
+  const navigate = useNavigate(); // Initialize useNavigate
 
-const CartItem = ({ item, updateQuantity, removeFromCart }) => {
-  const handleQuantityChange = (e) => {
-    const newQuantity = parseInt(e.target.value, 10);
-    if (newQuantity >= 1) {
-      updateQuantity(item.id, newQuantity, item.stock_quantity);
-    }
-  };
-
-  return (
-    <div className="cart-item">
-      <div className="cart-item-image">
-        <Link to={`/product/${item.id}`}>
-          <img src={item.imageUrl} alt={item.name} />
-        </Link>
-      </div>
-      
-      <div className="cart-item-details">
-        <Link to={`/product/${item.id}`}>
-          <h3>{item.name}</h3>
-        </Link>
-        <p className="cart-item-price">${item.price?.toFixed(2)}</p>
-      </div>
-      
-      <div className="cart-item-controls">
-        <div className="quantity-control">
-          <button 
-            className="quantity-btn"
-            onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1), item.stock_quantity)}
-            aria-label="Decrease quantity"
-          >
-            {/* Minus icon */}
-            -
-          </button>
-          
-          <input
-            type="number"
-            min="1"
-            max={item.stock_quantity}
-            value={item.quantity}
-            onChange={handleQuantityChange}
-            className="quantity-input"
-            aria-label="Item quantity"
-          />
-          
-          <button 
-            className="quantity-btn"
-            onClick={() => updateQuantity(item.id, item.quantity + 1, item.stock_quantity)}
-            aria-label="Increase quantity"
-            disabled={item.quantity >= item.stock_quantity}
-          >
-            {/* Plus icon */}
-            +
-          </button>
-        </div>
-        
-        <button 
-          className="remove-btn" 
-          onClick={() => removeFromCart(item.id)}
-          aria-label="Remove item"
-        >
-          <span className="remove-icon">
-            {/* Trash icon */}
-            🗑️
-          </span>
-          Remove
-        </button>
-      </div>
-      
-      <div className="cart-item-subtotal">
-        ${(item.price * item.quantity).toFixed(2)}
-      </div>
-    </div>
-  );
-};
-
-const Cart = () => {
-  const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
-  const [discountCode, setDiscountCode] = useState('');
-  const [appliedDiscount, setAppliedDiscount] = useState(null);
-  const [shippingMethod, setShippingMethod] = useState('standard');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const navigate = useNavigate();
-  
-  // Animation effect when cart items change
+  // Fetch danh sách sản phẩm từ API
   useEffect(() => {
-    const cartItems = document.querySelectorAll('.cart-item');
-    cartItems.forEach((item, index) => {
-      item.style.opacity = '0';
-      item.style.transform = 'translateY(20px)';
-      setTimeout(() => {
-        item.style.opacity = '1';
-        item.style.transform = 'translateY(0)';
-      }, 100 * (index + 1));
-    });
-  }, [cart.length]);
-  
-  const handleApplyDiscount = () => {
-    setIsProcessing(true);
-    
-    // Simulate API delay
-    setTimeout(() => {
-      if (discountCode === 'SAVE10' || discountCode === 'SAVE20') {
-        setAppliedDiscount(discountCode);
-      } else {
-        alert('Invalid discount code. Try SAVE10 or SAVE20.');
-        setAppliedDiscount(null);
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("https://fakestoreapi.com/products");
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        toast.error("Failed to fetch products.");
       }
-      setIsProcessing(false);
-    }, 800);
-  };
-  
-  const handleShippingChange = (method) => {
-    setShippingMethod(method);
-  };
-  
-  const handleCheckout = () => {
-    // Store shipping method and discount in sessionStorage for use in checkout
-    sessionStorage.setItem('shippingMethod', shippingMethod);
-    if (appliedDiscount) {
-      sessionStorage.setItem('appliedDiscount', appliedDiscount);
+    };
+    fetchProducts();
+  }, []);
+
+  // Thêm sản phẩm vào giỏ hàng
+  const addToCart = (product) => {
+    const newCartItems = [...cartItems];
+    const existingProduct = newCartItems.find((item) => item.id === product.id);
+
+    if (existingProduct) {
+      existingProduct.quantity += 1;
+    } else {
+      newCartItems.push({ ...product, quantity: 1 });
     }
-    
-    // Navigate to the checkout page
-    navigate('/checkout');
+
+    setCartItems(newCartItems);
+    toast.success(`${product.title} has been added to your cart.`);
   };
 
-  // Calculate cart summary with shipping method considered
-  const cartSummary = calculateCartSummary(cart, appliedDiscount, shippingMethod);
-  
-  if (cart.length === 0) {
-    return (
-      <div className="cart-container empty-cart">
-        <div className="empty-cart-icon">
-          {/* Shopping cart icon */}
-          🛒
-        </div>
-        <h2>Your cart is empty</h2>
-        <p>Looks like you haven't added any items to your cart yet.<br />
-        Explore our products and find something you'll love!</p>
-        <Link to="/products" className="button primary-button">
-          <span className="button-icon">
-            {/* Shopping icon */}
-            🛍️
-          </span>
-          Browse Products
-        </Link>
-      </div>
+  // Remove item from cart with confirmation
+  const removeFromCart = async (productId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to remove this item from your cart?"
     );
-  }
+
+    if (confirmDelete) {
+      try {
+        const updatedCart = cartItems.filter((item) => item.id !== productId);
+        setCartItems(updatedCart);
+        toast.success("Item removed from cart.");
+      } catch (error) {
+        console.error("Error removing item from cart:", error);
+        toast.error("Failed to remove item from cart.");
+      }
+    } else {
+      toast.info("Item removal canceled.");
+    }
+  };
+
+  // Update item quantity in cart
+  const updateQuantity = async (productId, quantity) => {
+    if (quantity < 1) return; // Kiểm tra số lượng phải lớn hơn 0
+    const updatedCart = cartItems.map((item) =>
+      item.id === productId ? { ...item, quantity } : item
+    );
+    setCartItems(updatedCart);
+  };
+
+  // Calculate total price
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  // Handle Checkout
+  const handleCheckout = () => {
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty. Add items to proceed to checkout.");
+      return;
+    }
+    toast.success("Proceeding to checkout...");
+    navigate("/checkout"); // Navigate to the checkout page
+  };
+
+  // Handle Track Order
+  const handleTrack = () => {
+    navigate("/orders"); // Navigate to the orders page
+  };
 
   return (
     <div className="cart-container">
-      <h1>Your Shopping Cart</h1>
-      
-      <div className="cart-content">
+      <ToastContainer />
+      <h1>Your Cart</h1>
+      {cartItems.length === 0 ? (
+        <p className="empty-cart">Your cart is empty.</p>
+      ) : (
         <div className="cart-items">
-          <div className="cart-header">
-            <span>Product</span>
-            <span>Price</span>
-            <span>Quantity</span>
-            <span>Subtotal</span>
-          </div>
-          
-          {cart.map((item) => (
-            <CartItem
-              key={item.id}
-              item={item}
-              updateQuantity={updateQuantity}
-              removeFromCart={removeFromCart}
-            />
+          {cartItems.map((item) => (
+            <div key={item.id} className="cart-item">
+              <img
+                src={item.image}
+                alt={item.title}
+                className="cart-item-image"
+              />
+              <div className="cart-item-details">
+                <h3>{item.title}</h3>
+                <p>${item.price.toLocaleString("en-US")}</p>
+                <div className="quantity-controls">
+                  <button
+                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                  >
+                    -
+                  </button>
+                  <span>{item.quantity}</span>
+                  <button
+                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                  >
+                    +
+                  </button>
+                </div>
+                <button
+                  onClick={() => removeFromCart(item.id)}
+                  className="remove-button"
+                >
+                  <FaTrash /> {/* Thùng rác nhỏ */}
+                </button>
+              </div>
+            </div>
           ))}
-          
-          <div className="cart-actions">
-            <button 
-              className="button secondary-button" 
-              onClick={clearCart}
-            >
-              <span className="button-icon">
-                {/* Trash icon */}
-                🗑️
-              </span>
-              Clear Cart
-            </button>
-            
-            <Link to="/products" className="button outline-button">
-              <span className="button-icon">
-                {/* Arrow left icon */}
-                ←
-              </span>
-              Continue Shopping
-            </Link>
-          </div>
         </div>
-        
-        <div className="cart-summary">
-          <h3>Order Summary</h3>
-          
-          <div className="summary-row">
-            <span className="summary-label">Items ({cartSummary.itemCount}):</span>
-            <span className="summary-value">${cartSummary.subtotal.toFixed(2)}</span>
+      )}
+
+      <div className="total-price">
+        <h2>Total: ${totalPrice.toLocaleString("en-US")}</h2>
+      </div>
+
+      <button className="checkout-button" onClick={handleCheckout}>
+        Proceed to Checkout
+      </button>
+
+      {/* Track order button */}
+      <div className="track-order">
+        <button className="track-order-button" onClick={handleTrack}>
+          <FaClipboardList /> Track Your Order
+        </button>
+      </div>
+
+      {/* Sản phẩm có sẵn để thêm vào giỏ hàng */}
+      <div className="product-list">
+        <h2>Products Available</h2>
+        {products.map((product) => (
+          <div key={product.id} className="product-card">
+            <img
+              src={product.image}
+              alt={product.title}
+              className="product-image"
+            />
+            <h3>{product.title}</h3>
+            <p>${product.price}</p>
+            <button onClick={() => addToCart(product)}>Add to Cart</button>
           </div>
-          
-          <div className="discount-section">
-            <div className="discount-title">
-              <span className="discount-icon">
-                {/* Tag icon */}
-                🏷️
-              </span>
-              Apply Discount Code
-            </div>
-            
-            <div className="discount-input">
-              <input
-                type="text"
-                placeholder="Enter discount code"
-                value={discountCode}
-                onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
-                disabled={isProcessing}
-              />
-              <button 
-                onClick={handleApplyDiscount}
-                disabled={isProcessing || !discountCode}
-              >
-                {isProcessing ? '.....' : 'Apply'}
-              </button>
-            </div>
-            
-            {appliedDiscount && (
-              <div className="discount-applied">
-                <span>Discount ({appliedDiscount}):</span>
-                <span>-${cartSummary.discount.toFixed(2)}</span>
-              </div>
-            )}
-          </div>
-          
-          <div className="shipping-options">
-            <div className="shipping-title">Shipping Method</div>
-            
-            <div className={`shipping-option ${shippingMethod === 'standard' ? 'selected' : ''}`}>
-              <input 
-                type="radio" 
-                id="shipping-standard" 
-                name="shipping" 
-                checked={shippingMethod === 'standard'} 
-                onChange={() => handleShippingChange('standard')}
-              />
-              <div className="option-info">
-                <div className="option-name">Standard Shipping</div>
-                <div className="option-price">Free</div>
-              </div>
-            </div>
-            
-            <div className={`shipping-option ${shippingMethod === 'express' ? 'selected' : ''}`}>
-              <input 
-                type="radio" 
-                id="shipping-express" 
-                name="shipping" 
-                checked={shippingMethod === 'express'} 
-                onChange={() => handleShippingChange('express')}
-              />
-              <div className="option-info">
-                <div className="option-name">Express Shipping</div>
-                <div className="option-price">$9.99</div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="summary-row">
-            <span className="summary-label">Tax:</span>
-            <span className="summary-value">${cartSummary.tax.toFixed(2)}</span>
-          </div>
-          
-          <div className="summary-row">
-            <span className="summary-label">Shipping:</span>
-            <span className="summary-value">
-              {cartSummary.shipping === 0 
-                ? 'Free' 
-                : `$${cartSummary.shipping.toFixed(2)}`}
-            </span>
-          </div>
-          
-          <div className="summary-row total">
-            <span className="summary-label">Total:</span>
-            <span className="summary-value">${cartSummary.total.toFixed(2)}</span>
-          </div>
-          
-          <button 
-            className="button primary-button checkout-button"
-            onClick={handleCheckout}
-            disabled={cart.length === 0}
-          >
-            Proceed to Checkout
-          </button>
-        </div>
+        ))}
       </div>
     </div>
   );
-};
+}
 
 export default Cart;
