@@ -49,13 +49,16 @@ function App() {
 
   const router = [
     // Public Routes
-    { 
-      
-       
+    {
       path: "/",
       element: <Home />,
     },
-    
+
+    {
+      path: "/admin/orders",
+      element: <AdminOrder />,
+    },
+
     {
       path: "/info",
       element: <WebsiteInfo />,
