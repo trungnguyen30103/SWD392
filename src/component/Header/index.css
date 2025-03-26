@@ -60,7 +60,7 @@
 }
 
 .header .login-register a:hover {
-  color: #330613;
+  color: #c44267;
 }
 
 /* Navigation Bar styles */
@@ -93,7 +93,7 @@
 }
 
 .nav ul li a:hover {
-  color: #330613;
+  color: #c44f6c;
 }
 
 /* Dropdown menu styles */
@@ -107,12 +107,12 @@
 }
 
 .ant-dropdown-menu-item:hover {
-  background-color: #181042;
+  background-color: #c44f6c;
   color: white;
 }
 
 .nav ul li .ant-dropdown-trigger:hover {
-  color: #181042;
+  color: #c44f6c;
 }
 
 /* Responsive design for mobile */

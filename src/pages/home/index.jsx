@@ -1,117 +1,156 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./index.css"; // Đảm bảo bạn có file CSS riêng
-import Container from '../../component/Container';
+import { useState } from "react";
+import { Col, Row, Button, Spin } from "antd";
+import { Link } from "react-router-dom"; // Import Link từ react-router-dom
+import Carousel from "../../component/Carousel";
+import Container from "../../component/Container";
+import { getProducts } from "../../component/service/Uservies"; // Import hàm getProducts
+import "./index.css";
 
-const Home = () => {
-  const navigate = useNavigate();
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Lưu chỉ số của ảnh hiện tại
-  const [products, setProducts] = useState([]); // Sản phẩm từ API
-  const images = [
-    "https://cdn-media.sforum.vn/storage/app/media/anh-dep-59.jpg",
-    "https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/07/hinh-dep-5.jpg",
-    "https://images2.thanhnien.vn/528068263637045248/2024/1/25/e093e9cfc9027d6a142358d24d2ee350-65a11ac2af785880-17061562929701875684912.jpg",
-  ]; // Danh sách ảnh
+function HomePage() {
+  const [selectedKey, setSelectedKey] = useState(0); // Lưu trạng thái mục được chọn
+  const [products, setProducts] = useState([]); // State lưu trữ tất cả sản phẩm
+  const [currentProducts, setCurrentProducts] = useState([]); // State lưu trữ các sản phẩm đang hiển thị
+  const [loading, setLoading] = useState(false); // State kiểm tra trạng thái tải dữ liệu
+  const [error, setError] = useState(null); // State lưu thông báo lỗi
+  const [viewMoreCount, setViewMoreCount] = useState(5); // Số lượng sản phẩm đã tải, mặc định là 5 sản phẩm
 
-  // Hàm thay đổi ảnh mỗi 5 giây
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); // Mỗi 5 giây chuyển ảnh
-    return () => clearInterval(interval); // Dọn dẹp interval khi component bị hủy
-  }, []);
+  // Dữ liệu menu
+  const menuItems = ["ALL PRODUCT", "BABY THREE", "LABUBU"];
 
-  // Lấy 5 sản phẩm từ API
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("https://fakestoreapi.com/products");
-        const data = await response.json();
-        setProducts(data.slice(0, 4)); // Lấy 5 sản phẩm đầu tiên
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-    fetchProducts(); // Gọi hàm tải sản phẩm khi component mount
-  }, []);
-
-  // Hàm chuyển ảnh khi nhấn mũi tên trái hoặc phải
-  const changeImage = (direction) => {
-    if (direction === "left") {
-      setCurrentImageIndex(
-        (prevIndex) => (prevIndex - 1 + images.length) % images.length
-      );
-    } else {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+  const handleClick = async (index) => {
+    setSelectedKey(index); // Cập nhật mục được chọn
+    let category = menuItems[index].toLowerCase().replace(" ", "_"); // Chuyển danh mục thành dạng phù hợp với API
+    setLoading(true);
+    try {
+      const response = await getProducts(category); // Lấy sản phẩm từ API cho từng danh mục
+      setProducts(response.data); // Cập nhật state với tất cả sản phẩm
+      setCurrentProducts(response.data.slice(0, 5)); // Chỉ hiển thị 5 sản phẩm đầu tiên
+    } catch (err) {
+      setError("Failed to fetch products");
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  return (
-    <div className="home">
-      {/* Hero Section với carousel */}
-      <div className="hero">
-        <div className="hero-overlay">
-          <h1>Welcome to BlindBox!</h1>
-          <p>Discover the joy of surprise with our exclusive blindbox toys.</p>
-          <button className="cta-button" onClick={() => navigate("/products")}>
-            Shop Now
-          </button>
-        </div>
+  // Hàm để hiển thị thêm 5 sản phẩm
+  const handleViewMore = () => {
+    const nextProducts = products.slice(0, viewMoreCount + 5); // Lấy thêm 5 sản phẩm
+    setViewMoreCount(viewMoreCount + 5);
+    setCurrentProducts(nextProducts); // Cập nhật sản phẩm đang hiển thị
+  };
 
-        {/* Carousel Background Image */}
-        <div className="carousel-container">
-          <img
-            src={images[currentImageIndex]}
-            alt="Background"
-            className="carousel-image"
-          />
-          <button
-            className="carousel-arrow left"
-            onClick={() => changeImage("left")}
-          >
-            &lt;
-          </button>
-          <button
-            className="carousel-arrow right"
-            onClick={() => changeImage("right")}
-          >
-            &gt;
-          </button>
-        </div>
-      </div>
-<Container>
-      {/* Featured Products Section */}
-      <div className="featured-products">
-        <h2>Featured Products</h2>
-        <div className="product-grid">
-          {products.map((product) => (
-            <div className="product-card" key={product.id}>
-              <img
-                src={product.image}
-                alt={product.title}
-                className="product-image"
-              />
-              <h3>{product.title}</h3>
-              <p>${product.price}</p>
-              <button className="buy-now-button">Buy Now</button>
+  return (
+    <div className="homepage-wrapper">
+      <Carousel className="carousel-section" />
+      <Container>
+        <Col span={24}>
+          <a href="/product" className="product-category">
+            PRODUCT CATEGORY
+            <span className="underline"></span>
+          </a>
+        </Col>
+
+        <Row gutter={16} justify="center" className="menu-section">
+          {menuItems.map((item, index) => (
+            <Col key={index}>
+              <Button
+                className={`menu-button ${selectedKey === index ? "selected" : ""}`}
+                onClick={() => handleClick(index)}
+              >
+                {item}
+              </Button>
+            </Col>
+          ))}
+        </Row>
+
+        {/* Hiển thị thông báo loading và lỗi cho tất cả sản phẩm */}
+        {loading && (
+          <div className="loading-message">
+            <Spin size="large" /> {/* Hiển thị vòng quay khi đang tải */}
+            <p>Loading...</p>
+          </div>
+        )}
+        {error && (
+          <div className="error-message">
+            <p>{error}</p> {/* Hiển thị thông báo lỗi */}
+          </div>
+        )}
+
+        {/* Hiển thị sản phẩm */}
+        <div className="product-list">
+          {currentProducts.map((product, index) => (
+            <div key={index} className="product-item">
+              <h3>{product.name}</h3>
+              <p>{product.description}</p>
             </div>
           ))}
         </div>
-      </div>
 
-      {/* Additional Content */}
-      <div className="about-us">
-        <h2>More About Us</h2>
-        <p>
-          At BlindBox, we are passionate about delivering unique and exciting
-          experiences. Our blindbox toys are carefully curated to bring joy and
-          surprise to every customer. Explore our collection and discover
-          something new today!
-        </p>
-      </div>
+        {/* Hiển thị nút View More */}
+        <div className="view-more">
+          <Link to="/products">
+            <Button className="show-more-button">Show More</Button>
+          </Link>
+        </div>
+
+        {/* Các mục khác trong menu */}
+        <Col span={24}>
+          <a href="/product" className="product-category">
+            BABY THREE
+            <span className="underline"></span>
+          </a>
+        </Col>
+
+        {/* Hiển thị sản phẩm cho BABY THREE */}
+        {loading && (
+          <div className="loading-message">
+            <Spin size="large" />
+            <p>Loading Baby Three...</p>
+          </div>
+        )}
+        {error && (
+          <div className="error-message">
+            <p>{error}</p>
+          </div>
+        )}
+
+        {/* Hiển thị nút View More cho BABY THREE */}
+        <div className="view-more">
+          <Link to="/products">
+            <Button className="show-more-button">Show More</Button>
+          </Link>
+        </div>
+
+        {/* Hiển thị sản phẩm cho LABUBU */}
+        <Col span={24}>
+          <a href="/product" className="product-category">
+            LABUBU
+            <span className="underline"></span>
+          </a>
+        </Col>
+
+        {loading && (
+          <div className="loading-message">
+            <Spin size="large" />
+            <p>Loading Labubu...</p>
+          </div>
+        )}
+        {error && (
+          <div className="error-message">
+            <p>{error}</p>
+          </div>
+        )}
+
+        {/* Hiển thị nút View More cho LABUBU */}
+        <div className="view-more">
+          <Link to="/products">
+            <Button className="show-more-button">Show More</Button>
+          </Link>
+        </div>
       </Container>
     </div>
   );
-};
+}
 
-export default Home;
+export default HomePage;

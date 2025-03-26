@@ -143,7 +143,7 @@ const Header = ({ quantity, setQuantity }) => {
               overlay={<Menu items={babethreeItems} onClick={onClick} />}
               trigger={["hover"]}
             >
-              <Link to="/babethree-blindbox">BabeThree BlindBox Series</Link>
+              <Link to="/babethree-blindbox">BabyThree BlindBox Series</Link>
             </Dropdown>
           </li>
           <li>
