@@ -1,4 +1,4 @@
-import "./Container.css";
+import "./index.css";
 // eslint-disable-next-line react/prop-types
 function Container({ children }) {
   return (

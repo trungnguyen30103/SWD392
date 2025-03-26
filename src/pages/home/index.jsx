@@ -26,7 +26,7 @@ const Home = () => {
       try {
         const response = await fetch("https://fakestoreapi.com/products");
         const data = await response.json();
-        setProducts(data.slice(0, 5)); // Lấy 5 sản phẩm đầu tiên
+        setProducts(data.slice(0, 100)); // Lấy 5 sản phẩm đầu tiên
       } catch (error) {
         console.error("Error fetching products:", error);
       }
