@@ -10,7 +10,8 @@ import {
 import Header from "./component/Header/index.jsx";
 import Footer from "./component/Footer/index.jsx";
 import ProtectedRoute from "./component/ProtectedRoute/index.jsx";
-
+//AdminPage
+import AdminPage from "./pages/AdminPage/AdminPage.jsx";
 // Pages
 import Register from "./pages/register/index.jsx";
 import Home from "./pages/home/index.jsx";
@@ -48,9 +49,14 @@ function App() {
 
   const router = [
     // Public Routes
-    {
+    { 
+      
+       
       path: "/",
       element: <Home />,
+    },
+    {
+      path: "/admin/orders", element: <AdminOrder />, 
     },
     {
       path: "/info",
@@ -63,6 +69,10 @@ function App() {
     {
       path: "/login",
       element: <Login setRole={setRole} />,
+    },
+    {
+      path: "/adminpage",
+      element: <AdminPage />,
     },
     {
       path: "/register",
@@ -90,7 +100,7 @@ function App() {
     },
 
     // Order Routes (Admin and Customer)
-    {
+    /*{
       path: "/admin/orders",
       element: (
         <ProtectedRoute
@@ -99,7 +109,7 @@ function App() {
           userRole={role}
         />
       ),
-    },
+    }*/
     {
       path: "/orders",
       element: (

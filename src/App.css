@@ -27,6 +27,6 @@
 /* Main Content */
 .main-content {
   min-height: calc(100vh - 8vh - 15vh); /* Full viewport - navbar - footer */
-  padding-top: 8vh; /* Space for fixed navbar */
+ 
   box-sizing: border-box;
 }
