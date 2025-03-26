@@ -1,0 +1,128 @@
+/* General header styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header .left-icons a,
+.header .right-icons a {
+  margin: 0 10px;
+  color: #333;
+  text-decoration: none;
+}
+
+.header .logo img {
+  width: 180px;
+  height: 90px;
+  object-fit: contain;
+}
+
+.header .right-icons {
+  display: flex;
+  align-items: center;
+}
+
+.header .right-icons input {
+  padding: 8px;
+  margin-right: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.header .right-icons input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.header .right-icons a {
+  margin-left: 10px;
+}
+
+.header .login-register {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 10px;
+  text-decoration: underline;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 14px;
+}
+
+.header .login-register a {
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.header .login-register a:hover {
+  color: #330613;
+}
+
+/* Navigation Bar styles */
+.nav {
+  background-color: #f8f8f8;
+  padding: 10px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav ul li {
+  margin: 0 20px;
+  position: relative;
+}
+
+.nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 5px 0;
+  display: block;
+}
+
+.nav ul li a:hover {
+  color: #330613;
+}
+
+/* Dropdown menu styles */
+.ant-dropdown-trigger {
+  cursor: pointer;
+}
+
+.ant-dropdown-menu-item {
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.ant-dropdown-menu-item:hover {
+  background-color: #181042;
+  color: white;
+}
+
+.nav ul li .ant-dropdown-trigger:hover {
+  color: #181042;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+  .nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav ul li {
+    margin: 10px 0;
+  }
+}

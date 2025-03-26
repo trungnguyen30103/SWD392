@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-
+import Container from '../../../component/Container';
 const TermsUse = () => {
   // Cuộn về đầu trang khi trang được tải
   useEffect(() => {
@@ -7,6 +7,7 @@ const TermsUse = () => {
   }, []);
 
   return (
+    <Container>
     <div
       style={{
         width: "100%",
@@ -300,6 +301,7 @@ const TermsUse = () => {
         </li>
       </ul>
     </div>
+    </Container>
   );
 };
 

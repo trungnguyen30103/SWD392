@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.css"; // Đảm bảo bạn có file CSS riêng
+import Container from '../../component/Container';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const Home = () => {
       try {
         const response = await fetch("https://fakestoreapi.com/products");
         const data = await response.json();
-        setProducts(data.slice(0, 100)); // Lấy 5 sản phẩm đầu tiên
+        setProducts(data.slice(0, 4)); // Lấy 5 sản phẩm đầu tiên
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -78,7 +79,7 @@ const Home = () => {
           </button>
         </div>
       </div>
-
+<Container>
       {/* Featured Products Section */}
       <div className="featured-products">
         <h2>Featured Products</h2>
@@ -108,6 +109,7 @@ const Home = () => {
           something new today!
         </p>
       </div>
+      </Container>
     </div>
   );
 };

@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import React, { useState, useEffect, Profiler } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 // Components
-import Navbar from "./component/Navbar/index.jsx";
+import Header from "./component/Header/index.jsx";
 import Footer from "./component/Footer/index.jsx";
+import ProtectedRoute from "./component/ProtectedRoute/index.jsx";
 
 // Pages
 import Register from "./pages/register/index.jsx";
@@ -11,7 +17,7 @@ import Home from "./pages/home/index.jsx";
 import Cart from "./pages/cart/index.jsx";
 import Login from "./pages/login/index.jsx";
 import WebsiteInfo from "./pages/Infor/WebsiteInfor/index.jsx";
-
+import Profile from "./pages/profile/index.jsx";
 // Product Pages
 import AdminsProductList from "./pages/products/AdminsProduct/index.jsx";
 import CustomerProductList from "./pages/products/CustomerProduct/index.jsx";
@@ -71,23 +77,41 @@ function App() {
       element: <ProductDetail />,
     },
 
-    // User Management
+    // User Management (Admin only)
     {
       path: "/userlist",
-      element: <UserList />,
+      element: (
+        <ProtectedRoute
+          element={<UserList />}
+          allowedRoles={["ROLE_ADMIN"]}
+          userRole={role}
+        />
+      ),
     },
 
-    // Order Routes
+    // Order Routes (Admin and Customer)
     {
       path: "/admin/orders",
-      element: <AdminOrder />,
+      element: (
+        <ProtectedRoute
+          element={<AdminOrder />}
+          allowedRoles={["ROLE_ADMIN"]}
+          userRole={role}
+        />
+      ),
     },
     {
       path: "/orders",
-      element: <CustomerOrder />,
+      element: (
+        <ProtectedRoute
+          element={<CustomerOrder />}
+          allowedRoles={["ROLE_CUSTOMER"]}
+          userRole={role}
+        />
+      ),
     },
 
-    // Policies and Terms
+    // Policies and Terms (Public)
     {
       path: "/policy/:type",
       element: <PoliciesPage />,
@@ -96,24 +120,41 @@ function App() {
       path: "/termsofuse",
       element: <TermsUse />,
     },
-
+    {
+      path: "/profile",
+      element: <Profile />,
+    },
     // Admin Routes
     {
       path: "/admin/products",
-      element: <AdminsProductList />,
+      element: (
+        <ProtectedRoute
+          element={<AdminsProductList />}
+          allowedRoles={["ROLE_ADMIN"]}
+          userRole={role}
+        />
+      ),
     },
 
-    // Protected Route: Checkout
+    // Protected Route: Checkout (Customer only)
     {
       path: "/checkout",
-      element: role ? <div>Checkout Page</div> : <Navigate to="/login" />,
+      element: role ? (
+        <ProtectedRoute
+          element={<div>Checkout Page</div>}
+          allowedRoles={["ROLE_CUSTOMER"]}
+          userRole={role}
+        />
+      ) : (
+        <Navigate to="/login" />
+      ),
     },
   ];
 
   return (
     <Router>
       <div className="app">
-        <Navbar />
+        <Header />
         <div className="main-content">
           <Routes>
             {router.map((route, index) => (
