@@ -13,7 +13,7 @@ const Footer = () => {
       <div className="footer-content">
         <div className="logooo">
           <Link to="/">
-            <img src="blindbox-logo.png" alt="logo" />
+            <img src="blindbox-logo-footer.png" alt="logo" />
           </Link>
         </div>
         <div className="footer-section">

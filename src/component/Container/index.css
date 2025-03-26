@@ -1,15 +1,19 @@
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: smooth; /* Áp dụng hiệu ứng cuộn mượt khi di chuyển trang */
 }
 
-#container{
-    overflow-y: scroll;
+#container {
+  overflow-y: scroll; /* Hiển thị thanh cuộn dọc nếu nội dung vượt quá chiều cao của phần tử */
 }
+
 .container-main {
-  padding: 20px 150px;
-  min-height: 800px;
-  overflow: hidden;
-  @media (max-width: 768px) {
-    padding: 20px 50px;
+  padding: 10px 40px; /* Thiết lập khoảng cách padding cho phần tử .container-main */
+  min-height: 800px; /* Thiết lập chiều cao tối thiểu cho phần tử */
+  overflow: hidden; /* Ẩn phần nội dung bị tràn ra ngoài phần tử */
+}
+
+@media (max-width: 768px) {
+  .container-main {
+    padding: 20px 50px; /* Giảm padding cho màn hình có chiều rộng nhỏ hơn hoặc bằng 768px */
   }
 }

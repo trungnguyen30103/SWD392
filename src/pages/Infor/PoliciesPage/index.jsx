@@ -1,10 +1,12 @@
 
 import React, { useEffect } from "react";
+import Container from '../../../component/Container';
 const PoliciesPage = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
       }, []);
   return (
+    <Container>
     <div
       style={{
         width: "100%",
@@ -274,7 +276,9 @@ const PoliciesPage = () => {
           data for marketing purposes at any time.
         </li>
       </ul>
+      
     </div>
+    </Container>
   );
 };
 

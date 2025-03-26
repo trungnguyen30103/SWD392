@@ -1,9 +1,10 @@
 import React from "react";
 import "./index.css";
 import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
-
+import Container from '../../../component/Container';
 const WebsiteInfo = () => {
   return (
+    <Container>
     <div className="website-info">
       <h1 className="website-info-title">About BlindBox</h1>
       <p className="website-info-description">
@@ -112,6 +113,7 @@ const WebsiteInfo = () => {
         <strong>support@blindboxweb.com</strong>.
       </p>
     </div>
+    </Container>
   );
 };
 
