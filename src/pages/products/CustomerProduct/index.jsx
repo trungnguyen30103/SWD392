@@ -137,39 +137,6 @@ function CustomerProduct() {
           </div>
         ))}
       </div>
-
-      {/* Giỏ hàng */}
-      <div>
-        <FaShoppingCart
-          size={30}
-          onClick={handleCartClick}
-          className="cart-icon-container"
-          style={{
-            position: "fixed",
-            top: "140px",
-            right: "80px",
-            cursor: "pointer",
-            zIndex: 1000, // Đảm bảo icon giỏ hàng luôn hiển thị
-          }}
-        />
-        {cart.length > 0 && (
-          <span
-            style={{
-              position: "absolute",
-              top: "5px",
-              right: "5px",
-              backgroundColor: "red",
-              color: "Black",
-              borderRadius: "50%",
-              padding: "5px 10px",
-              fontSize: "14px",
-            }}
-          >
-            {cart.reduce((total, item) => total + item.quantity, 0)}{" "}
-            {/* Hiển thị tổng số lượng sản phẩm trong giỏ */}
-          </span>
-        )}
-      </div>
     </div>
   );
 }
