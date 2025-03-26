@@ -1,7 +1,10 @@
-// AdminPage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminPage.css";
+
+// Import actual components
+import ManageVoucher from "./ManageVoucher";
+import AdminProduct from "./AdminProduct";
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -18,8 +21,13 @@ function AdminPage() {
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
-    // You can add navigation logic here if needed
   };
+
+  // Placeholder components
+  const Dashboard = () => <div className="tab-content"><h2>Dashboard</h2><p>Welcome to Admin Panel</p></div>;
+  const ManageUser = () => <div className="tab-content"><h2>User Management</h2><p>Coming soon</p></div>;
+  const ManageOrder = () => <div className="tab-content"><h2>Order Management</h2><p>Coming soon</p></div>;
+  const ManageRating = () => <div className="tab-content"><h2>Rating Management</h2><p>Coming soon</p></div>;
 
   return (
     <div className="admin-container">
@@ -44,7 +52,7 @@ function AdminPage() {
 
       <div className="admin-content">
         {activeTab === "dashboard" && <Dashboard />}
-        {activeTab === "manage-product" && <ManageProduct />}
+        {activeTab === "manage-product" && <AdminProduct />}
         {activeTab === "manage-user" && <ManageUser />}
         {activeTab === "manage-voucher" && <ManageVoucher />}
         {activeTab === "manage-order" && <ManageOrder />}
@@ -53,13 +61,5 @@ function AdminPage() {
     </div>
   );
 }
-
-// Placeholder components - you'll replace these with your actual components
-const Dashboard = () => <div className="tab-content">Dashboard Content</div>;
-const ManageProduct = () => <div className="tab-content">Product Management</div>;
-const ManageUser = () => <div className="tab-content">User Management</div>;
-const ManageVoucher = () => <div className="tab-content">Voucher Management</div>;
-const ManageOrder = () => <div className="tab-content">Order Management</div>;
-const ManageRating = () => <div className="tab-content">Rating Management</div>;
 
 export default AdminPage;
