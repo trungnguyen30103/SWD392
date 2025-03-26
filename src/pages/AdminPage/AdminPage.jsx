@@ -4,6 +4,7 @@ import "./AdminPage.css";
 import ManageVoucher from "./ManageVoucher";
 import AdminProduct from "./AdminProduct";
 import ManageUser from "./ManageUser";
+import ManageReview from "./ManageRating";
 
 function AdminPage() {
     const [activeTab, setActiveTab] = useState("dashboard");
@@ -15,7 +16,7 @@ function AdminPage() {
         { id: "manage-user", name: "Manage User" },
         { id: "manage-voucher", name: "Manage Voucher" },
         { id: "manage-order", name: "Manage Order" },
-        { id: "manage-rating", name: "Manage Rating" },
+        { id: "manage-rating", name: "Manage Reviews" },
     ];
 
     const handleTabChange = (tabId) => {
@@ -25,7 +26,6 @@ function AdminPage() {
     // Placeholder components
     const Dashboard = () => <div className="tab-content"><h2>Dashboard</h2><p>Welcome to Admin Panel</p></div>;
     const ManageOrder = () => <div className="tab-content"><h2>Order Management</h2><p>Coming soon</p></div>;
-    const ManageRating = () => <div className="tab-content"><h2>Rating Management</h2><p>Coming soon</p></div>;
 
     return (
         <div className="admin-container">
@@ -54,7 +54,7 @@ function AdminPage() {
                 {activeTab === "manage-user" && <ManageUser />}
                 {activeTab === "manage-voucher" && <ManageVoucher />}
                 {activeTab === "manage-order" && <ManageOrder />}
-                {activeTab === "manage-rating" && <ManageRating />}
+                {activeTab === "manage-rating" && <ManageReview />}
             </div>
         </div>
     );
