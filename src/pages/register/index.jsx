@@ -38,7 +38,9 @@ const Register = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:8080/users', formData); // Replace with your backend URL
+      const response = await axios.post('/api/users/customer', formData, {
+        withCredentials: true
+      }); // Replace with your backend URL
       console.log('Registration successful:', response.data);
       navigate('/login'); // Redirect to login page after success
     } catch (err) {

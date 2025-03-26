@@ -32,7 +32,7 @@ export default function Login() {
 
     try {
       // Send login request to the backend
-      const response = await axios.post("http://localhost:5000/api/auth/login", {
+      const response = await axios.post("http://localhost:8080/auth/login", {
         username: username,  // Use 'username' instead of 'email'
         password: password,
       });

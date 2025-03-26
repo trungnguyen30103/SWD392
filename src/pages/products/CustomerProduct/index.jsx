@@ -1,95 +1,101 @@
 import React, { useState, useEffect } from "react";
-import { FaShoppingCart, FaSearch } from "react-icons/fa";
+import { FaCartPlus, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
+import axios from "axios";
 
 function CustomerProduct() {
-  const [products, setProducts] = useState([]); // Dữ liệu sản phẩm động
-  const [cart, setCart] = useState([]); // Giỏ hàng
-  const [searchQuery, setSearchQuery] = useState(""); // Lưu từ khóa tìm kiếm
+  const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
-  // Hàm fetch dữ liệu sản phẩm từ API (hoặc sử dụng mảng sản phẩm giả lập)
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://fakestoreapi.com/products");
-        const data = await response.json();
-        setProducts(data); // Cập nhật state với dữ liệu sản phẩm
+        const response = await axios.get("http://localhost:8080/api/products", {
+          withCredentials: true
+        });
+
+        console.log(response.data)
+   
+        // setProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
 
-    fetchProducts(); // Gọi hàm fetch khi component mount
+    fetchProducts();
   }, []);
 
-  // Lấy giỏ hàng từ localStorage nếu có khi trang tải lại
   useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem("cart")); // Lấy giỏ hàng từ localStorage
+    const storedCart = JSON.parse(localStorage.getItem("cart"));
     if (storedCart) {
-      setCart(storedCart); // Cập nhật giỏ hàng từ localStorage vào state
+      setCart(storedCart);
     }
   }, []);
 
-  // Lưu giỏ hàng vào localStorage mỗi khi giỏ hàng thay đổi
   useEffect(() => {
     if (cart.length > 0) {
-      localStorage.setItem("cart", JSON.stringify(cart)); // Lưu giỏ hàng vào localStorage
+      localStorage.setItem("cart", JSON.stringify(cart));
     }
   }, [cart]);
 
-  // Hàm lọc sản phẩm dựa trên tên hoặc id
   const filteredProducts = products.filter(
     (product) =>
       product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.id.toString().includes(searchQuery)
   );
 
-  // Thêm sản phẩm vào giỏ hàng
   const addToCart = (product) => {
     if (product.stock <= 0) {
       alert("Product is out of stock.");
       return;
     }
 
-    const newCart = [...cart]; // Tạo bản sao của giỏ hàng hiện tại
+    const newCart = [...cart];
     const existingProduct = newCart.find((item) => item.id === product.id);
 
     if (existingProduct) {
       if (existingProduct.quantity < product.stock) {
         existingProduct.quantity += 1;
-        setCart(newCart); // Cập nhật giỏ hàng khi số lượng sản phẩm thay đổi
+        setCart(newCart);
         alert("Item quantity increased in cart.");
       } else {
         alert("This item is already at maximum stock in your cart.");
       }
     } else {
-      newCart.push({ ...product, quantity: 1 }); // Thêm sản phẩm mới vào giỏ hàng
-      setCart(newCart); // Cập nhật lại giỏ hàng
+      newCart.push({ ...product, quantity: 1 });
+      setCart(newCart);
       alert(`${product.title} has been added to your cart.`);
     }
   };
 
-  // Điều hướng đến chi tiết sản phẩm
-  // Update the handleProductClick function to use the correct route
   const handleProductClick = (id) => {
     navigate(`/productdetail/${id}`);
   };
 
-  // Điều hướng đến giỏ hàng
   const handleCartClick = () => {
     navigate("/cart");
   };
 
-  // Cập nhật từ khóa tìm kiếm
   const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value); // Cập nhật từ khóa tìm kiếm
+    setSearchQuery(event.target.value);
   };
 
   return (
-    <div>
-      <h1>Our Products</h1>
+    <div className="customer-product-container">
+      <div className="header-container">
+        <h1>Our Products</h1>
+        <div className="cart-icon-wrapper" onClick={handleCartClick}>
+          <FaCartPlus className="cart-icon" />
+          {cart.length > 0 && (
+            <span className="cart-count">
+              {cart.reduce((total, item) => total + item.quantity, 0)}
+            </span>
+          )}
+        </div>
+      </div>
 
       <div className="search-container">
         <input
@@ -101,7 +107,6 @@ function CustomerProduct() {
         />
       </div>
 
-      {/* Hiển thị thông báo nếu không có sản phẩm */}
       {filteredProducts.length === 0 && searchQuery && (
         <p>No products found matching "{searchQuery}"</p>
       )}
@@ -122,7 +127,6 @@ function CustomerProduct() {
               <p>Out of Stock</p>
             )}
 
-            {/* Các nút nằm dưới cùng */}
             <div className="product-buttons">
               <button
                 onClick={() => addToCart(product)}
@@ -137,7 +141,15 @@ function CustomerProduct() {
           </div>
         ))}
       </div>
+
+      <button 
+        onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
+        className="scroll-to-top"
+      >
+        ↑
+      </button>
     </div>
   );
 }
+
 export default CustomerProduct;

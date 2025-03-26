@@ -1,8 +1,7 @@
-// ProductDetail.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaShoppingCart, FaArrowLeft } from "react-icons/fa";
+import { FaShoppingCart, FaArrowLeft, FaArrowUp } from "react-icons/fa";
 import "./ProductDetail.css";
 
 const ProductDetail = () => {
@@ -11,6 +10,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -21,9 +21,9 @@ const ProductDetail = () => {
         setProduct({
           ...response.data,
           stock: response.data.rating.count,
-          series: "Crying Again Series", // Example additional field
-          material: "Vinyl", // Example additional field
-          dimensions: "20cm tall", // Example additional field
+          series: "Crying Again Series",
+          material: "Vinyl",
+          dimensions: "20cm tall",
         });
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -35,12 +35,31 @@ const ProductDetail = () => {
     fetchProduct();
   }, [productId]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const addToCart = () => {
-    // Add your cart logic here
     alert(`${product.title} x${quantity} added to cart!`);
   };
 
   const handleBack = () => navigate(-1);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
 
   if (loading) return <div className="loading-container">Loading...</div>;
   if (!product) return <div className="error-container">Product not found</div>;
@@ -50,6 +69,16 @@ const ProductDetail = () => {
       <button onClick={handleBack} className="back-button">
         <FaArrowLeft /> Continue Shopping
       </button>
+
+      {showScrollButton && (
+        <button 
+          className="back-to-top"
+          onClick={scrollToTop}
+          aria-label="Back to top"
+        >
+          <FaArrowUp />
+        </button>
+      )}
 
       <div className="product-detail-grid">
         <div className="product-gallery">
