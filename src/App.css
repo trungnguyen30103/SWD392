@@ -14,3 +14,9 @@
   width: 100%;
 }
 
+.main-content {
+  min-height: calc(100vh - 8vh - 15vh); /* Full viewport - navbar - footer */
+ 
+  box-sizing: border-box;
+}
+

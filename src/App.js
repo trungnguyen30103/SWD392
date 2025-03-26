@@ -10,7 +10,8 @@ import {
 import Header from "./component/Header/index.jsx";
 import Footer from "./component/Footer/index.jsx";
 import ProtectedRoute from "./component/ProtectedRoute/index.jsx";
-
+//AdminPage
+import AdminPage from "./pages/AdminPage/AdminPage.jsx";
 // Pages
 import Register from "./pages/register/index.jsx";
 import Home from "./pages/home/index.jsx";
@@ -18,13 +19,14 @@ import Cart from "./pages/cart/index.jsx";
 import Login from "./pages/login/index.jsx";
 import WebsiteInfo from "./pages/Infor/WebsiteInfor/index.jsx";
 import Profile from "./pages/profile/index.jsx";
+import Category from "./pages/Category/index.jsx";
 // Product Pages
 import AdminsProductList from "./pages/products/AdminsProduct/index.jsx";
 import CustomerProductList from "./pages/products/CustomerProduct/index.jsx";
 import ProductDetail from "./pages/products/CustomerProduct/ProductDetail.jsx";
 
 // Order Pages
-import AdminOrder from "./pages/order/AdminOrder/index.jsx";
+import AdminOrder from "./pages/AdminPage/AdminOrder.jsx";
 import CustomerOrder from "./pages/order/CustomerOrder/index.jsx";
 
 // User Management
@@ -52,6 +54,12 @@ function App() {
       path: "/",
       element: <Home />,
     },
+
+    {
+      path: "/admin/orders",
+      element: <AdminOrder />,
+    },
+
     {
       path: "/info",
       element: <WebsiteInfo />,
@@ -63,6 +71,10 @@ function App() {
     {
       path: "/login",
       element: <Login setRole={setRole} />,
+    },
+    {
+      path: "/adminpage",
+      element: <AdminPage />,
     },
     {
       path: "/register",
@@ -90,7 +102,7 @@ function App() {
     },
 
     // Order Routes (Admin and Customer)
-    {
+    /*{
       path: "/admin/orders",
       element: (
         <ProtectedRoute
@@ -99,7 +111,7 @@ function App() {
           userRole={role}
         />
       ),
-    },
+    }*/
     {
       path: "/orders",
       element: (
@@ -124,8 +136,12 @@ function App() {
       path: "/profile",
       element: <Profile />,
     },
-    // Admin Routes
     {
+      path: "/category",
+      element: <Category />,
+    },
+    // Admin Routes
+    /*{
       path: "/admin/products",
       element: (
         <ProtectedRoute
@@ -134,7 +150,7 @@ function App() {
           userRole={role}
         />
       ),
-    },
+    },*/
 
     // Protected Route: Checkout (Customer only)
     {

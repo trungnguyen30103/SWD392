@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./index.css";
-import { useNavigate } from "react-router-dom";
+import "./AdminOrder.css";
 
-function OrderHistory({ customerId }) {
+function AdminOrder() {
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
+    // Fetch all orders
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`/api/orders/${customerId}`);
+        const response = await axios.get("/api/orders"); // Giả sử API này trả về tất cả đơn hàng
         setOrders(response.data); // Dữ liệu đơn hàng
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
     };
 
+    // Fetch products list
     const fetchProducts = async () => {
       try {
         const response = await axios.get("https://fakestoreapi.com/products");
@@ -28,8 +29,9 @@ function OrderHistory({ customerId }) {
 
     fetchOrders();
     fetchProducts();
-  }, [customerId]);
+  }, []);
 
+  // Function to cancel an order
   const cancelOrder = async (orderId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to cancel this order?"
@@ -37,9 +39,9 @@ function OrderHistory({ customerId }) {
 
     if (confirmDelete) {
       try {
-        await axios.delete(`/api/orders/${customerId}`);
+        await axios.delete(`/api/orders/${orderId}`); // API để hủy đơn hàng
         alert("Order canceled");
-        setOrders(orders.filter((order) => order._id !== orderId));
+        setOrders(orders.filter((order) => order._id !== orderId)); // Cập nhật lại danh sách đơn hàng
       } catch (error) {
         console.error("Error canceling order:", error);
         alert("Failed to cancel order");
@@ -51,7 +53,7 @@ function OrderHistory({ customerId }) {
 
   return (
     <div>
-      <h1>Your Orders</h1>
+      <h1>Admin Order Management</h1>
       {orders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
@@ -73,7 +75,7 @@ function OrderHistory({ customerId }) {
                 (product) => product.id === order.productId
               );
 
-              // Tính tổng giá của đơn hàng (số lượng * giá sản phẩm)
+              // Calculate total price (quantity * price)
               const totalPrice = orderProduct
                 ? orderProduct.price * order.quantity
                 : 0;
@@ -120,4 +122,4 @@ function OrderHistory({ customerId }) {
   );
 }
 
-export default OrderHistory;
+export default AdminOrder;
