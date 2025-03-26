@@ -1,0 +1,161 @@
+/* General Styles for Admin */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .admin-container {
+    font-family: Arial, sans-serif;
+    background-color: #e9ecef;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Admin Order Table Styles */
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .admin-table th, .admin-table td {
+    padding: 12px 20px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .admin-table th {
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+  }
+  
+  .admin-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .admin-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .admin-table img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  /* Admin Order Button */
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    margin: 5px;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .cancel-button {
+    background-color: #dc3545;
+    font-size: 14px;
+  }
+  
+  .cancel-button:hover {
+    background-color: #c82333;
+  }
+  
+  .remove-button {
+    padding: 8px 10px;
+    border-radius: 50%;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+  }
+  
+  .remove-button:hover {
+    background-color: #f1b0b7;
+    border-color: #f1b0b7;
+  }
+  
+  /* Admin Order Container */
+  .admin-order-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .admin-order-container h2 {
+    text-align: center;
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .admin-order-container .filter-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .admin-order-container .filter-container select {
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .admin-order-container .filter-container button {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: none;
+  }
+  
+  .admin-order-container .filter-container button:hover {
+    background-color: #218838;
+  }
+  
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .pagination-container button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    margin: 0 5px;
+    background-color: white;
+    cursor: pointer;
+  }
+  
+  .pagination-container button:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .pagination-container .active {
+    background-color: #007bff;
+    color: white;
+  }
+  

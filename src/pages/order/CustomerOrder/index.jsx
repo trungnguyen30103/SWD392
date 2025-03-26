@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./index.css";
+import { useNavigate } from "react-router-dom";
 
 function OrderHistory({ customerId }) {
   const [orders, setOrders] = useState([]);
@@ -36,7 +37,7 @@ function OrderHistory({ customerId }) {
 
     if (confirmDelete) {
       try {
-        await axios.delete(`/api/orders/${orderId}`);
+        await axios.delete(`/api/orders/${customerId}`);
         alert("Order canceled");
         setOrders(orders.filter((order) => order._id !== orderId));
       } catch (error) {
