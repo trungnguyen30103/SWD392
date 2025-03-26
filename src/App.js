@@ -19,13 +19,14 @@ import Cart from "./pages/cart/index.jsx";
 import Login from "./pages/login/index.jsx";
 import WebsiteInfo from "./pages/Infor/WebsiteInfor/index.jsx";
 import Profile from "./pages/profile/index.jsx";
+import Category from "./pages/Category/index.jsx";
 // Product Pages
 import AdminsProductList from "./pages/products/AdminsProduct/index.jsx";
 import CustomerProductList from "./pages/products/CustomerProduct/index.jsx";
 import ProductDetail from "./pages/products/CustomerProduct/ProductDetail.jsx";
 
 // Order Pages
-import AdminOrder from "./pages/order/AdminOrder/index.jsx";
+import AdminOrder from "./pages/AdminPage/AdminOrder.jsx";
 import CustomerOrder from "./pages/order/CustomerOrder/index.jsx";
 
 // User Management
@@ -134,6 +135,10 @@ function App() {
     {
       path: "/profile",
       element: <Profile />,
+    },
+    {
+      path: "/category",
+      element: <Category />,
     },
     // Admin Routes
     /*{
