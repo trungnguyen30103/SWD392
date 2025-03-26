@@ -55,9 +55,7 @@ function App() {
       path: "/",
       element: <Home />,
     },
-    {
-      path: "/admin/orders", element: <AdminOrder />, 
-    },
+    
     {
       path: "/info",
       element: <WebsiteInfo />,
@@ -135,7 +133,7 @@ function App() {
       element: <Profile />,
     },
     // Admin Routes
-    {
+    /*{
       path: "/admin/products",
       element: (
         <ProtectedRoute
@@ -144,7 +142,7 @@ function App() {
           userRole={role}
         />
       ),
-    },
+    },*/
 
     // Protected Route: Checkout (Customer only)
     {
