@@ -14,7 +14,8 @@ function AdminProductList() {
     price: "",
     stock: "",
     categoryID: "",
-    status: "ACTIVE"
+    status: "ACTIVE",
+    image: null
   });
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -107,7 +108,8 @@ function AdminProductList() {
       price: product.price,
       stock: product.stock,
       categoryID: product.category?.categoryID || "",
-      status: product.status
+      status: product.status,
+      image: product.image
     });
     setShowForm(true);
   };
@@ -119,7 +121,8 @@ function AdminProductList() {
       price: "",
       stock: "",
       categoryID: "",
-      status: "ACTIVE"
+      status: "ACTIVE",
+      image: ""
     });
     setEditingId(null);
     setShowForm(false);
@@ -150,6 +153,14 @@ function AdminProductList() {
             />
             {errors.productName && <span className="error">{errors.productName}</span>}
           </div>
+          <div className="form-group">
+  <label>Product Image *</label>
+  <input
+    type="file"
+    onChange={e => setNewProduct({...newProduct, image: e.target.files[0]})}
+  />
+  {errors.image && <span className="error">{errors.image}</span>}
+</div>
 
           <div className="form-group">
             <label>Description *</label>
@@ -236,8 +247,11 @@ function AdminProductList() {
                   {product.status}
                 </span>
               </div>
+              <div className="product-image">{product.image && <img src={product.image} alt={product.productName}  />}</div>
+              
               <p className="description">{product.description}</p>
               <div className="details">
+                
                 <div className="detail-item">
                   <span>Price:</span>
                   <span>${product.price.toFixed(2)}</span>
