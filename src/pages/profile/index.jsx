@@ -32,15 +32,23 @@ const Profile = () => {
           },
         };
 
-        const userResponse = await axios.get(`http://localhost:8080/api/users/${userID}`, config);
+        const userResponse = await axios.get(
+          `http://localhost:8080/api/users/${userID}`,
+          config
+        );
         setUser(userResponse.data);
 
         try {
-          const ordersResponse = await axios.get(`http://localhost:8080/api/orders?userId=${userID}`, config);
+          const ordersResponse = await axios.get(
+            `http://localhost:8080/api/orders?userId=${userID}`,
+            config
+          );
           setOrders(ordersResponse.data);
         } catch (ordersErr) {
           console.error("Error fetching orders:", ordersErr);
-          setOrdersError(ordersErr.response?.data?.message || "Failed to load orders.");
+          setOrdersError(
+            ordersErr.response?.data?.message || "Failed to load orders."
+          );
         }
       } catch (err) {
         console.error("Error fetching user data:", err);
@@ -50,7 +58,9 @@ const Profile = () => {
           setError("Session expired. Please log in again.");
           navigate("/login");
         } else {
-          setError(err.response?.data?.message || "Failed to load profile data.");
+          setError(
+            err.response?.data?.message || "Failed to load profile data."
+          );
         }
       } finally {
         setLoading(false);
@@ -70,15 +80,11 @@ const Profile = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      await axios.put(
-        `http://localhost:8080/api/users/${user.userID}`,
-        user,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.put(`http://localhost:8080/api/users/${user.userID}`, user, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       toast.success("Profile updated successfully!");
       setIsEditing(false);
     } catch (err) {
@@ -189,26 +195,56 @@ const Profile = () => {
                 onChange={handleChange}
               />
             </label>
-            <button type="submit" className="save-button">Save Changes</button>
-            <button type="button" className="cancel-button" onClick={() => setIsEditing(false)}>
+            <button type="submit" className="save-button">
+              Save Changes
+            </button>
+            <button
+              type="button"
+              className="cancel-button"
+              onClick={() => setIsEditing(false)}
+            >
               Cancel
             </button>
           </form>
         ) : (
           <div className="profile-info">
-            <p><strong>Full Name:</strong> {user.fullName}</p>
-            <p><strong>Username:</strong> {user.userName}</p>
-            <p><strong>Phone:</strong> {user.phone}</p>
-            <p><strong>Address:</strong> {user.address}</p>
-            <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Status:</strong> {user.status}</p>
+            <p>
+              <strong>Full Name:</strong> {user.fullName}
+            </p>
+            <p>
+              <strong>Username:</strong> {user.userName}
+            </p>
+            <p>
+              <strong>Phone:</strong> {user.phone}
+            </p>
+            <p>
+              <strong>Address:</strong> {user.address}
+            </p>
+            <p>
+              <strong>Email:</strong> {user.email}
+            </p>
+            <p>
+              <strong>Status:</strong> {user.status}
+            </p>
             {user.avatar_url && (
               <div className="avatar-container">
                 <img src={user.avatar_url} alt="Avatar" className="avatar" />
               </div>
             )}
-            <button className="edit-button" onClick={() => setIsEditing(true)}>Edit Profile</button>
-            <button className="password-button" onClick={handlePasswordChange}>Change Password</button>
+            <div className="button-group">
+              <button
+                className="edit-button"
+                onClick={() => setIsEditing(true)}
+              >
+                Edit Profile
+              </button>
+              <button
+                className="password-button"
+                onClick={handlePasswordChange}
+              >
+                Change Password
+              </button>
+            </div>
           </div>
         )}
       </section>
@@ -217,11 +253,23 @@ const Profile = () => {
       <section className="profile-section">
         <h2>Account Details</h2>
         <div className="profile-info">
-          <p><strong>User ID:</strong> {user.userID}</p>
-          <p><strong>Role:</strong> {user.role.name}</p>
-          <p><strong>Balance:</strong> ${user.balance.toFixed(2)}</p>
-          <p><strong>Created At:</strong> {new Date(user.createdAt).toLocaleString()}</p>
-          <p><strong>Updated At:</strong> {new Date(user.updatedAt).toLocaleString()}</p>
+          <p>
+            <strong>User ID:</strong> {user.userID}
+          </p>
+          <p>
+            <strong>Role:</strong> {user.role.name}
+          </p>
+          <p>
+            <strong>Balance:</strong> ${user.balance.toFixed(2)}
+          </p>
+          <p>
+            <strong>Created At:</strong>{" "}
+            {new Date(user.createdAt).toLocaleString()}
+          </p>
+          <p>
+            <strong>Updated At:</strong>{" "}
+            {new Date(user.updatedAt).toLocaleString()}
+          </p>
         </div>
       </section>
 
@@ -234,7 +282,8 @@ const Profile = () => {
           <ul className="orders-list">
             {orders.map((order) => (
               <li key={order.id} className="order-item">
-                Order #{order.id} - Total: ${order.totalAmount} - Status: {order.status}
+                Order #{order.id} - Total: ${order.totalAmount} - Status:{" "}
+                {order.status}
               </li>
             ))}
           </ul>

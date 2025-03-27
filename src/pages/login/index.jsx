@@ -40,11 +40,15 @@ export default function Login() {
       );
 
       console.log("Login successful:", response.data);
-      toast.success("Login successful!");
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem('userID', response.data.userID);
-      navigate("/");
+
+      toast.success("Login successful!", {
+        autoClose: 1500,
+        onClose: () => navigate("/")
+      });
+
     } catch (error) {
       console.error("Login error:", error);
       toast.error(
@@ -70,7 +74,6 @@ export default function Login() {
           If you don't have an account, <a href="/register">register here</a>
         </p>
 
-        {/* Form group to wrap the input fields */}
         <div className="form-group">
           <TextField
             required
