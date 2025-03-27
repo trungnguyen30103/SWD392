@@ -20,7 +20,7 @@ import Home from "./pages/home/index.jsx";
 import Cart from "./pages/cart/index.jsx";
 import Login from "./pages/login/index.jsx";
 import ForgotPassword from "./pages/ForgotPassword/index.jsx";  
-
+import GachaBlindbox from "./pages/GachaBlindbox/index.jsx";
 
 import WebsiteInfo from "./pages/Infor/WebsiteInfor/index.jsx";
 import Profile from "./pages/profile/index.jsx";
@@ -64,7 +64,11 @@ function App() {
       path: "/admin/orders",
       element: <AdminOrder />,
     },
-
+    {
+      path: "/gacha-blindbox",
+      element: <GachaBlindbox />,
+    },
+    
     {
       path: "/info",
       element: <WebsiteInfo />,
