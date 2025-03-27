@@ -43,6 +43,7 @@ export default function Login() {
       toast.success("Login successful!");
 
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem('userID', response.data.userID);
       navigate("/");
     } catch (error) {
       console.error("Login error:", error);

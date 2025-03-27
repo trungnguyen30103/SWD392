@@ -13,49 +13,46 @@ function Cart() {
   const [voucherCode, setVoucherCode] = useState("");
   const navigate = useNavigate();
 
-  // Fetch user's cart from backend
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        setLoading(true);
-        const token = localStorage.getItem("token");
-        if (!token) {
-          navigate("/login");
-          return;
-        }
+  // Helper functions
+  const getUserId = () => {
+    return localStorage.getItem("userID") || 0;
+  };
 
-        const response = await axios.get("http://localhost:8080/api/carts/current", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        
-        setCartItems(response.data.cartItems || []);
-      } catch (error) {
-        console.error("Error fetching cart:", error);
-        toast.error("Failed to load your cart");
-      } finally {
-        setLoading(false);
+  const getCartId = () => {
+    return cartItems.length > 0 ? cartItems[0].cartId : null;
+  };
+
+  const calculateSubtotal = () => {
+    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  };
+
+  const calculateTotal = () => {
+    return calculateSubtotal() - discount;
+  };
+
+  // API functions
+  const fetchCart = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
       }
-    };
 
-    fetchCart();
-  }, [navigate]);
+      const response = await axios.get(`http://localhost:8080/api/carts/${getUserId()}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      setCartItems(response.data.cartItems || []);
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+      toast.error("Failed to load your cart");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // Fetch products
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/api/products/status/active");
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        toast.error("Failed to fetch products.");
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  // Add to cart - sync with backend
   const addToCart = async (product) => {
     try {
       const token = localStorage.getItem("token");
@@ -70,8 +67,7 @@ function Cart() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Refresh cart
-      const cartResponse = await axios.get("http://localhost:8080/api/carts/current", {
+      const cartResponse = await axios.get(`http://localhost:8080/api/carts/${getUserId()}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -83,7 +79,6 @@ function Cart() {
     }
   };
 
-  // Remove from cart
   const removeFromCart = async (productId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to remove this item from your cart?"
@@ -101,8 +96,7 @@ function Cart() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Refresh cart
-      const cartResponse = await axios.get("http://localhost:8080/api/carts/current", {
+      const cartResponse = await axios.get(`http://localhost:8080/api/carts/${getUserId()}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -114,7 +108,6 @@ function Cart() {
     }
   };
 
-  // Update quantity
   const updateQuantity = async (productId, newQuantity) => {
     if (newQuantity < 1) return;
 
@@ -126,8 +119,7 @@ function Cart() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Refresh cart
-      const cartResponse = await axios.get("http://localhost:8080/api/carts/current", {
+      const cartResponse = await axios.get(`http://localhost:8080/api/carts/${getUserId()}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -138,7 +130,6 @@ function Cart() {
     }
   };
 
-  // Apply voucher
   const applyVoucher = async () => {
     try {
       const response = await axios.post("http://localhost:8080/api/discounts/apply", {
@@ -156,7 +147,6 @@ function Cart() {
     }
   };
 
-  // Handle checkout
   const handleCheckout = async () => {
     if (cartItems.length === 0) {
       toast.error("Your cart is empty");
@@ -186,24 +176,25 @@ function Cart() {
     }
   };
 
-  // Helper functions
-  const getUserId = () => {
-    // In a real app, you'd decode the JWT to get user ID
-    return localStorage.getItem("userId") || 0;
-  };
+  // Fetch data on mount
+  useEffect(() => {
+    fetchCart();
+  }, [navigate]);
 
-  const getCartId = () => {
-    // This would come from your cart API response
-    return cartItems.length > 0 ? cartItems[0].cartId : null;
-  };
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/products");
+        setProducts(response.data || []);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        toast.error("Failed to fetch products.");
+        setProducts([]);
+      }
+    };
 
-  const calculateSubtotal = () => {
-    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
-  };
-
-  const calculateTotal = () => {
-    return calculateSubtotal() - discount;
-  };
+    fetchProducts();
+  }, []);
 
   if (loading) {
     return (
@@ -308,29 +299,31 @@ function Cart() {
         </button>
       </div>
 
-      <div className="product-list">
-        <h2>Recommended Products</h2>
-        <div className="products-grid">
-          {products.slice(0, 4).map((product) => (
-            <div key={product.productID} className="product-card">
-              <img
-                src={product.productImages?.[0]?.imageUrl || "/placeholder-product.jpg"}
-                alt={product.productName}
-                className="product-image"
-                onClick={() => navigate(`/productdetail/${product.productID}`)}
-              />
-              <h3>{product.productName}</h3>
-              <p>${product.price.toFixed(2)}</p>
-              <button 
-                onClick={() => addToCart(product)}
-                disabled={product.stock <= 0}
-              >
-                {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
-              </button>
-            </div>
-          ))}
+      {products.length > 0 && (
+        <div className="product-list">
+          <h2>Recommended Products</h2>
+          <div className="products-grid">
+            {products.slice(0, 4).map((product) => (
+              <div key={product.productID} className="product-card">
+                <img
+                  src={product.productImages?.[0]?.imageUrl || "/placeholder-product.jpg"}
+                  alt={product.productName}
+                  className="product-image"
+                  onClick={() => navigate(`/productdetail/${product.productID}`)}
+                />
+                <h3>{product.productName}</h3>
+                <p>${product.price.toFixed(2)}</p>
+                <button 
+                  onClick={() => addToCart(product)}
+                  disabled={product.stock <= 0}
+                >
+                  {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
