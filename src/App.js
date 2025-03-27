@@ -41,6 +41,7 @@ import CustomerOrder from "./pages/order/CustomerOrder/index.jsx";
 // User Management
 import UserList from "./pages/UserManagement/index.jsx";
 
+import Dashboard from "./pages/AdminPage/Dashboard/index.jsx";
 // Information Pages
 import PoliciesPage from "./pages/Infor/PoliciesPage/index.jsx";
 import TermsUse from "./pages/Infor/TermsUse/index.jsx";
@@ -59,6 +60,10 @@ function App() {
 
   const router = [
     // Public Routes
+    {
+      path: "/dashboard",
+      element: <Dashboard />,
+    },
     {
       path: "/how-to-make-a-purchase",
       element: <HowtomakePurchase />,
