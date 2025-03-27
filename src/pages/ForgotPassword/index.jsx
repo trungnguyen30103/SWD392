@@ -62,7 +62,7 @@ export default function ForgotPassword() {
           variant="contained"
           onClick={handleForgotPassword}
           disabled={isRequesting}
-        >
+        className="button-forgot">
           {isRequesting ? "Sending..." : "Send Reset Link"}
         </Button>
       </Box>
