@@ -10,11 +10,14 @@ function CustomerProduct() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
+  const userId = localStorage.getItem("userID");
+  const token = localStorage.getItem("token");
+
+  // Fetch products from the API
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/products");
-        console.log(response.data)
         setProducts(response.data.data); // Access the data array from the response
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -24,46 +27,64 @@ function CustomerProduct() {
     fetchProducts();
   }, []);
 
+  // Fetch cart from the API when the component mounts or userId/token changes
   useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem("cart"));
-    if (storedCart) {
-      setCart(storedCart);
-    }
-  }, []);
+    const fetchCart = async () => {
+      if (!userId || !token) {
+        console.error("User not logged in");
+        return;
+      }
+      try {
+        const response = await axios.get(`http://localhost:8080/api/carts/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.data.statusCode === 200) {
+          setCart(response.data.data.cartItems || []);
+        } else {
+          console.error("Failed to fetch cart:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching cart:", error);
+      }
+    };
 
-  useEffect(() => {
-    if (cart.length > 0) {
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
-  }, [cart]);
+    fetchCart();
+  }, [userId, token]);
 
-  const filteredProducts = products.filter(
-    (product) =>
-      product.productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.productID.toString().includes(searchQuery)
-  );
-
-  const addToCart = (product) => {
+  // Add product to cart via API
+  const addToCart = async (product) => {
     if (product.stock <= 0) {
       alert("Product is out of stock.");
       return;
     }
 
-    const newCart = [...cart];
-    const existingProduct = newCart.find((item) => item.productID === product.productID);
+    if (!userId || !token) {
+      alert("Please log in to add items to your cart.");
+      navigate("/login");
+      return;
+    }
 
-    if (existingProduct) {
-      if (existingProduct.quantity < product.stock) {
-        existingProduct.quantity += 1;
-        setCart(newCart);
-        alert("Item quantity increased in cart.");
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/carts/${userId}/add/${product.productID}`,
+        { quantity: 1 },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (response.data.statusCode === 201) {
+        // Refresh the cart after adding the product
+        const cartResponse = await axios.get(`http://localhost:8080/api/carts/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (cartResponse.data.statusCode === 200) {
+          setCart(cartResponse.data.data.cartItems || []);
+          alert(`${product.productName} has been added to your cart.`);
+        }
       } else {
-        alert("This item is already at maximum stock in your cart.");
+        alert("Failed to add item to cart.");
       }
-    } else {
-      newCart.push({ ...product, quantity: 1 });
-      setCart(newCart);
-      alert(`${product.productName} has been added to your cart.`);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      alert("Failed to add item to cart.");
     }
   };
 
@@ -78,6 +99,12 @@ function CustomerProduct() {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
+
+  const filteredProducts = products.filter(
+    (product) =>
+      product.productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.productID.toString().includes(searchQuery)
+  );
 
   return (
     <div className="customer-product-container">
@@ -138,8 +165,8 @@ function CustomerProduct() {
         ))}
       </div>
 
-      <button 
-        onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         className="scroll-to-top"
       >
         ↑
