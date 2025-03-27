@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminPage.css";
 import ManageVoucher from "./ManageVoucher";
 import AdminProduct from "./AdminProduct";
 import ManageUser from "./ManageUser";
 import ManageReview from "./ManageRating";
-
+import Dashboard from "./Dashboard/index.jsx"; 
 function AdminPage() {
     const [activeTab, setActiveTab] = useState("dashboard");
     const navigate = useNavigate();
 
     const tabs = [
-        { id: "dashboard", name: "Dashboard" },
+        { id: "manage-dashboard", name: "Dashboard" },
         { id: "manage-product", name: "Manage Product" },
         { id: "manage-user", name: "Manage User" },
         { id: "manage-voucher", name: "Manage Voucher" },
@@ -23,9 +23,16 @@ function AdminPage() {
         setActiveTab(tabId);
     };
 
-    // Placeholder components
-    const Dashboard = () => <div className="tab-content"><h2>Dashboard</h2><p>Welcome to Admin Panel</p></div>;
-    const ManageOrder = () => <div className="tab-content"><h2>Order Management</h2><p>Coming soon</p></div>;
+    const ManageOrder = () => (
+        <div className="tab-content">
+            <h2>Order Management</h2>
+            <p>Coming soon</p>
+        </div>
+    );
+
+    useEffect(() => {
+        console.log("Active Tab:", activeTab);
+    }, [activeTab]);
 
     return (
         <div className="admin-container">
@@ -49,7 +56,7 @@ function AdminPage() {
             </div>
 
             <div className="admin-content">
-                {activeTab === "dashboard" && <Dashboard />}
+                {activeTab === "manage-dashboard" && <Dashboard />} {/* Sử dụng component Dashboard đã import */}
                 {activeTab === "manage-product" && <AdminProduct />}
                 {activeTab === "manage-user" && <ManageUser />}
                 {activeTab === "manage-voucher" && <ManageVoucher />}
