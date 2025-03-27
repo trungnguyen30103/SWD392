@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaFacebook,
@@ -7,19 +7,26 @@ import {
   FaShoppingCart,
   FaUser,
   FaInstagram,
-} from "react-icons/fa"; // Import các icon từ react-icons
-import "./index.css"; // Nếu bạn cần thêm CSS
+} from "react-icons/fa"; // Import icons from react-icons
+import "./index.css"; // If you need additional CSS
 import { Link } from "react-router-dom";
-import { Dropdown, Menu } from "antd"; // Sử dụng Dropdown từ antd
+import { Dropdown, Menu } from "antd"; // Use Dropdown from antd
 
 const Header = ({ quantity, setQuantity }) => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Check login status
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);  // If there is a token, the user is logged in
+  }, []);
 
   const labubuItems = [
     {
       label: (
         <div style={{ fontSize: "15px", padding: "5px 20px" }}>
-          Bộ Sưu Tập Mùa Đông
+          Winter Collection
         </div>
       ),
       key: "labubu-winter",
@@ -27,7 +34,7 @@ const Header = ({ quantity, setQuantity }) => {
     {
       label: (
         <div style={{ fontSize: "15px", padding: "5px 20px" }}>
-          Bộ Sưu Tập Mùa Hè
+          Summer Collection
         </div>
       ),
       key: "labubu-summer",
@@ -35,7 +42,7 @@ const Header = ({ quantity, setQuantity }) => {
     {
       label: (
         <div style={{ fontSize: "15px", padding: "5px 20px" }}>
-          Bộ Sưu Tập Mùa Xuân
+          Spring Collection
         </div>
       ),
       key: "labubu-spring",
@@ -46,7 +53,7 @@ const Header = ({ quantity, setQuantity }) => {
     {
       label: (
         <div style={{ fontSize: "15px", padding: "5px 20px" }}>
-          Bộ Sưu Tập Mùa Đông
+          Winter Collection
         </div>
       ),
       key: "babethree-winter",
@@ -54,7 +61,7 @@ const Header = ({ quantity, setQuantity }) => {
     {
       label: (
         <div style={{ fontSize: "15px", padding: "5px 20px" }}>
-          Bộ Sưu Tập Mùa Hè
+          Summer Collection
         </div>
       ),
       key: "babethree-summer",
@@ -62,7 +69,7 @@ const Header = ({ quantity, setQuantity }) => {
     {
       label: (
         <div style={{ fontSize: "15px", padding: "5px 20px" }}>
-          Bộ Sưu Tập Mùa Xuân
+          Spring Collection
         </div>
       ),
       key: "babethree-spring",
@@ -71,6 +78,17 @@ const Header = ({ quantity, setQuantity }) => {
 
   const onClick = ({ key }) => {
     navigate(`${key}`);
+  };
+
+  const handleLogout = () => {
+    // Remove token from localStorage
+    localStorage.removeItem("token");
+    
+    // Update login status
+    setIsLoggedIn(false);
+
+    // Redirect user to the login page
+    navigate("/login");
   };
 
   return (
@@ -111,10 +129,19 @@ const Header = ({ quantity, setQuantity }) => {
         </div>
 
         <div className="right-icons">
-          <div className="login-register">
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </div>
+          {isLoggedIn ? (
+            <div className="login-register">
+              {/* Logout button without background */}
+              <button onClick={handleLogout} className="logout-btn">
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="login-register">
+              <Link to="/login">Login</Link>
+              <Link to="/register">Register</Link>
+            </div>
+          )}
           <input type="text" placeholder="Search..." />
           <a href="/cart">
             <FaShoppingCart size={20} />
