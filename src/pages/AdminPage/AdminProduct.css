@@ -11,6 +11,7 @@
     margin-bottom: 2rem;
   }
   
+  
   .toggle-form-btn {
     background: #3498db;
     color: white;
@@ -96,6 +97,12 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+  }
+  .product-image {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 5px;
   }
   
   .status {
