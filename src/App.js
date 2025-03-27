@@ -21,7 +21,7 @@ import WebsiteInfo from "./pages/Infor/WebsiteInfor/index.jsx";
 import Profile from "./pages/profile/index.jsx";
 import Category from "./pages/Category/index.jsx";
 // Product Pages
-import AdminsProductList from "./pages/products/AdminsProduct/index.jsx";
+// import AdminsProductList from "./pages/products/AdminsProduct/index.jsx";
 import CustomerProductList from "./pages/products/CustomerProduct/index.jsx";
 import ProductDetail from "./pages/products/CustomerProduct/ProductDetail.jsx";
 
