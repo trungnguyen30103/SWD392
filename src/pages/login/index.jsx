@@ -104,9 +104,10 @@ export default function Login() {
             Logging in...
           </Button>
         )}
-        <a href="/forget-form" className="forgot-password-link">
+        <a href="/forget-password" className="forgot-password-link">
           Forgot password?
         </a>
+
         <p className="divider">Or login with</p>
 
         <Grid

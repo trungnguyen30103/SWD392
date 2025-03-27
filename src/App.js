@@ -19,6 +19,9 @@ import Register from "./pages/register/index.jsx";
 import Home from "./pages/home/index.jsx";
 import Cart from "./pages/cart/index.jsx";
 import Login from "./pages/login/index.jsx";
+import ForgotPassword from "./pages/ForgotPassword/index.jsx";  
+
+
 import WebsiteInfo from "./pages/Infor/WebsiteInfor/index.jsx";
 import Profile from "./pages/profile/index.jsx";
 import Category from "./pages/Category/index.jsx";
@@ -82,6 +85,12 @@ function App() {
       path: "/register",
       element: <Register />,
     },
+    {
+      path: "/forget-password",
+      element: <ForgotPassword />,  
+    },
+    
+    
     {
       path: "/products",
       element: <CustomerProductList />,
@@ -147,6 +156,8 @@ function App() {
       path: "/category",
       element: <Category />,
     },
+    
+    
     // Admin Routes
     /*{
       path: "/admin/products",
