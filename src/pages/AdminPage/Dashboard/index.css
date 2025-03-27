@@ -1,0 +1,73 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #fff; /* Nền trắng cho toàn bộ dashboard */
+    height: 100vh;
+    overflow-y: auto;
+    border-radius: 10px; /* Bo tròn viền container */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ nhẹ để tạo độ nổi */
+    margin: 40px auto; /* Căn giữa container */
+    max-width: 1500px; /* Giới hạn chiều rộng tối đa của container */
+  }
+  
+  .dashboard-filters {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .dashboard-filters select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .dashboard-stats {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .stat-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    flex: 1;
+  }
+  
+  .stat-card h3 {
+    font-size: 1.4rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .stat-card p {
+    font-size: 1.6rem;
+    color: #4CAF50;
+    font-weight: bold;
+  }
+  
+  .dashboard-charts {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .chart-container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    flex: 1;
+  }
+  
+  .chart-container h3 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
