@@ -7,26 +7,26 @@ import {
   FaShoppingCart,
   FaUser,
   FaInstagram,
-} from "react-icons/fa"; // Import các icon từ react-icons
-import "./index.css"; // Nếu bạn cần thêm CSS
+} from "react-icons/fa"; // Import icons from react-icons
+import "./index.css"; // If you need additional CSS
 import { Link } from "react-router-dom";
-import { Dropdown, Menu } from "antd"; // Sử dụng Dropdown từ antd
+import { Dropdown, Menu } from "antd"; // Use Dropdown from antd
 
 const Header = ({ quantity, setQuantity }) => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Kiểm tra trạng thái đăng nhập
+  // Check login status
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);  // Nếu có token, người dùng đã đăng nhập
+    setIsLoggedIn(!!token);  // If there is a token, the user is logged in
   }, []);
 
   const labubuItems = [
     {
       label: (
         <div style={{ fontSize: "15px", padding: "5px 20px" }}>
-          Bộ Sưu Tập Mùa Đông
+          Winter Collection
         </div>
       ),
       key: "labubu-winter",
@@ -34,7 +34,7 @@ const Header = ({ quantity, setQuantity }) => {
     {
       label: (
         <div style={{ fontSize: "15px", padding: "5px 20px" }}>
-          Bộ Sưu Tập Mùa Hè
+          Summer Collection
         </div>
       ),
       key: "labubu-summer",
@@ -42,7 +42,7 @@ const Header = ({ quantity, setQuantity }) => {
     {
       label: (
         <div style={{ fontSize: "15px", padding: "5px 20px" }}>
-          Bộ Sưu Tập Mùa Xuân
+          Spring Collection
         </div>
       ),
       key: "labubu-spring",
@@ -53,7 +53,7 @@ const Header = ({ quantity, setQuantity }) => {
     {
       label: (
         <div style={{ fontSize: "15px", padding: "5px 20px" }}>
-          Bộ Sưu Tập Mùa Đông
+          Winter Collection
         </div>
       ),
       key: "babethree-winter",
@@ -61,7 +61,7 @@ const Header = ({ quantity, setQuantity }) => {
     {
       label: (
         <div style={{ fontSize: "15px", padding: "5px 20px" }}>
-          Bộ Sưu Tập Mùa Hè
+          Summer Collection
         </div>
       ),
       key: "babethree-summer",
@@ -69,7 +69,7 @@ const Header = ({ quantity, setQuantity }) => {
     {
       label: (
         <div style={{ fontSize: "15px", padding: "5px 20px" }}>
-          Bộ Sưu Tập Mùa Xuân
+          Spring Collection
         </div>
       ),
       key: "babethree-spring",
@@ -81,13 +81,13 @@ const Header = ({ quantity, setQuantity }) => {
   };
 
   const handleLogout = () => {
-    // Xóa token khỏi localStorage
+    // Remove token from localStorage
     localStorage.removeItem("token");
     
-    // Cập nhật trạng thái đăng nhập
+    // Update login status
     setIsLoggedIn(false);
 
-    // Điều hướng người dùng về trang login
+    // Redirect user to the login page
     navigate("/login");
   };
 
@@ -131,7 +131,7 @@ const Header = ({ quantity, setQuantity }) => {
         <div className="right-icons">
           {isLoggedIn ? (
             <div className="login-register">
-              {/* Nút Logout không có nền */}
+              {/* Logout button without background */}
               <button onClick={handleLogout} className="logout-btn">
                 Logout
               </button>

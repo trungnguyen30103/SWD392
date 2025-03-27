@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Col, Row, Button, Spin } from "antd";
 import { Link } from "react-router-dom"; // Import Link từ react-router-dom
 import Carousel from "../../component/Carousel";
 import Container from "../../component/Container";
-import { getProducts } from "../../component/service/Uservies"; // Import hàm getProducts
+import { getProductsByCategory, getCategories } from "../../component/service/Uservies"; // Import các hàm API mới
 import "./index.css";
 
 function HomePage() {
@@ -13,16 +13,30 @@ function HomePage() {
   const [loading, setLoading] = useState(false); // State kiểm tra trạng thái tải dữ liệu
   const [error, setError] = useState(null); // State lưu thông báo lỗi
   const [viewMoreCount, setViewMoreCount] = useState(5); // Số lượng sản phẩm đã tải, mặc định là 5 sản phẩm
+  const [categories, setCategories] = useState([]); // State lưu trữ các danh mục sản phẩm
 
   // Dữ liệu menu
   const menuItems = ["ALL PRODUCT", "BABY THREE", "LABUBU"];
+
+  // Hàm lấy danh mục sản phẩm từ API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await getCategories(); // API lấy danh mục sản phẩm
+        setCategories(response.data); // Cập nhật danh mục sản phẩm
+      } catch (err) {
+        console.error("Failed to fetch categories", err);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const handleClick = async (index) => {
     setSelectedKey(index); // Cập nhật mục được chọn
     let category = menuItems[index].toLowerCase().replace(" ", "_"); // Chuyển danh mục thành dạng phù hợp với API
     setLoading(true);
     try {
-      const response = await getProducts(category); // Lấy sản phẩm từ API cho từng danh mục
+      const response = await getProductsByCategory(category); // Lấy sản phẩm từ API cho từng danh mục
       setProducts(response.data); // Cập nhật state với tất cả sản phẩm
       setCurrentProducts(response.data.slice(0, 5)); // Chỉ hiển thị 5 sản phẩm đầu tiên
     } catch (err) {
@@ -45,7 +59,7 @@ function HomePage() {
       <Carousel className="carousel-section" />
       <Container>
         <Col span={24}>
-          <a href="/product" className="product-category">
+          <a href="/products" className="product-category">
             PRODUCT CATEGORY
             <span className="underline"></span>
           </a>
@@ -81,73 +95,68 @@ function HomePage() {
         <div className="product-list">
           {currentProducts.map((product, index) => (
             <div key={index} className="product-item">
+              <img src={product.imageUrl} alt={product.name} className="product-image" />
               <h3>{product.name}</h3>
               <p>{product.description}</p>
+              <p className="product-price">${product.price}</p>
+              <Link to={`/product/${product.id}`}>
+                <Button className="view-details-button">View Details</Button>
+              </Link>
             </div>
           ))}
         </div>
 
         {/* Hiển thị nút View More */}
         <div className="view-more">
-          <Link to="/products">
-            <Button className="show-more-button">Show More</Button>
-          </Link>
+          <Button className="show-more-button" onClick={handleViewMore}>
+            Show More
+          </Button>
         </div>
 
-        {/* Các mục khác trong menu */}
-        <Col span={24}>
-          <a href="/product" className="product-category">
-            BABY THREE
-            <span className="underline"></span>
-          </a>
-        </Col>
+        {/* Hiển thị danh mục sản phẩm */}
+        {categories.map((category, index) => (
+          <div key={index}>
+            <Col span={24}>
+              <a href={`/products/${category.name}`} className="product-category">
+                {category.name}
+                <span className="underline"></span>
+              </a>
+            </Col>
+            {loading && (
+              <div className="loading-message">
+                <Spin size="large" />
+                <p>Loading {category.name}...</p>
+              </div>
+            )}
+            {error && (
+              <div className="error-message">
+                <p>{error}</p>
+              </div>
+            )}
 
-        {/* Hiển thị sản phẩm cho BABY THREE */}
-        {loading && (
-          <div className="loading-message">
-            <Spin size="large" />
-            <p>Loading Baby Three...</p>
+            {/* Hiển thị sản phẩm cho mỗi danh mục */}
+            <div className="category-products">
+              {products.filter(product => product.category === category.name).map((product, i) => (
+                <div key={i} className="product-item">
+                  <img src={product.imageUrl} alt={product.name} className="product-image" />
+                  <h4>{product.name}</h4>
+                  <p>{product.description}</p>
+                  <p className="product-price">${product.price}</p>
+                  <Link to={`/product/${product.id}`}>
+                    <Button className="view-details-button">View Details</Button>
+                  </Link>
+                </div>
+              ))}
+            </div>
+
+            {/* Hiển thị nút View More cho danh mục */}
+            <div className="view-more">
+              <Link to={`/products/${category.name}`}>
+                <Button className="show-more-button">Show More</Button>
+              </Link>
+            </div>
           </div>
-        )}
-        {error && (
-          <div className="error-message">
-            <p>{error}</p>
-          </div>
-        )}
-
-        {/* Hiển thị nút View More cho BABY THREE */}
-        <div className="view-more">
-          <Link to="/products">
-            <Button className="show-more-button">Show More</Button>
-          </Link>
-        </div>
-
-        {/* Hiển thị sản phẩm cho LABUBU */}
-        <Col span={24}>
-          <a href="/product" className="product-category">
-            LABUBU
-            <span className="underline"></span>
-          </a>
-        </Col>
-
-        {loading && (
-          <div className="loading-message">
-            <Spin size="large" />
-            <p>Loading Labubu...</p>
-          </div>
-        )}
-        {error && (
-          <div className="error-message">
-            <p>{error}</p>
-          </div>
-        )}
-
-        {/* Hiển thị nút View More cho LABUBU */}
-        <div className="view-more">
-          <Link to="/products">
-            <Button className="show-more-button">Show More</Button>
-          </Link>
-        </div>
+        ))}
       </Container>
     </div>
   );
