@@ -47,6 +47,10 @@ const GachaBlindbox = () => {
     setIsLoading(true);
     setError(null);
 
+    // Thêm âm thanh quay
+    const spinSound = new Audio("spin-sound.mp3"); // Đảm bảo có file âm thanh này
+    spinSound.play();
+
     const drawnItems = [];
     for (let i = 0; i < numDraws; i++) {
       drawnItems.push(getRandomItem());
@@ -60,7 +64,7 @@ const GachaBlindbox = () => {
       setIsLoading(false);
       setIsSpinning(false);
       capsule.classList.remove("spin"); // Loại bỏ class 'spin' để dừng quay
-    }, 2000);
+    }, 5000);
   };
 
   const handleClickOk = () => {
@@ -143,7 +147,6 @@ const GachaBlindbox = () => {
                   alt={item.name}
                   className="gacha-item-image"
                 />
-                
               </div>
             ))}
           </div>
