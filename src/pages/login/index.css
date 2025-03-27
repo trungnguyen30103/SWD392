@@ -54,7 +54,6 @@
   width: 100%;
 }
 
-
 /* Forgot password link */
 .forgot-password-link {
   display: block;
@@ -68,23 +67,19 @@
   text-decoration: underline;
 }
 
-
 .divider {
   margin: 10px 0;
   color: #888;
   font-size: 14px;
 }
 
-
-
-
 .btn-login {
   width: 100%;
   background-color: #000 !important;
   color: white !important;
   font-size: 16px;
-  font-weight: bold !important; 
-  font-family: 'Roboto', sans-serif; 
+  font-weight: bold !important;
+  font-family: "Roboto", sans-serif;
   padding: 10px;
   border-radius: 4px;
   margin-bottom: 20px;
@@ -96,11 +91,9 @@
   cursor: pointer;
 }
 
-
-
 /* Facebook button style */
 .btn-social-facebook {
-  background-color: #3b5998;
+  background-color: #929cb1;
   color: white;
   font-size: 16px;
   font-weight: normal; /* Đảm bảo chữ thường */
@@ -117,19 +110,18 @@
 .btn-social-facebook:hover {
   background-color: white;
   color: #3b5998;
-  border: 1px solid #3b5998;
+  border: 1px solid #73809c;
 }
-
 
 .btn-social-google {
   background-color: #db4437;
   color: white;
   font-size: 16px;
-  font-weight: normal !important; 
+  font-weight: normal !important;
   width: 150px;
   padding: 10px;
   border-radius: 4px;
-  text-transform: capitalize !important; 
+  text-transform: capitalize !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -139,11 +131,12 @@
 .btn-social-google:hover {
   background-color: white;
   color: #db4437;
-  border: 1px solid #db4437;
+  border: 1px solid #7a6462;
 }
 
 /* Icon and text inside the buttons */
-.btn-social-facebook i, .btn-social-google i {
+.btn-social-facebook i,
+.btn-social-google i {
   margin-right: 8px;
   font-size: 18px;
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaFacebook,
@@ -14,6 +14,13 @@ import { Dropdown, Menu } from "antd"; // Sử dụng Dropdown từ antd
 
 const Header = ({ quantity, setQuantity }) => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Kiểm tra trạng thái đăng nhập
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);  // Nếu có token, người dùng đã đăng nhập
+  }, []);
 
   const labubuItems = [
     {
@@ -73,6 +80,17 @@ const Header = ({ quantity, setQuantity }) => {
     navigate(`${key}`);
   };
 
+  const handleLogout = () => {
+    // Xóa token khỏi localStorage
+    localStorage.removeItem("token");
+    
+    // Cập nhật trạng thái đăng nhập
+    setIsLoggedIn(false);
+
+    // Điều hướng người dùng về trang login
+    navigate("/login");
+  };
+
   return (
     <>
       <header className="header">
@@ -111,10 +129,19 @@ const Header = ({ quantity, setQuantity }) => {
         </div>
 
         <div className="right-icons">
-          <div className="login-register">
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </div>
+          {isLoggedIn ? (
+            <div className="login-register">
+              {/* Nút Logout không có nền */}
+              <button onClick={handleLogout} className="logout-btn">
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="login-register">
+              <Link to="/login">Login</Link>
+              <Link to="/register">Register</Link>
+            </div>
+          )}
           <input type="text" placeholder="Search..." />
           <a href="/cart">
             <FaShoppingCart size={20} />
