@@ -1,194 +1,335 @@
 import React, { useState, useEffect } from "react";
-import { FaTrash, FaClipboardList, FaArrowLeft } from "react-icons/fa"; // Thêm biểu tượng quay lại
+import { FaTrash, FaClipboardList, FaArrowLeft, FaShoppingCart } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./index.css";
-import axios from "axios"; // Thêm axios để gọi API của bạn
 
-function Cart({ cart, setCart }) {
-  const [cartItems, setCartItems] = useState([]); // Giỏ hàng trống ban đầu
-  const [products, setProducts] = useState([]); // Danh sách sản phẩm để thêm vào giỏ hàng
-  const navigate = useNavigate(); // Initialize useNavigate
+function Cart() {
+  const [cartItems, setCartItems] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [discount, setDiscount] = useState(0);
+  const [voucherCode, setVoucherCode] = useState("");
+  const navigate = useNavigate();
 
-  // Thay đổi API ở đây
+  // Fetch user's cart from backend
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem("token");
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+
+        const response = await axios.get("http://localhost:8080/api/carts/current", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        setCartItems(response.data.cartItems || []);
+      } catch (error) {
+        console.error("Error fetching cart:", error);
+        toast.error("Failed to load your cart");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCart();
+  }, [navigate]);
+
+  // Fetch products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // Gọi API của bạn để lấy danh sách sản phẩm
-        const response = await axios.get("https://yourapi.com/products");
-        setProducts(response.data); // Cập nhật state với dữ liệu từ API của bạn
+        const response = await axios.get("http://localhost:8080/api/products/status/active");
+        setProducts(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
         toast.error("Failed to fetch products.");
       }
     };
 
-    fetchProducts(); // Gọi hàm fetch khi component mount
+    fetchProducts();
   }, []);
 
-  // Lưu giỏ hàng vào localStorage mỗi khi giỏ hàng thay đổi
-  useEffect(() => {
-    if (cartItems.length > 0) {
-      localStorage.setItem("cartItems", JSON.stringify(cartItems)); // Lưu giỏ hàng vào localStorage
+  // Add to cart - sync with backend
+  const addToCart = async (product) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+
+      await axios.post(
+        `http://localhost:8080/api/carts/${getUserId()}/add/${product.productID}`,
+        { quantity: 1 },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // Refresh cart
+      const cartResponse = await axios.get("http://localhost:8080/api/carts/current", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      setCartItems(cartResponse.data.cartItems);
+      toast.success(`${product.productName} added to cart`);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      toast.error("Failed to add item to cart");
     }
-  }, [cartItems]);
-
-  // Thêm sản phẩm vào giỏ hàng
-  const addToCart = (product) => {
-    const newCartItems = [...cartItems];
-    const existingProduct = newCartItems.find((item) => item.id === product.id);
-
-    if (existingProduct) {
-      existingProduct.quantity += 1;
-    } else {
-      newCartItems.push({ ...product, quantity: 1 });
-    }
-
-    setCartItems(newCartItems);
-    toast.success(`${product.title} has been added to your cart.`);
   };
 
-  // Remove item from cart with confirmation
+  // Remove from cart
   const removeFromCart = async (productId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to remove this item from your cart?"
     );
 
-    if (confirmDelete) {
-      try {
-        const updatedCart = cartItems.filter((item) => item.id !== productId);
-        setCartItems(updatedCart);
-        toast.success("Item removed from cart.");
-      } catch (error) {
-        console.error("Error removing item from cart:", error);
-        toast.error("Failed to remove item from cart.");
-      }
-    } else {
+    if (!confirmDelete) {
       toast.info("Item removal canceled.");
-    }
-  };
-
-  // Update item quantity in cart
-  const updateQuantity = async (productId, quantity) => {
-    if (quantity < 1) return; // Kiểm tra số lượng phải lớn hơn 0
-    const product = cartItems.find((item) => item.id === productId);
-
-    if (quantity > product.stock) {
-      toast.error("Cannot exceed stock quantity!");
       return;
     }
 
-    const updatedCart = cartItems.map((item) =>
-      item.id === productId ? { ...item, quantity } : item
-    );
-    setCartItems(updatedCart);
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(
+        `http://localhost:8080/api/carts/${getUserId()}/remove/${productId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // Refresh cart
+      const cartResponse = await axios.get("http://localhost:8080/api/carts/current", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      setCartItems(cartResponse.data.cartItems);
+      toast.success("Item removed from cart");
+    } catch (error) {
+      console.error("Error removing item:", error);
+      toast.error("Failed to remove item");
+    }
   };
 
-  // Calculate total price
-  const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  // Update quantity
+  const updateQuantity = async (productId, newQuantity) => {
+    if (newQuantity < 1) return;
 
-  // Handle Checkout
-  const handleCheckout = () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `http://localhost:8080/api/carts/${getUserId()}/update/${productId}`,
+        { quantity: newQuantity },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // Refresh cart
+      const cartResponse = await axios.get("http://localhost:8080/api/carts/current", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      setCartItems(cartResponse.data.cartItems);
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+      toast.error("Failed to update quantity");
+    }
+  };
+
+  // Apply voucher
+  const applyVoucher = async () => {
+    try {
+      const response = await axios.post("http://localhost:8080/api/discounts/apply", {
+        code: voucherCode,
+        cartId: getCartId()
+      }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+      
+      setDiscount(response.data.discountAmount);
+      toast.success("Voucher applied successfully");
+    } catch (error) {
+      console.error("Error applying voucher:", error);
+      toast.error("Invalid voucher code");
+    }
+  };
+
+  // Handle checkout
+  const handleCheckout = async () => {
     if (cartItems.length === 0) {
-      toast.error("Your cart is empty. Add items to proceed to checkout.");
+      toast.error("Your cart is empty");
       return;
     }
-    toast.success("Proceeding to checkout...");
-    navigate("/checkout"); // Navigate to the checkout page
+
+    try {
+      const token = localStorage.getItem("token");
+      const orderResponse = await axios.post(
+        "http://localhost:8080/api/orders",
+        {
+          items: cartItems.map(item => ({
+            productId: item.product.productID,
+            quantity: item.quantity,
+            price: item.price
+          })),
+          total: calculateTotal(),
+          discount: discount
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      navigate(`/checkout/${orderResponse.data.orderId}`);
+    } catch (error) {
+      console.error("Checkout error:", error);
+      toast.error("Failed to proceed to checkout");
+    }
   };
 
-  // Handle Track Order
-  const handleTrack = () => {
-    navigate("/orders"); // Navigate to the orders page
+  // Helper functions
+  const getUserId = () => {
+    // In a real app, you'd decode the JWT to get user ID
+    return localStorage.getItem("userId") || 0;
   };
+
+  const getCartId = () => {
+    // This would come from your cart API response
+    return cartItems.length > 0 ? cartItems[0].cartId : null;
+  };
+
+  const calculateSubtotal = () => {
+    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  };
+
+  const calculateTotal = () => {
+    return calculateSubtotal() - discount;
+  };
+
+  if (loading) {
+    return (
+      <div className="cart-container">
+        <div className="loading-spinner">Loading your cart...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="cart-container">
       <ToastContainer />
       <h1>Your Cart</h1>
 
-      {/* Nút quay lại cửa hàng luôn hiển thị */}
       <div>
         <button onClick={() => navigate("/products")} className="back-button">
-          <FaArrowLeft /> Go back to shopping
+          <FaArrowLeft /> Continue Shopping
         </button>
       </div>
 
-      {/* Kiểm tra và hiển thị giỏ hàng nếu có sản phẩm */}
       {cartItems.length === 0 ? (
-        <div>
-          <p className="empty-cart">Your cart is empty.</p>
+        <div className="empty-cart">
+          <FaShoppingCart size={48} />
+          <p>Your cart is empty</p>
+          <button onClick={() => navigate("/products")} className="browse-products-btn">
+            Browse Products
+          </button>
         </div>
       ) : (
-        <div className="cart-items">
-          {cartItems.map((item) => (
-            <div key={item.id} className="cart-item">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="cart-item-image"
-              />
-              <div className="cart-item-details">
-                <h3>{item.title}</h3>
-                <p>${item.price.toLocaleString("en-US")}</p>
-                <div className="quantity-controls">
+        <>
+          <div className="cart-items">
+            {cartItems.map((item) => (
+              <div key={item.cartItemId} className="cart-item">
+                <img
+                  src={item.product.productImages?.[0]?.imageUrl || "/placeholder-product.jpg"}
+                  alt={item.product.productName}
+                  className="cart-item-image"
+                />
+                <div className="cart-item-details">
+                  <h3>{item.product.productName}</h3>
+                  <p>${item.price.toFixed(2)}</p>
+                  <div className="quantity-controls">
+                    <button
+                      onClick={() => updateQuantity(item.product.productID, item.quantity - 1)}
+                      disabled={item.quantity <= 1}
+                    >
+                      -
+                    </button>
+                    <span>{item.quantity}</span>
+                    <button
+                      onClick={() => updateQuantity(item.product.productID, item.quantity + 1)}
+                      disabled={item.quantity >= item.product.stock}
+                    >
+                      +
+                    </button>
+                  </div>
                   <button
-                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                    onClick={() => removeFromCart(item.product.productID)}
+                    className="remove-button"
                   >
-                    -
-                  </button>
-                  <span>{item.quantity}</span>
-                  <button
-                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                  >
-                    +
+                    <FaTrash />
                   </button>
                 </div>
-                <button
-                  onClick={() => removeFromCart(item.id)}
-                  className="remove-button"
-                >
-                  <FaTrash /> {/* Thùng rác nhỏ */}
-                </button>
               </div>
+            ))}
+          </div>
+
+          <div className="voucher-section">
+            <input
+              type="text"
+              placeholder="Enter voucher code"
+              value={voucherCode}
+              onChange={(e) => setVoucherCode(e.target.value)}
+            />
+            <button onClick={applyVoucher}>Apply Voucher</button>
+          </div>
+
+          <div className="price-summary">
+            <div className="price-row">
+              <span>Subtotal:</span>
+              <span>${calculateSubtotal().toFixed(2)}</span>
+            </div>
+            <div className="price-row">
+              <span>Discount:</span>
+              <span>-${discount.toFixed(2)}</span>
+            </div>
+            <div className="price-row total">
+              <span>Total:</span>
+              <span>${calculateTotal().toFixed(2)}</span>
+            </div>
+          </div>
+
+          <button className="checkout-button" onClick={handleCheckout}>
+            Proceed to Checkout
+          </button>
+        </>
+      )}
+
+      <div className="track-order">
+        <button className="track-order-button" onClick={() => navigate("/orders")}>
+          <FaClipboardList /> Track Your Orders
+        </button>
+      </div>
+
+      <div className="product-list">
+        <h2>Recommended Products</h2>
+        <div className="products-grid">
+          {products.slice(0, 4).map((product) => (
+            <div key={product.productID} className="product-card">
+              <img
+                src={product.productImages?.[0]?.imageUrl || "/placeholder-product.jpg"}
+                alt={product.productName}
+                className="product-image"
+                onClick={() => navigate(`/productdetail/${product.productID}`)}
+              />
+              <h3>{product.productName}</h3>
+              <p>${product.price.toFixed(2)}</p>
+              <button 
+                onClick={() => addToCart(product)}
+                disabled={product.stock <= 0}
+              >
+                {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
+              </button>
             </div>
           ))}
         </div>
-      )}
-
-      <div className="total-price">
-        <h2>Total: ${totalPrice.toLocaleString("en-US")}</h2>
-      </div>
-
-      <button className="checkout-button" onClick={handleCheckout}>
-        Proceed to Checkout
-      </button>
-
-      {/* Track order button */}
-      <div className="track-order">
-        <button className="track-order-button" onClick={handleTrack}>
-          <FaClipboardList /> Track Your Order
-        </button>
-      </div>
-
-      {/* Sản phẩm có sẵn để thêm vào giỏ hàng */}
-      <div className="product-list">
-        <h2>Products Available</h2>
-        {products.map((product) => (
-          <div key={product.id} className="product-card">
-            <img
-              src={product.image}
-              alt={product.title}
-              className="product-image"
-            />
-            <h3>{product.title}</h3>
-            <p>${product.price}</p>
-            <button onClick={() => addToCart(product)}>Add to Cart</button>
-          </div>
-        ))}
       </div>
     </div>
   );

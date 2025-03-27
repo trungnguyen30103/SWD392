@@ -14,7 +14,7 @@ const ManageUser = () => {
         address: ''
     });
 
-    const fetchUsers = async (url = '/api/users') => {
+    const fetchUsers = async (url = 'http://localhost:8080/api/users') => {
         try {
             const response = await axios.get(url);
             setUsers(response.data.data);
@@ -36,8 +36,8 @@ const ManageUser = () => {
         }
         
         try {
-            let endpoint = `/api/users/search/${searchType}?${searchType}=${searchQuery}`;
-            if (searchType === 'role') endpoint = `/api/users/search/role?roleID=${searchQuery}`;
+            let endpoint = `http://localhost:8080/api/users/search/${searchType}?${searchType}=${searchQuery}`;
+            if (searchType === 'role') endpoint = `http://localhost:8080/api/users/search/role?roleID=${searchQuery}`;
             
             const response = await axios.get(endpoint);
             setUsers(response.data.data);
@@ -51,7 +51,7 @@ const ManageUser = () => {
         if (!window.confirm('Are you sure you want to delete this user?')) return;
         
         try {
-            await axios.delete(`/api/users/${userId}`);
+            await axios.delete(`http://localhost:8080/api/users/${userId}`);
             setUsers(users.filter(user => user.userID !== userId));
             alert('User deleted successfully');
         } catch (error) {
@@ -73,7 +73,7 @@ const ManageUser = () => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`/api/users/admin/${editingUser.userID}`, formData);
+            const response = await axios.put(`http://localhost:8080/api/users/admin/${editingUser.userID}`, formData);
             setUsers(users.map(u => u.userID === editingUser.userID ? response.data.data : u));
             setEditingUser(null);
             alert('User updated successfully');
