@@ -13,13 +13,9 @@ function CustomerProduct() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/products", {
-          withCredentials: true
-        });
-
+        const response = await axios.get("http://localhost:8080/api/products");
         console.log(response.data)
-   
-        // setProducts(data);
+        setProducts(response.data.data); // Access the data array from the response
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -43,8 +39,8 @@ function CustomerProduct() {
 
   const filteredProducts = products.filter(
     (product) =>
-      product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.id.toString().includes(searchQuery)
+      product.productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.productID.toString().includes(searchQuery)
   );
 
   const addToCart = (product) => {
@@ -54,7 +50,7 @@ function CustomerProduct() {
     }
 
     const newCart = [...cart];
-    const existingProduct = newCart.find((item) => item.id === product.id);
+    const existingProduct = newCart.find((item) => item.productID === product.productID);
 
     if (existingProduct) {
       if (existingProduct.quantity < product.stock) {
@@ -67,7 +63,7 @@ function CustomerProduct() {
     } else {
       newCart.push({ ...product, quantity: 1 });
       setCart(newCart);
-      alert(`${product.title} has been added to your cart.`);
+      alert(`${product.productName} has been added to your cart.`);
     }
   };
 
@@ -113,13 +109,13 @@ function CustomerProduct() {
 
       <div className="product-list">
         {filteredProducts.map((product) => (
-          <div key={product.id} className="product-card">
+          <div key={product.productID} className="product-card">
             <img
               className="product-img"
-              src={product.image}
-              alt={product.title}
+              src={product.productImages[0]?.imageUrl || ""}
+              alt={product.productImages[0]?.altText || product.productName}
             />
-            <h3>{product.title}</h3>
+            <h3>{product.productName}</h3>
             <p>Price: ${product.price}</p>
             {product.stock > 0 ? (
               <p>In Stock: {product.stock}</p>
@@ -134,7 +130,7 @@ function CustomerProduct() {
               >
                 Add to Cart
               </button>
-              <button onClick={() => handleProductClick(product.id)}>
+              <button onClick={() => handleProductClick(product.productID)}>
                 View Details
               </button>
             </div>

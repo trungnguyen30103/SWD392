@@ -11,20 +11,22 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `https://fakestoreapi.com/products/${productId}`
+          `http://localhost:8080/api/products/${productId}`
         );
-        setProduct({
-          ...response.data,
-          stock: response.data.rating.count,
-          series: "Crying Again Series",
-          material: "Vinyl",
-          dimensions: "20cm tall",
-        });
+        if (response.data.success) {
+          setProduct({
+            ...response.data.data,
+            series: "Crying Again Series",
+            material: "Vinyl",
+            dimensions: "20cm tall",
+          });
+        }
       } catch (error) {
         console.error("Error fetching product:", error);
       } finally {
@@ -49,7 +51,7 @@ const ProductDetail = () => {
   }, []);
 
   const addToCart = () => {
-    alert(`${product.title} x${quantity} added to cart!`);
+    alert(`${product.productName} x${quantity} added to cart!`);
   };
 
   const handleBack = () => navigate(-1);
@@ -83,21 +85,38 @@ const ProductDetail = () => {
       <div className="product-detail-grid">
         <div className="product-gallery">
           <div className="main-image">
-            <img src={product.image} alt={product.title} />
+            <img 
+              src={product.productImages[selectedImage]?.imageUrl} 
+              alt={product.productImages[selectedImage]?.altText || product.productName} 
+            />
           </div>
+          {product.productImages.length > 1 && (
+            <div className="thumbnail-container">
+              {product.productImages.map((image, index) => (
+                <img
+                  key={image.productImageID}
+                  src={image.imageUrl}
+                  alt={image.altText}
+                  className={`thumbnail ${index === selectedImage ? 'active' : ''}`}
+                  onClick={() => setSelectedImage(index)}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="product-info">
-          <h1 className="product-title">{product.title}</h1>
+          <h1 className="product-title">{product.productName}</h1>
           <div className="product-meta">
             <span className="product-series">{product.series}</span>
             <span className="product-stock">
               {product.stock > 0 ? "In Stock" : "Pre-order"}
             </span>
+            <span className="product-status">{product.status}</span>
           </div>
 
           <div className="price-container">
-            <span className="price">${product.price}</span>
+            <span className="price">${product.price.toFixed(2)}</span>
           </div>
 
           <div className="product-specs">
@@ -125,7 +144,7 @@ const ProductDetail = () => {
               max={product.stock}
               onChange={(e) =>
                 setQuantity(
-                  Math.max(1, Math.min(product.stock, e.target.value))
+                  Math.max(1, Math.min(product.stock, parseInt(e.target.value) || 1))
                 )
               }
             />
@@ -140,7 +159,7 @@ const ProductDetail = () => {
           <button
             className="add-to-cart-btn"
             onClick={addToCart}
-            disabled={product.stock <= 0}
+            disabled={product.stock <= 0 || product.status !== "ACTIVE"}
           >
             <FaShoppingCart /> Add to Cart
           </button>

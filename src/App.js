@@ -25,6 +25,10 @@ import GachaBlindbox from "./pages/GachaBlindbox/index.jsx";
 import WebsiteInfo from "./pages/Infor/WebsiteInfor/index.jsx";
 import Profile from "./pages/profile/index.jsx";
 import Category from "./pages/Category/index.jsx";
+import HowtomakePurchase from "./pages/Infor/HowtomakePurchase/index.jsx";
+import Howtopay from "./pages/Infor/Howtopay/index.jsx";
+import Howtoreceivedelivery from "./pages/Infor/Howtoreceivedelivery/index.jsx";
+import ServiceTerms from "./pages/Infor/ServiceTerms/index.jsx";
 // Product Pages
 // import AdminsProductList from "./pages/products/AdminsProduct/index.jsx";
 import CustomerProductList from "./pages/products/CustomerProduct/index.jsx";
@@ -55,6 +59,23 @@ function App() {
 
   const router = [
     // Public Routes
+    {
+      path: "/how-to-make-a-purchase",
+      element: <HowtomakePurchase />,
+    },
+
+    {
+      path: "/how-to-pay",
+      element: <Howtopay />,
+    },
+    {
+      path: "/how-to-receive-delivery",
+      element: <Howtoreceivedelivery />,
+    },
+    {
+      path: "/service-terms",
+      element: <ServiceTerms />,
+    },
     {
       path: "/",
       element: <Home />,
@@ -175,6 +196,7 @@ function App() {
     },*/
 
     // Protected Route: Checkout (Customer only)
+
     {
       path: "/checkout",
       element: role ? (
