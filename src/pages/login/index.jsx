@@ -1,25 +1,20 @@
-
-import { TextField, Box, Button } from "@mui/material";
+import { TextField, Box, Button, Grid } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "./index.css";
+import "font-awesome/css/font-awesome.min.css";
 
 export default function Login() {
-  const [username, setUsername] = useState("");
+  const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRequesting, setRequesting] = useState(false);
   const navigate = useNavigate();
 
   const validateInputs = () => {
-    
-    if (!username || username.length < 3) {
-      toast.error("Username must be at least 3 characters long.");
-      return false;
-    }
-    if (!password || password.length < 6) {
-      toast.error("Password must be at least 6 characters long.");
+    if (!usernameOrEmail || usernameOrEmail.length < 3) {
+      toast.error("Username or Email is invalid.");
       return false;
     }
     return true;
@@ -31,26 +26,29 @@ export default function Login() {
     setRequesting(true);
 
     try {
-      // Send login request to the backend
-      const response = await axios.post("http://localhost:8080/auth/login", {
-        username: username,  // Use 'username' instead of 'email'
+      const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+        usernameOrEmail
+      );
+      const loginData = {
+        [isEmail ? "email" : "username"]: usernameOrEmail,
         password: password,
-      });
+      };
 
-      // Handle successful login
+      const response = await axios.post(
+        "http://localhost:8080/auth/login",
+        loginData
+      );
+
       console.log("Login successful:", response.data);
       toast.success("Login successful!");
 
-      // Store the token (e.g., in localStorage)
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", response.data.role);
-
-      // Navigate to the home page or dashboard
       navigate("/");
     } catch (error) {
-      // Handle login error
       console.error("Login error:", error);
-      toast.error("Authentication failed. Please check your username and password.");
+      toast.error(
+        "Authentication failed. Please check your username/email and password."
+      );
     } finally {
       setRequesting(false);
     }
@@ -63,49 +61,73 @@ export default function Login() {
   };
 
   return (
-    <div className="login">
+    <div className="login-container">
       <ToastContainer />
-      <Box className="login__form">
-        <h2>Login</h2>
-        <TextField
-          required
-          className="login-input"
-          id="outlined-required"
-          label="Username"
-          defaultValue=""
-          onChange={(e) => setUsername(e.target.value)}
-          onKeyPress={handleKeyPress}
-        />
-        <TextField
-          required
-          className="login-input"
-          id="outlined-required"
-          type="password"
-          label="Password"
-          defaultValue=""
-          onChange={(e) => setPassword(e.target.value)}
-          onKeyPress={handleKeyPress}
-        />
-        <a href="/forget-form">Forgot password?</a>
+      <Box className="login-form">
+        <h2 className="login-title">Login</h2>
+        <p className="register-link">
+          If you don't have an account, <a href="/register">register here</a>
+        </p>
+
+        {/* Form group to wrap the input fields */}
+        <div className="form-group">
+          <TextField
+            required
+            className="login-input-username"
+            id="outlined-required"
+            label="Username or Email"
+            value={usernameOrEmail}
+            onChange={(e) => setUsernameOrEmail(e.target.value)}
+            onKeyPress={handleKeyPress}
+          />
+          <TextField
+            required
+            className="login-input-password"
+            id="outlined-required"
+            type="password"
+            label="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyPress={handleKeyPress}
+          />
+        </div>
         {!isRequesting ? (
           <Button
             variant="contained"
-            href="#contained-buttons"
             className="btn-login"
             onClick={handleLogin}
           >
             Login
           </Button>
         ) : (
-          <Button
-            variant="contained"
-            href="#contained-buttons"
-            className="btn-login"
-            disabled
-          >
+          <Button variant="contained" className="btn-login" disabled>
             Logging in...
           </Button>
         )}
+        <a href="/forget-form" className="forgot-password-link">
+          Forgot password?
+        </a>
+        <p className="divider">Or login with</p>
+
+        <Grid
+          container
+          spacing={2}
+          justifyContent="center"
+          className="social-buttons-container"
+        >
+          <Grid item>
+            <Button variant="outlined" className="btn-social-facebook">
+              <i className="fa fa-facebook" style={{ marginRight: "8px" }}></i>
+              facebook
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button variant="outlined" className="btn-social-google">
+              <i className="fa fa-google" style={{ marginRight: "8px" }}></i>
+              google
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
     </div>
   );

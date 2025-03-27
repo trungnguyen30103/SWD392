@@ -1,47 +1,149 @@
-.login {
+/* To center everything within the container */
+.login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-color: #f5f5f5;
+}
 
-  .login__form {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
+/* The login form box */
+.login-form {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
 
-    h2 {
-      margin-bottom: 1.5rem;
-      color: #333;
-    }
+/* Title of the login form */
+.login-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
 
-    .login-input {
-      width: 100%;
-      margin-bottom: 1rem;
-    }
+/* Link for registration */
+.register-link {
+  font-size: 14px;
+  color: #000;
+  margin-bottom: 20px;
+}
 
-    a {
-      display: block;
-      margin-bottom: 1rem;
-      color: #007bff;
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
+.register-link a {
+  text-decoration: none;
+  color: #000;
+}
 
-    .btn-login {
-      width: 100%;
-      padding: 0.75rem;
-      background-color: #007bff;
-      color: white;
-      &:hover {
-        background-color: #0056b3;
-      }
-    }
-  }
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+/* Form group wrapper */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Tăng khoảng cách giữa các trường nhập */
+  margin-bottom: 20px;
+}
+
+/* Input fields for username/email and password */
+.login-input-username,
+.login-input-password {
+  width: 100%;
+}
+
+
+/* Forgot password link */
+.forgot-password-link {
+  display: block;
+  font-size: 14px;
+  color: #000;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+}
+
+
+.divider {
+  margin: 10px 0;
+  color: #888;
+  font-size: 14px;
+}
+
+
+
+
+.btn-login {
+  width: 100%;
+  background-color: #000 !important;
+  color: white !important;
+  font-size: 16px;
+  font-weight: bold !important; 
+  font-family: 'Roboto', sans-serif; 
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-transform: none !important;
+  border: none;
+}
+.btn-login:hover {
+  background-color: #333 !important;
+  cursor: pointer;
+}
+
+
+
+/* Facebook button style */
+.btn-social-facebook {
+  background-color: #3b5998;
+  color: white;
+  font-size: 16px;
+  font-weight: normal; /* Đảm bảo chữ thường */
+  width: 150px;
+  padding: 10px;
+  border-radius: 4px;
+  text-transform: capitalize !important; /* Viết hoa chữ cái đầu tiên */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-social-facebook:hover {
+  background-color: white;
+  color: #3b5998;
+  border: 1px solid #3b5998;
+}
+
+
+.btn-social-google {
+  background-color: #db4437;
+  color: white;
+  font-size: 16px;
+  font-weight: normal !important; 
+  width: 150px;
+  padding: 10px;
+  border-radius: 4px;
+  text-transform: capitalize !important; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-social-google:hover {
+  background-color: white;
+  color: #db4437;
+  border: 1px solid #db4437;
+}
+
+/* Icon and text inside the buttons */
+.btn-social-facebook i, .btn-social-google i {
+  margin-right: 8px;
+  font-size: 18px;
 }
