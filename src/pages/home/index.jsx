@@ -108,18 +108,18 @@ function HomePage() {
 
         <div className="product-list">
           {currentItems.map((item, index) => (
-            <div key={index} className="product-item">
-              <img 
-                src={item.imageUrl || (item.blindboxImages?.[0]?.imageUrl)}
-                alt={item.productName || item.name}
-                className="product-image"
-              />
-              <h3>{item.productName || item.name}</h3>
-              <p className="product-price">${item.price}</p>
-              <Link to={item.productID ? `/product/${item.productID}` : `/blindbox/${item.blindboxID}`}>
-                <Button className="view-details-button">View Details</Button>
-              </Link>
-            </div>
+            <div className="product-item">
+            <img 
+              src={item.imageUrl || (item.blindboxImages?.[0]?.imageUrl)}
+              alt={item.productName || item.name}
+              className="product-image"
+            />
+            <h3>{item.productName || item.name}</h3>
+            <p className="product-price">${item.price}</p>
+            <Link to={item.productID ? `/product/${item.productID}` : `/blindbox/${item.blindboxID}`}>
+              <Button className="view-details-button">View Details</Button>
+            </Link>
+          </div>
           ))}
         </div>
 
