@@ -13,162 +13,95 @@ export const loginApi = (email, password, recaptchaResponse) => {
   return api.post("public/login", payload); // Gọi API login
 };
 
-// Hàm lấy tất cả các sản phẩm
-export const getProducts = () => {
-  return api.get('/blindboxes');  // Lấy tất cả sản phẩm từ API
-};
+// ======================== Blindbox APIs ========================
 
-// Hàm lấy sản phẩm theo danh mục
-export const getProductsByCategory = (category) => {
-  return api.get(`/blindboxes/category/${category}`);  // Lấy sản phẩm theo danh mục
-};
+export const getBlindboxes = () => api.get("/api/blindboxes");
 
-// Hàm lấy một sản phẩm theo ID
-export const getProductById = (productId) => {
-  return api.get(`/blindboxes/${productId}`);  // Lấy sản phẩm theo ID
-};
+export const getBlindboxById = (blindboxID) =>
+  api.get(`/api/blindboxes/${blindboxID}`);
 
-// Hàm tạo một sản phẩm mới
-export const createProduct = (product) => {
-  return api.post('/blindboxes', product);  // Tạo một sản phẩm mới
-};
+export const createBlindbox = (blindbox) =>
+  api.post("/api/blindboxes", blindbox);
 
-// Hàm cập nhật sản phẩm
-export const updateProduct = (productId, product) => {
-  return api.put(`/blindboxes/${productId}`, product);  // Cập nhật sản phẩm
-};
+export const updateBlindbox = (blindboxID, blindbox) =>
+  api.put(`/api/blindboxes/${blindboxID}`, blindbox);
 
-// Hàm xóa một sản phẩm
-export const deleteProduct = (productId) => {
-  return api.delete(`/blindboxes/${productId}`);  // Xóa sản phẩm theo ID
-};
+export const deleteBlindbox = (blindboxID) =>
+  api.delete(`/api/blindboxes/${blindboxID}`);
 
-// Hàm lấy tất cả danh mục
-export const getCategories = () => {
-  return api.get('/api/categories');  // Lấy tất cả danh mục từ API
-};
+export const getBlindboxesByCategory = (categoryID) =>
+  api.get(`/api/blindboxes/category/${categoryID}`);
 
-// Hàm lấy danh mục theo ID
-export const getCategoryById = (categoryId) => {
-  return api.get(`/api/categories/${categoryId}`);  // Lấy danh mục theo ID
-};
+export const getActiveBlindboxes = () =>
+  api.get("/api/blindboxes/status/active");
 
-// Hàm tạo một danh mục mới
-export const createCategory = (category) => {
-  return api.post('/api/categories', category);  // Tạo một danh mục mới
-};
+export const getDisabledBlindboxes = () =>
+  api.get("/api/blindboxes/status/disable");
 
-// Hàm cập nhật danh mục
-export const updateCategory = (categoryId, category) => {
-  return api.put(`/api/categories/${categoryId}`, category);  // Cập nhật danh mục
-};
+export const getOutOfStockBlindboxes = () =>
+  api.get("/api/blindboxes/status/out-of-stock");
 
-// Hàm xóa danh mục
-export const deleteCategory = (categoryId) => {
-  return api.delete(`/api/categories/${categoryId}`);  // Xóa danh mục theo ID
-};
+export const searchBlindboxesByName = (name) =>
+  api.get(`/api/blindboxes/search?name=${name}`);
 
-// Hàm lấy tất cả các bình luận (reviews)
-export const getReviews = () => {
-  return api.get('/reviews');  // Lấy tất cả các bình luận từ API
-};
+// ======================== Gacha APIs ========================
 
-// Hàm lấy bình luận theo ID
-export const getReviewById = (reviewId) => {
-  return api.get(`/reviews/${reviewId}`);  // Lấy bình luận theo ID
-};
+export const openBlindbox = () => api.get("/api/gacha/open-box");
 
-// Hàm tạo bình luận mới
-export const createReview = (review) => {
-  return api.post('/reviews', review);  // Tạo bình luận mới
-};
+export const getGachaHistory = () => api.get("/api/gacha/history");
 
-// Hàm cập nhật bình luận
-export const updateReview = (reviewId, review) => {
-  return api.put(`/reviews/${reviewId}`, review);  // Cập nhật bình luận
-};
+export const getGachaHistoryByUser = () =>
+  api.get("/api/gacha/history/user");
 
-// Hàm xóa bình luận
-export const deleteReview = (reviewId) => {
-  return api.delete(`/reviews/${reviewId}`);  // Xóa bình luận theo ID
-};
+// ======================== Order APIs ========================
 
-// Hàm lấy tất cả các đơn hàng
-export const getOrders = () => {
-  return api.get('/api/orders');  // Lấy tất cả các đơn hàng từ API
-};
+export const createBlindboxOrder = (order) =>
+  api.post("/api/orders/create-blindbox-order", order);
 
-// Hàm lấy đơn hàng theo ID
-export const getOrderById = (orderId) => {
-  return api.get(`/api/orders/${orderId}`);  // Lấy đơn hàng theo ID
-};
+export const payBlindboxOrder = (orderData) =>
+  api.post("/api/orders/pay-blindbox-order", orderData);
 
-// Hàm tạo đơn hàng mới
-export const createOrder = (order) => {
-  return api.post('/api/orders', order);  // Tạo đơn hàng mới
-};
+// ======================== Cart APIs ========================
 
-// Hàm cập nhật đơn hàng
-export const updateOrder = (orderId, order) => {
-  return api.put(`/api/orders/${orderId}`, order);  // Cập nhật đơn hàng
-};
+export const getCartByUserId = (userId) =>
+  api.get(`/api/carts/${userId}`);
 
-// Hàm xóa đơn hàng
-export const deleteOrder = (orderId) => {
-  return api.delete(`/api/orders/${orderId}`);  // Xóa đơn hàng theo ID
-};
+export const addToCart = (userId, productId) =>
+  api.post(`/api/carts/${userId}/add/${productId}`, null);
 
-// Hàm lấy tất cả các người dùng
-export const getUsers = () => {
-  return api.get('/api/users');  // Lấy tất cả người dùng từ API
-};
+export const updateCartItem = (userId, productId, quantity) =>
+  api.put(`/api/carts/${userId}/update/${productId}`, { quantity });
 
-// Hàm lấy người dùng theo ID
-export const getUserById = (userId) => {
-  return api.get(`/api/users/${userId}`);  // Lấy người dùng theo ID
-};
+export const removeFromCart = (userId, productId) =>
+  api.delete(`/api/carts/${userId}/remove/${productId}`);
 
-// Hàm tạo người dùng mới
-export const createUser = (user) => {
-  return api.post('/api/users', user);  // Tạo người dùng mới
-};
+export const clearCart = (userId) =>
+  api.delete(`/api/carts/${userId}/clear`);
 
-// Hàm cập nhật người dùng
-export const updateUser = (userId, user) => {
-  return api.put(`/api/users/${userId}`, user);  // Cập nhật người dùng
-};
+// ======================== Discount APIs ========================
 
-// Hàm xóa người dùng
-export const deleteUser = (userId) => {
-  return api.delete(`/api/users/${userId}`);  // Xóa người dùng theo ID
-};
+export const getDiscounts = () => api.get("/api/discounts");
 
-// Hàm xử lý thanh toán
-export const processPayment = (paymentRequest) => {
-  return api.post('/payment/process', paymentRequest);  // Xử lý thanh toán
-};
+export const getDiscountById = (id) => api.get(`/api/discounts/${id}`);
 
-// Hàm lấy tất cả các bình luận trong Wishlist
-export const getWishlist = () => {
-  return api.get('/api/wishlist');  // Lấy tất cả các wishlist từ API
-};
+export const createDiscount = (data) => api.post("/api/discounts", data);
 
-// Hàm thêm sản phẩm vào Wishlist
-export const addToWishlist = (productId) => {
-  return api.post(`/api/wishlist`, { productId });  // Thêm sản phẩm vào wishlist
-};
+export const updateDiscount = (id, data) =>
+  api.put(`/api/discounts/${id}`, data);
 
-// Hàm xóa sản phẩm khỏi Wishlist
-export const removeFromWishlist = (wishlistItemId) => {
-  return api.delete(`/api/wishlist/${wishlistItemId}`);  // Xóa sản phẩm khỏi wishlist
-};
+export const deleteDiscount = (id) => api.delete(`/api/discounts/${id}`);
 
-// Hàm tạo và cập nhật thông tin người dùng
-export const updateCustomer = (userId, customerData) => {
-  return api.put(`/api/users/customer/${userId}`, customerData); // Cập nhật thông tin người dùng
-};
+export const applyDiscountCode = (payload) =>
+  api.post("/api/discounts/apply", payload);
 
-// Hàm lấy thông tin người dùng theo tên người dùng
-export const getUserByUsername = (userName) => {
-  return api.get(`/api/users/search/userName?userName=${userName}`);  // Lấy thông tin người dùng theo tên
-};
+// ======================== Review APIs ========================
+
+export const getReviews = () => api.get("/reviews");
+
+export const getReviewById = (id) => api.get(`/reviews/${id}`);
+
+export const createReview = (review) => api.post("/reviews", review);
+
+export const updateReview = (id, review) => api.put(`/reviews/${id}`, review);
+
+export const deleteReview = (id) => api.delete(`/reviews/${id}`);

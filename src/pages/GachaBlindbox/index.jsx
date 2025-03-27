@@ -8,7 +8,8 @@ const GachaBlindbox = () => {
   const [error, setError] = useState(null);
   const [balance, setBalance] = useState(1000);
   const [spinCount, setSpinCount] = useState(0);
-  const [isSpinning, setIsSpinning] = useState(false); // Thêm state để kiểm tra có quay hay không
+  const [isSpinning, setIsSpinning] = useState(false); 
+  const [history, setHistory] = useState([]);  // Thêm state để lưu kết quả gacha
 
   const sampleItems = [
     { name: "Golden Dragon", imageUrl: "blb.png", rarity: "Legendary" },
@@ -43,27 +44,29 @@ const GachaBlindbox = () => {
       return;
     }
 
-    setIsSpinning(true); // Bắt đầu quay
+    setIsSpinning(true);
     setIsLoading(true);
     setError(null);
 
-    // Thêm âm thanh quay
-    const spinSound = new Audio("spin-sound.mp3"); // Đảm bảo có file âm thanh này
+    const spinSound = new Audio("spin-sound.mp3");
     spinSound.play();
 
     const drawnItems = [];
     for (let i = 0; i < numDraws; i++) {
       drawnItems.push(getRandomItem());
     }
+
     const capsule = document.querySelector(".gacha-capsule");
     capsule.classList.add("spin");
+
     setTimeout(() => {
       setItems(drawnItems);
       setBalance(balance - numDraws * 10);
       setSpinCount((prevCount) => (prevCount + numDraws) % 100);
+      setHistory((prevHistory) => [...prevHistory, ...drawnItems]); // Lưu kết quả vào history
       setIsLoading(false);
       setIsSpinning(false);
-      capsule.classList.remove("spin"); // Loại bỏ class 'spin' để dừng quay
+      capsule.classList.remove("spin");
     }, 5000);
   };
 
@@ -161,6 +164,18 @@ const GachaBlindbox = () => {
             </button>
           </div>
         )}
+      </div>
+
+      <div className="gacha-history-container">
+        <h2>History</h2>
+        <div className="gacha-history">
+          {history.map((item, index) => (
+            <div key={index} className={`gacha-history-item ${item.rarity.toLowerCase()}`}>
+              <img src={item.imageUrl} alt={item.name} className="gacha-history-item-image" />
+              <div className="gacha-history-item-name">{item.name}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </Container>
   );

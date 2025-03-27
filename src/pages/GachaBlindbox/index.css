@@ -254,3 +254,50 @@
 .gacha-action-button:hover {
   background-color: #333;
 }
+
+/* Lịch sử Gacha */
+.gacha-history-container {
+  position: absolute; /* Đặt lịch sử ở vị trí tuyệt đối */
+  left: 20px;
+  top: 180px;
+  bottom: 20px; /* Giới hạn lịch sử ở giữa trang */
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  width: 200px; /* Đặt chiều rộng cho ô lịch sử */
+}
+
+.gacha-history h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.gacha-history {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gacha-history-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Thêm bóng nhẹ cho các mục */
+}
+
+.gacha-history-item-name {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.gacha-history-item-image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}

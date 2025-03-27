@@ -14,7 +14,7 @@ function CustomerProduct() {
     const fetchProducts = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/products");
-        console.log(response.data)
+        console.log(response.data);
         setProducts(response.data.data); // Access the data array from the response
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -50,7 +50,9 @@ function CustomerProduct() {
     }
 
     const newCart = [...cart];
-    const existingProduct = newCart.find((item) => item.productID === product.productID);
+    const existingProduct = newCart.find(
+      (item) => item.productID === product.productID
+    );
 
     if (existingProduct) {
       if (existingProduct.quantity < product.stock) {
@@ -138,8 +140,8 @@ function CustomerProduct() {
         ))}
       </div>
 
-      <button 
-        onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         className="scroll-to-top"
       >
         ↑

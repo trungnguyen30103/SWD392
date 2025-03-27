@@ -19,7 +19,7 @@ const Header = ({ quantity, setQuantity }) => {
   // Check login status
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);  // If there is a token, the user is logged in
+    setIsLoggedIn(!!token); // If there is a token, the user is logged in
   }, []);
 
   const labubuItems = [
@@ -83,7 +83,7 @@ const Header = ({ quantity, setQuantity }) => {
   const handleLogout = () => {
     // Remove token from localStorage
     localStorage.removeItem("token");
-    
+
     // Update login status
     setIsLoggedIn(false);
 
@@ -162,7 +162,7 @@ const Header = ({ quantity, setQuantity }) => {
               overlay={<Menu items={labubuItems} onClick={onClick} />}
               trigger={["hover"]}
             >
-              <Link to="/labubu-blindbox">Labubu BlindBox Series</Link>
+              <Link to="/products">Labubu BlindBox Series</Link>
             </Dropdown>
           </li>
           <li>
@@ -170,14 +170,14 @@ const Header = ({ quantity, setQuantity }) => {
               overlay={<Menu items={babethreeItems} onClick={onClick} />}
               trigger={["hover"]}
             >
-              <Link to="/babethree-blindbox">BabyThree BlindBox Series</Link>
+              <Link to="/products">BabyThree BlindBox Series</Link>
             </Dropdown>
           </li>
           <li>
             <Link to="/gacha-blindbox">Gacha Blindbox</Link>
           </li>
           <li>
-            <Link to="/guidelines">Guidelines</Link>
+            <Link to="/how-to-make-a-purchase">Guidelines</Link>
           </li>
           <li>
             <Link to="/info">Contact</Link>

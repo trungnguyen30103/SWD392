@@ -13,6 +13,8 @@ function Cart() {
   const [voucherCode, setVoucherCode] = useState("");
   const navigate = useNavigate();
 
+  const backendBaseUrl = "http://localhost:8080";
+
   // Helper functions
   const getUserId = () => {
     return localStorage.getItem("userID") || 0;
@@ -23,11 +25,17 @@ function Cart() {
   };
 
   const calculateSubtotal = () => {
-    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
   const calculateTotal = () => {
     return calculateSubtotal() - discount;
+  };
+
+  const getFullImageUrl = (imageUrl) => {
+    if (!imageUrl) return "/placeholder-product.jpg";
+    if (imageUrl.startsWith("http")) return imageUrl;
+    return `${backendBaseUrl}${imageUrl}`;
   };
 
   // API functions
@@ -41,9 +49,9 @@ function Cart() {
       }
 
       const response = await axios.get(`http://localhost:8080/api/carts/${getUserId()}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
-      
+
       setCartItems(response.data.cartItems || []);
     } catch (error) {
       console.error("Error fetching cart:", error);
@@ -68,9 +76,9 @@ function Cart() {
       );
 
       const cartResponse = await axios.get(`http://localhost:8080/api/carts/${getUserId()}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
-      
+
       setCartItems(cartResponse.data.cartItems);
       toast.success(`${product.productName} added to cart`);
     } catch (error) {
@@ -80,10 +88,7 @@ function Cart() {
   };
 
   const removeFromCart = async (productId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to remove this item from your cart?"
-    );
-
+    const confirmDelete = window.confirm("Are you sure you want to remove this item from your cart?");
     if (!confirmDelete) {
       toast.info("Item removal canceled.");
       return;
@@ -91,15 +96,14 @@ function Cart() {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(
-        `http://localhost:8080/api/carts/${getUserId()}/remove/${productId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await axios.delete(`http://localhost:8080/api/carts/${getUserId()}/remove/${productId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       const cartResponse = await axios.get(`http://localhost:8080/api/carts/${getUserId()}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
-      
+
       setCartItems(cartResponse.data.cartItems);
       toast.success("Item removed from cart");
     } catch (error) {
@@ -120,9 +124,9 @@ function Cart() {
       );
 
       const cartResponse = await axios.get(`http://localhost:8080/api/carts/${getUserId()}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
-      
+
       setCartItems(cartResponse.data.cartItems);
     } catch (error) {
       console.error("Error updating quantity:", error);
@@ -132,13 +136,15 @@ function Cart() {
 
   const applyVoucher = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/api/discounts/apply", {
-        code: voucherCode,
-        cartId: getCartId()
-      }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
-      
+      const response = await axios.post(
+        "http://localhost:8080/api/discounts/apply",
+        {
+          code: voucherCode,
+          cartId: getCartId(),
+        },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+
       setDiscount(response.data.discountAmount);
       toast.success("Voucher applied successfully");
     } catch (error) {
@@ -158,13 +164,13 @@ function Cart() {
       const orderResponse = await axios.post(
         "http://localhost:8080/api/orders",
         {
-          items: cartItems.map(item => ({
+          items: cartItems.map((item) => ({
             productId: item.product.productID,
             quantity: item.quantity,
-            price: item.price
+            price: item.price,
           })),
           total: calculateTotal(),
-          discount: discount
+          discount: discount,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -229,9 +235,10 @@ function Cart() {
             {cartItems.map((item) => (
               <div key={item.cartItemId} className="cart-item">
                 <img
-                  src={item.product.productImages?.[0]?.imageUrl || "/placeholder-product.jpg"}
+                  src={getFullImageUrl(item.product.productImages?.[0]?.imageUrl)}
                   alt={item.product.productName}
                   className="cart-item-image"
+                  onError={(e) => (e.target.src = "/placeholder-product.jpg")}
                 />
                 <div className="cart-item-details">
                   <h3>{item.product.productName}</h3>
@@ -306,14 +313,15 @@ function Cart() {
             {products.slice(0, 4).map((product) => (
               <div key={product.productID} className="product-card">
                 <img
-                  src={product.productImages?.[0]?.imageUrl || "/placeholder-product.jpg"}
+                  src={getFullImageUrl(product.productImages?.[0]?.imageUrl)}
                   alt={product.productName}
                   className="product-image"
+                  onError={(e) => (e.target.src = "/placeholder-product.jpg")}
                   onClick={() => navigate(`/productdetail/${product.productID}`)}
                 />
                 <h3>{product.productName}</h3>
                 <p>${product.price.toFixed(2)}</p>
-                <button 
+                <button
                   onClick={() => addToCart(product)}
                   disabled={product.stock <= 0}
                 >
