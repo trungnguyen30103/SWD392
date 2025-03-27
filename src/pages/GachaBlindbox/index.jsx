@@ -143,7 +143,7 @@ const GachaBlindbox = () => {
                   alt={item.name}
                   className="gacha-item-image"
                 />
-                <p className="gacha-item-rarity">Rarity: {item.rarity}</p>
+                
               </div>
             ))}
           </div>
