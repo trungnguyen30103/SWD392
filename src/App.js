@@ -13,7 +13,7 @@ import ProtectedRoute from "./component/ProtectedRoute/index.jsx";
 //AdminPage
 import AdminPage from "./pages/AdminPage/AdminPage.jsx";
 //Dashboard 
-import AdminDashboard from "./pages/Admin/Dashboard";
+import AdminDashboard from './pages/Admin/Dashboard/AdminDashboard.jsx';
 // Pages
 import Register from "./pages/register/index.jsx";
 import Home from "./pages/home/index.jsx";
