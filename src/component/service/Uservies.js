@@ -147,3 +147,28 @@ export const deleteUser = (userId) => {
 export const processPayment = (paymentRequest) => {
   return api.post('/payment/process', paymentRequest);  // Xử lý thanh toán
 };
+
+// Hàm lấy tất cả các bình luận trong Wishlist
+export const getWishlist = () => {
+  return api.get('/api/wishlist');  // Lấy tất cả các wishlist từ API
+};
+
+// Hàm thêm sản phẩm vào Wishlist
+export const addToWishlist = (productId) => {
+  return api.post(`/api/wishlist`, { productId });  // Thêm sản phẩm vào wishlist
+};
+
+// Hàm xóa sản phẩm khỏi Wishlist
+export const removeFromWishlist = (wishlistItemId) => {
+  return api.delete(`/api/wishlist/${wishlistItemId}`);  // Xóa sản phẩm khỏi wishlist
+};
+
+// Hàm tạo và cập nhật thông tin người dùng
+export const updateCustomer = (userId, customerData) => {
+  return api.put(`/api/users/customer/${userId}`, customerData); // Cập nhật thông tin người dùng
+};
+
+// Hàm lấy thông tin người dùng theo tên người dùng
+export const getUserByUsername = (userName) => {
+  return api.get(`/api/users/search/userName?userName=${userName}`);  // Lấy thông tin người dùng theo tên
+};
