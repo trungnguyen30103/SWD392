@@ -1,121 +1,152 @@
-/* General Styles */
+/* Tổng quát */
 .register-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #000; /* Black background */
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-  width: 100%;
+  display: flex;  /* Sử dụng Flexbox để căn chỉnh các phần tử con */
+  justify-content: center;  /* Canh giữa các phần tử theo chiều ngang */
+  align-items: center;  /* Canh giữa các phần tử theo chiều dọc */
+  min-height: 100vh;  /* Đảm bảo chiều cao của container ít nhất là 100% chiều cao của viewport */
+  background: #f4f4f9;  /* Màu nền của trang đăng ký */
+  font-family: "Arial", sans-serif;  /* Phông chữ của trang */
+  margin: 0;  /* Xóa bỏ margin mặc định */
+  padding: 0;  /* Xóa bỏ padding mặc định */
+  width: 100%;  /* Chiều rộng 100% */
 }
 
 .register-card {
-  background: #1a1a1a; /* Dark gray card background */
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1); /* White shadow for contrast */
-  padding: 30px;
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-  margin: 20px; /* Add some margin for smaller screens */
+  background: #fff;  /* Màu nền của thẻ đăng ký */
+  border-radius: 12px;  /* Bo tròn các góc của thẻ */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);  /* Thêm hiệu ứng bóng cho thẻ */
+  padding: 30px;  /* Khoảng cách bên trong thẻ */
+  max-width: 420px;  /* Chiều rộng tối đa của thẻ */
+  width: 100%;  /* Đảm bảo thẻ chiếm 100% chiều rộng nếu nhỏ hơn max-width */
+  text-align: center;  /* Căn giữa nội dung trong thẻ */
+  margin: 20px;  /* Khoảng cách xung quanh thẻ */
 }
 
 .register-header {
-  margin-bottom: 20px;
+  margin-bottom: 20px;  /* Khoảng cách phía dưới của header */
 }
 
 .register-header h2 {
-  font-size: 28px; /* Bigger font size */
-  color: #fff; /* White text */
-  margin-bottom: 10px;
-  font-weight: bold; /* Bolder font */
+  font-size: 30px;  /* Kích thước font cho tiêu đề */
+  color: #333;  /* Màu chữ của tiêu đề */
+  margin-bottom: 10px;  /* Khoảng cách phía dưới tiêu đề */
+  font-weight: bold;  /* Đậm tiêu đề */
 }
 
 .register-header p {
-  font-size: 16px; /* Bigger font size */
-  color: #ccc; /* Light gray text */
-  font-weight: 500; /* Medium bold */
+  font-size: 16px;  /* Kích thước font cho đoạn văn */
+  color: #666;  /* Màu chữ của đoạn văn */
+  font-weight: 500;  /* Độ đậm của chữ */
 }
 
-/* Form Styles */
+/* Form */
 .form-group {
-  position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 20px;  /* Khoảng cách phía dưới mỗi nhóm trường */
+  position: relative;  /* Để các thông báo lỗi có thể được căn chỉnh một cách chính xác */
 }
 
 .form-group input {
-  width: 100%;
-  padding: 12px 12px 12px 40px;
-  border: 1px solid #444;
-  border-radius: 8px;
-  font-size: 16px;
-  outline: none;
-  transition: border-color 0.3s ease;
-  background: #333;
-  color: #fff;
-  box-sizing: border-box; /* Add this to prevent overflow */
+  width: 100%;  /* Chiếm 100% chiều rộng của phần tử chứa */
+  padding: 14px;  /* Khoảng cách bên trong ô input */
+  border: 1px solid #ddd;  /* Viền màu xám nhạt */
+  border-radius: 8px;  /* Bo tròn góc ô input */
+  font-size: 16px;  /* Kích thước font của ô input */
+  outline: none;  /* Tắt viền khi ô input được focus */
+  background: #f9f9f9;  /* Màu nền của ô input */
+  color: #333;  /* Màu chữ của ô input */
+  transition: border-color 0.3s ease;  /* Thêm hiệu ứng chuyển màu viền khi focus */
 }
 
 .form-group input:focus {
-  border-color: #6a11cb; /* Purple border on focus */
+  border-color: #6a11cb;  /* Màu viền khi ô input được focus */
+  background: #fff;  /* Màu nền khi ô input được focus */
 }
 
-.input-icon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 18px; /* Bigger icon size */
-  color: #ccc; /* Light gray icon */
-}
-
-/* Button Styles */
+/* Nút đăng ký */
 .register-button {
-  width: 100%;
-  padding: 14px;
-  background: #6a11cb; /* Purple button */
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px; /* Bigger font size */
-  font-weight: bold; /* Bolder font */
-  cursor: pointer;
-  transition: background 0.3s ease;
+  width: 100%;  /* Chiếm toàn bộ chiều rộng */
+  padding: 14px;  /* Khoảng cách bên trong nút */
+  background: #03070e;  /* Màu nền của nút */
+  color: #fff;  /* Màu chữ của nút */
+  border: none;  /* Bỏ viền */
+  border-radius: 8px;  /* Bo tròn góc của nút */
+  font-size: 18px;  /* Kích thước font của nút */
+  font-weight: bold;  /* Đậm chữ */
+  cursor: pointer;  /* Thay đổi con trỏ thành tay khi hover */
+  transition: background 0.3s ease;  /* Thêm hiệu ứng chuyển màu nền khi hover */
 }
 
 .register-button:hover {
-  background: #2575fc; /* Blue hover effect */
+  background: #6a11cb;  /* Màu nền khi hover */
 }
 
 .register-button:disabled {
-  background: #555; /* Gray disabled state */
-  cursor: not-allowed;
+  background: #ddd;  /* Màu nền khi nút bị vô hiệu hóa */
+  cursor: not-allowed;  /* Thay đổi con trỏ thành biểu tượng không cho phép khi nút bị vô hiệu hóa */
 }
 
-/* Error Message */
+/* Thông báo lỗi */
 .error-message {
-  color: #ff4d4d; /* Red error text */
-  font-size: 16px; /* Bigger font size */
-  margin-bottom: 20px;
-  font-weight: bold; /* Bolder font */
+  color: #ff4d4d;  /* Màu chữ của thông báo lỗi */
+  font-size: 12px;  /* Kích thước font của thông báo lỗi */
+  font-weight: bold;  /* Đậm chữ thông báo lỗi */
+  position: absolute;  /* Định vị tuyệt đối để hiển thị thông báo lỗi */
+  top: -18px;  /* Vị trí trên của thông báo lỗi */
+  left: 0;  /* Căn trái của thông báo lỗi */
+  margin-bottom: 5px;  /* Khoảng cách dưới của thông báo lỗi */
+  text-align: left;  /* Căn trái nội dung thông báo lỗi */
 }
 
-/* Login Link */
+/* Liên kết đăng nhập */
 .login-link {
-  margin-top: 20px;
-  font-size: 16px; /* Bigger font size */
-  color: #ccc; /* Light gray text */
-  font-weight: 500; /* Medium bold */
+  margin-top: 20px;  /* Khoảng cách phía trên của liên kết đăng nhập */
+  font-size: 16px;  /* Kích thước font của liên kết */
 }
 
 .login-link a {
-  color: #6a11cb; /* Purple link */
-  text-decoration: none;
-  font-weight: bold; /* Bolder font */
+  color: #2575fc;  /* Màu chữ của liên kết */
+  text-decoration: none;  /* Xóa gạch chân liên kết */
+  font-weight: bold;  /* Đậm chữ liên kết */
 }
 
 .login-link a:hover {
-  text-decoration: underline;
+  text-decoration: underline;  /* Gạch chân liên kết khi hover */
+}
+
+/* Header Styles */
+header {
+  background-color: #03070e;  /* Màu nền của header */
+  color: #fff;  /* Màu chữ của header */
+  padding: 20px 0;  /* Khoảng cách trên và dưới của header */
+  text-align: center;  /* Căn giữa nội dung trong header */
+  font-size: 24px;  /* Kích thước font của header */
+}
+
+header h1 {
+  margin: 0;  /* Xóa margin của tiêu đề h1 */
+  font-size: 32px;  /* Kích thước font cho h1 */
+}
+
+header p {
+  font-size: 18px;  /* Kích thước font của đoạn văn trong header */
+  margin: 10px 0;  /* Khoảng cách trên và dưới của đoạn văn */
+  color: #ddd;  /* Màu chữ của đoạn văn */
+}
+
+/* Footer Styles */
+footer {
+  background-color: #f4f4f9;  /* Màu nền của footer */
+  text-align: center;  /* Căn giữa nội dung trong footer */
+  padding: 10px 0;  /* Khoảng cách trên và dưới của footer */
+  font-size: 14px;  /* Kích thước font của footer */
+  color: #666;  /* Màu chữ của footer */
+}
+
+footer a {
+  color: #2575fc;  /* Màu chữ của liên kết trong footer */
+  text-decoration: none;  /* Xóa gạch chân liên kết */
+}
+
+footer a:hover {
+  text-decoration: underline;  /* Gạch chân liên kết khi hover */
 }

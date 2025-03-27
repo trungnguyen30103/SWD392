@@ -12,11 +12,16 @@ import Footer from "./component/Footer/index.jsx";
 import ProtectedRoute from "./component/ProtectedRoute/index.jsx";
 //AdminPage
 import AdminPage from "./pages/AdminPage/AdminPage.jsx";
+//Dashboard 
+import AdminDashboard from './pages/Admin/Dashboard/AdminDashboard.jsx';
 // Pages
 import Register from "./pages/register/index.jsx";
 import Home from "./pages/home/index.jsx";
 import Cart from "./pages/cart/index.jsx";
 import Login from "./pages/login/index.jsx";
+import ForgotPassword from "./pages/ForgotPassword/index.jsx";  
+import GachaBlindbox from "./pages/GachaBlindbox/index.jsx";
+
 import WebsiteInfo from "./pages/Infor/WebsiteInfor/index.jsx";
 import Profile from "./pages/profile/index.jsx";
 import Category from "./pages/Category/index.jsx";
@@ -25,7 +30,7 @@ import Howtopay from "./pages/Infor/Howtopay/index.jsx";
 import Howtoreceivedelivery from "./pages/Infor/Howtoreceivedelivery/index.jsx";
 import ServiceTerms from "./pages/Infor/ServiceTerms/index.jsx";
 // Product Pages
-import AdminsProductList from "./pages/products/AdminsProduct/index.jsx";
+// import AdminsProductList from "./pages/products/AdminsProduct/index.jsx";
 import CustomerProductList from "./pages/products/CustomerProduct/index.jsx";
 import ProductDetail from "./pages/products/CustomerProduct/ProductDetail.jsx";
 
@@ -85,7 +90,11 @@ function App() {
       path: "/admin/orders",
       element: <AdminOrder />,
     },
-
+    {
+      path: "/gacha-blindbox",
+      element: <GachaBlindbox />,
+    },
+    
     {
       path: "/info",
       element: <WebsiteInfo />,
@@ -107,6 +116,12 @@ function App() {
       element: <Register />,
     },
     {
+      path: "/forget-password",
+      element: <ForgotPassword />,  
+    },
+    
+    
+    {
       path: "/products",
       element: <CustomerProductList />,
     },
@@ -126,7 +141,12 @@ function App() {
         />
       ),
     },
-
+    //Dashboard
+    {
+      path: "/admin/dashboard",
+      element: <AdminDashboard/>,
+    },
+    
     // Order Routes (Admin and Customer)
     /*{
       path: "/admin/orders",
@@ -166,6 +186,8 @@ function App() {
       path: "/category",
       element: <Category />,
     },
+    
+    
     // Admin Routes
     /*{
       path: "/admin/products",

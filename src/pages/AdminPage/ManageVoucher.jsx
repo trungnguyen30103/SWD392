@@ -1,57 +1,51 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { isValid, parseISO, format, isAfter, isBefore } from "date-fns";
+import { format, isAfter, isBefore } from "date-fns";
 import "./ManageVoucher.css";
 
 const ManageVoucher = () => {
   const [discounts, setDiscounts] = useState([]);
   const [newDiscount, setNewDiscount] = useState({
     discountPercentage: "",
-    validFrom: "",
-    validUntil: "",
+    valid_from: "",
+    valid_until: "",
     status: "ACTIVE",
-    blindboxId: null,
-    productId: null,
+    blindBoxId: null,
+    productId: null
   });
   const [editingId, setEditingId] = useState(null);
   const [errors, setErrors] = useState({});
+  const [products, setProducts] = useState([]);
+  const [blindBoxes, setBlindBoxes] = useState([]);
 
   useEffect(() => {
-    const fetchDiscounts = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/discounts");
-        setDiscounts(response.data);
+        const [discountsRes, productsRes, blindBoxesRes] = await Promise.all([
+          axios.get("http://localhost:8080/api/discounts"),
+          axios.get("http://localhost:8080/api/products"),
+          axios.get("http://localhost:8080/api/blindboxes")
+        ]);
+        
+        setDiscounts(discountsRes.data);
+        setProducts(productsRes.data.data);
+        setBlindBoxes(blindBoxesRes.data.data);
       } catch (error) {
-        console.error("Error fetching discounts:", error);
+        console.error("Error fetching data:", error);
       }
     };
-    fetchDiscounts();
+    fetchData();
   }, []);
 
   const validateDate = (dateString) => {
     if (!dateString) return false;
-
     const date = new Date(dateString);
-    const currentYear = new Date().getFullYear();
-
-    // Check if date is valid (e.g., not Feb 30)
-    if (!isValid(date)) {
-      return false;
-    }
-
-    // Check year is between 2024 and current year
-    const year = date.getFullYear();
-    if (year < 2024 || year > currentYear) {
-      return false;
-    }
-
-    return true;
+    return !isNaN(date.getTime());
   };
 
   const validateForm = () => {
     const newErrors = {};
     const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
 
     // Validate discount percentage
     if (
@@ -64,21 +58,30 @@ const ManageVoucher = () => {
     }
 
     // Validate dates
-    if (!newDiscount.validFrom || !validateDate(newDiscount.validFrom)) {
-      newErrors.validFrom = "Please enter a valid date (2024-current year)";
+    if (!newDiscount.valid_from || !validateDate(newDiscount.valid_from)) {
+      newErrors.valid_from = "Please enter a valid start date";
     }
 
-    if (!newDiscount.validUntil || !validateDate(newDiscount.validUntil)) {
-      newErrors.validUntil = "Please enter a valid date (2024-current year)";
+    if (!newDiscount.valid_until || !validateDate(newDiscount.valid_until)) {
+      newErrors.valid_until = "Please enter a valid end date";
+    }
+
+    // Validate at least one of blindBoxId or productId is provided
+    if (!newDiscount.blindBoxId && !newDiscount.productId) {
+      newErrors.applicableTo = "Please select either a product or blind box";
     }
 
     // Validate date range
-    if (newDiscount.validFrom && newDiscount.validUntil) {
-      const fromDate = new Date(newDiscount.validFrom);
-      const untilDate = new Date(newDiscount.validUntil);
+    if (newDiscount.valid_from && newDiscount.valid_until) {
+      const fromDate = new Date(newDiscount.valid_from);
+      const untilDate = new Date(newDiscount.valid_until);
 
       if (isAfter(fromDate, untilDate)) {
         newErrors.dateRange = "Valid From date must be before Valid Until date";
+      }
+
+      if (isBefore(untilDate, currentDate)) {
+        newErrors.pastDate = "Valid Until date cannot be in the past";
       }
     }
 
@@ -94,56 +97,70 @@ const ManageVoucher = () => {
     }));
   };
 
-  const handleCreate = async () => {
-    if (!validateForm()) return;
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/discounts",
-        newDiscount
-      );
-      setDiscounts([...discounts, response.data]);
-      resetForm();
-    } catch (error) {
-      console.error("Error creating discount:", error);
+  const handleSelectChange = (e) => {
+    const { name, value } = e.target;
+    // Clear the other field when one is selected
+    if (name === "blindBoxId") {
+      setNewDiscount(prev => ({
+        ...prev,
+        blindBoxId: value,
+        productId: null
+      }));
+    } else if (name === "productId") {
+      setNewDiscount(prev => ({
+        ...prev,
+        productId: value,
+        blindBoxId: null
+      }));
     }
   };
 
-  const handleUpdate = async () => {
+  const handleSubmit = async () => {
     if (!validateForm()) return;
 
     try {
-      const response = await axios.put(
-        `http://localhost:8080/api/discounts/${editingId}`,
-        newDiscount
-      );
-      setDiscounts(
-        discounts.map((d) => (d.id === editingId ? response.data : d))
-      );
+      const endpoint = editingId 
+        ? `http://localhost:8080/api/discounts/${editingId}`
+        : "http://localhost:8080/api/discounts";
+      
+      const method = editingId ? "put" : "post";
+      
+      const response = await axios[method](endpoint, {
+        ...newDiscount,
+        // Convert empty strings to null for the IDs
+        blindBoxId: newDiscount.blindBoxId || null,
+        productId: newDiscount.productId || null
+      });
+
+      if (editingId) {
+        setDiscounts(discounts.map(d => d.discountId === editingId ? response.data : d));
+      } else {
+        setDiscounts([...discounts, response.data]);
+      }
       resetForm();
     } catch (error) {
-      console.error("Error updating discount:", error);
+      console.error("Error saving discount:", error);
     }
   };
 
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:8080/api/discounts/${id}`);
-      setDiscounts(discounts.filter((d) => d.id !== id));
+      setDiscounts(discounts.filter((d) => d.discountId !== id));
     } catch (error) {
       console.error("Error deleting discount:", error);
     }
   };
 
   const handleEdit = (discount) => {
-    setEditingId(discount.id);
+    setEditingId(discount.discountId);
     setNewDiscount({
       discountPercentage: discount.discountPercentage,
-      validFrom: format(new Date(discount.validFrom), "yyyy-MM-dd'T'HH:mm"),
-      validUntil: format(new Date(discount.validUntil), "yyyy-MM-dd'T'HH:mm"),
+      valid_from: format(new Date(discount.valid_from), "yyyy-MM-dd'T'HH:mm"),
+      valid_until: format(new Date(discount.valid_until), "yyyy-MM-dd'T'HH:mm"),
       status: discount.status,
-      blindboxId: discount.blindboxId,
-      productId: discount.productId,
+      blindBoxId: discount.blindBoxId || null,
+      productId: discount.productId || null
     });
   };
 
@@ -151,13 +168,24 @@ const ManageVoucher = () => {
     setEditingId(null);
     setNewDiscount({
       discountPercentage: "",
-      validFrom: "",
-      validUntil: "",
+      valid_from: "",
+      valid_until: "",
       status: "ACTIVE",
-      blindboxId: null,
-      productId: null,
+      blindBoxId: null,
+      productId: null
     });
     setErrors({});
+  };
+
+  const getApplicableName = (discount) => {
+    if (discount.productId) {
+      const product = products.find(p => p.productId === discount.productId);
+      return product ? `Product: ${product.name}` : "Product";
+    } else if (discount.blindBoxId) {
+      const blindBox = blindBoxes.find(b => b.blindBoxId === discount.blindBoxId);
+      return blindBox ? `Blind Box: ${blindBox.name}` : "Blind Box";
+    }
+    return "Not specified";
   };
 
   return (
@@ -186,14 +214,12 @@ const ManageVoucher = () => {
           <label>Valid From:</label>
           <input
             type="datetime-local"
-            name="validFrom"
-            value={newDiscount.validFrom}
+            name="valid_from"
+            value={newDiscount.valid_from}
             onChange={handleInputChange}
-            min="2024-01-01T00:00"
-            max={`${new Date().getFullYear()}-12-31T23:59`}
           />
-          {errors.validFrom && (
-            <span className="error-message">{errors.validFrom}</span>
+          {errors.valid_from && (
+            <span className="error-message">{errors.valid_from}</span>
           )}
         </div>
 
@@ -201,20 +227,50 @@ const ManageVoucher = () => {
           <label>Valid Until:</label>
           <input
             type="datetime-local"
-            name="validUntil"
-            value={newDiscount.validUntil}
+            name="valid_until"
+            value={newDiscount.valid_until}
             onChange={handleInputChange}
-            min="2024-01-01T00:00"
-            max={`${new Date().getFullYear()}-12-31T23:59`}
           />
-          {errors.validUntil && (
-            <span className="error-message">{errors.validUntil}</span>
+          {errors.valid_until && (
+            <span className="error-message">{errors.valid_until}</span>
           )}
         </div>
 
-        {errors.dateRange && (
-          <div className="error-message">{errors.dateRange}</div>
-        )}
+        <div className="form-group">
+          <label>Applicable To:</label>
+          <div className="applicable-options">
+            <select
+              name="productId"
+              value={newDiscount.productId || ""}
+              onChange={handleSelectChange}
+              disabled={!!newDiscount.blindBoxId}
+            >
+              <option value="">Select Product</option>
+              {products.map(product => (
+                <option key={product.productId} value={product.productId}>
+                  {product.name}
+                </option>
+              ))}
+            </select>
+            <span className="or-text">OR</span>
+            <select
+              name="blindBoxId"
+              value={newDiscount.blindBoxId || ""}
+              onChange={handleSelectChange}
+              disabled={!!newDiscount.productId}
+            >
+              <option value="">Select Blind Box</option>
+              {blindBoxes.map(box => (
+                <option key={box.blindBoxId} value={box.blindBoxId}>
+                  {box.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          {errors.applicableTo && (
+            <span className="error-message">{errors.applicableTo}</span>
+          )}
+        </div>
 
         <div className="form-group">
           <label>Status:</label>
@@ -228,31 +284,16 @@ const ManageVoucher = () => {
           </select>
         </div>
 
-        <div className="form-group">
-          <label>Blindbox ID (optional):</label>
-          <input
-            type="number"
-            name="blindboxId"
-            value={newDiscount.blindboxId || ""}
-            onChange={handleInputChange}
-            min="0"
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Product ID (optional):</label>
-          <input
-            type="number"
-            name="productId"
-            value={newDiscount.productId || ""}
-            onChange={handleInputChange}
-            min="0"
-          />
-        </div>
+        {errors.dateRange && (
+          <div className="error-message">{errors.dateRange}</div>
+        )}
+        {errors.pastDate && (
+          <div className="error-message">{errors.pastDate}</div>
+        )}
 
         <div className="form-actions">
           <button
-            onClick={editingId ? handleUpdate : handleCreate}
+            onClick={handleSubmit}
             className="submit-button"
           >
             {editingId ? "Update Voucher" : "Create Voucher"}
@@ -272,22 +313,20 @@ const ManageVoucher = () => {
             <th>Discount %</th>
             <th>Valid From</th>
             <th>Valid Until</th>
+            <th>Applicable To</th>
             <th>Status</th>
-            <th>Blindbox ID</th>
-            <th>Product ID</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {discounts.map((discount) => (
-            <tr key={discount.id}>
-              <td>{discount.id}</td>
+            <tr key={discount.discountId}>
+              <td>{discount.discountId}</td>
               <td>{discount.discountPercentage}%</td>
-              <td>{new Date(discount.validFrom).toLocaleString()}</td>
-              <td>{new Date(discount.validUntil).toLocaleString()}</td>
+              <td>{new Date(discount.valid_from).toLocaleString()}</td>
+              <td>{new Date(discount.valid_until).toLocaleString()}</td>
+              <td>{getApplicableName(discount)}</td>
               <td>{discount.status}</td>
-              <td>{discount.blindboxId || "-"}</td>
-              <td>{discount.productId || "-"}</td>
               <td>
                 <button
                   onClick={() => handleEdit(discount)}
@@ -296,7 +335,7 @@ const ManageVoucher = () => {
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDelete(discount.id)}
+                  onClick={() => handleDelete(discount.discountId)}
                   className="delete-button"
                 >
                   Delete

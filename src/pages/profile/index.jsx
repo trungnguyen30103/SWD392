@@ -1,69 +1,98 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
 
-function Profile() {
-  const [user, setUser] = useState({
-    account: "johndoe123", // Non-editable account
-    name: "John Doe",
-    email: "johndoe@example.com",
-    password: "********",
-    phone: "123-456-7890",
-    address: "123 Main St, City, Country",
-    profilePicture: "https://via.placeholder.com/150",
-  });
+const Profile = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [balance, setBalance] = useState(0);
+  const [orders, setOrders] = useState([]);
+  const userID = 1; // Thay đổi với ID thực tế của người dùng
 
-  const [isEditing, setIsEditing] = useState(false); // Toggle edit mode
-
-  // Fetch user data from API (pseudo info for testing)
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/user");
+        const response = await axios.get(`/api/users/${userID}`);
         setUser(response.data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        // Use pseudo info if API fails
-        setUser({
-          account: "johndoe123",
-          name: "John Doe",
-          email: "johndoe@example.com",
-          password: "********",
-          phone: "123-456-7890",
-          address: "123 Main St, City, Country",
-          profilePicture: "https://via.placeholder.com/150",
-        });
+        setBalance(response.data.balance);
+        const orderResponse = await axios.get(`/api/orders?userId=${userID}`);
+        setOrders(orderResponse.data);
+      } catch (err) {
+        setError("You are not logged in. Please sign up or log in.");
       }
     };
     fetchUserData();
-  }, []);
+  }, [userID]);
 
-  // Handle input changes
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
-  // Handle form submission
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
     try {
-      await axios.put("http://localhost:5000/api/user", user);
+      await axios.put(`/api/users/${user.id}`, user);
       toast.success("Profile updated successfully!");
-      setIsEditing(false); // Disable editing after saving
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      toast.error("Failed to update profile.");
+      setIsEditing(false);
+    } catch (err) {
+      toast.error("Error updating profile.");
+    } finally {
+      setLoading(false);
     }
   };
+
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    const newPassword = prompt("Please enter your new password");
+    if (newPassword) {
+      try {
+        await axios.put(`/api/users/forgot-password/${user.id}`, {
+          password: newPassword,
+        });
+        toast.success("Password changed successfully!");
+      } catch (err) {
+        toast.error("Error changing password.");
+      }
+    }
+  };
+
+  const handleViewOrders = async () => {
+    try {
+      const response = await axios.get(`/api/orders?userId=${user.id}`);
+      setOrders(response.data);
+    } catch (err) {
+      toast.error("Error fetching order history.");
+    }
+  };
+
+  if (!user) {
+    return (
+      <div className="profile-container">
+        <ToastContainer />
+        <div className="profile-header">
+          <h1>Account Information</h1>
+        </div>
+        <p>
+          You do not have an account. Please <a href="/register">sign up</a> to
+          view account information.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="profile-container">
       <ToastContainer />
       <div className="profile-header">
-        <h1>Profile</h1>
+        <h1>Hello, {user.fullName}!</h1>
         <button
           className="update-profile-button"
           onClick={() => setIsEditing(!isEditing)}
@@ -72,95 +101,90 @@ function Profile() {
         </button>
       </div>
 
-      <div className="profile-picture-container">
-        <img
-          src={user.profilePicture}
-          alt="Profile"
-          className="profile-picture"
-        />
-      </div>
-      <h2 className="profile-name">{user.name}</h2>
+      <div className="profile-details">
+        <div className="profile-info">
+          <div className="info-item">
+            <strong>Full Name:</strong>{" "}
+            {isEditing ? (
+              <input
+                type="text"
+                name="fullName"
+                value={user.fullName}
+                onChange={handleChange}
+              />
+            ) : (
+              user.fullName
+            )}
+          </div>
 
-      <form onSubmit={handleSubmit} className="profile-form">
-        <div className="form-group">
-          <label>Account</label>
-          <input
-            type="text"
-            name="account"
-            value={user.account}
-            readOnly // Non-editable
-            className="form-input"
-          />
-        </div>
+          <div className="info-item">
+            <strong>Email:</strong>{" "}
+            {isEditing ? (
+              <input
+                type="email"
+                name="email"
+                value={user.email}
+                onChange={handleChange}
+              />
+            ) : (
+              user.email
+            )}
+          </div>
 
-        <div className="form-group">
-          <label>Name</label>
-          <input
-            type="text"
-            name="name"
-            value={user.name}
-            onChange={handleInputChange}
-            disabled={!isEditing} // Disabled unless editing
-            className="form-input"
-          />
-        </div>
+          <div className="info-item">
+            <strong>Phone:</strong>{" "}
+            {isEditing ? (
+              <input
+                type="text"
+                name="phone"
+                value={user.phone}
+                onChange={handleChange}
+              />
+            ) : (
+              user.phone
+            )}
+          </div>
 
-        <div className="form-group">
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={user.email}
-            onChange={handleInputChange}
-            disabled={!isEditing} // Disabled unless editing
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={user.password}
-            onChange={handleInputChange}
-            disabled={!isEditing} // Disabled unless editing
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Phone Number</label>
-          <input
-            type="text"
-            name="phone"
-            value={user.phone}
-            onChange={handleInputChange}
-            disabled={!isEditing} // Disabled unless editing
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Address</label>
-          <input
-            type="text"
-            name="address"
-            value={user.address}
-            onChange={handleInputChange}
-            disabled={!isEditing} // Disabled unless editing
-            className="form-input"
-          />
+          <div className="info-item">
+            <strong>Address:</strong>{" "}
+            {isEditing ? (
+              <input
+                type="text"
+                name="address"
+                value={user.address}
+                onChange={handleChange}
+              />
+            ) : (
+              user.address
+            )}
+          </div>
         </div>
 
         {isEditing && (
-          <button type="submit" className="save-button">
-            Save Changes
+          <button
+            onClick={handleSubmit}
+            className="save-button"
+            disabled={loading}
+          >
+            {loading ? "Saving..." : "Save Changes"}
           </button>
         )}
-      </form>
+      </div>
+
+      <div className="profile-actions">
+        <button className="action-button" onClick={handlePasswordChange}>
+          Change Password
+        </button>
+        <button className="action-button" onClick={handleViewOrders}>
+          View Order History
+        </button>
+      </div>
+
+      <div className="profile-balance">
+        <h3>Your Current Balance: ${balance}</h3>
+      </div>
     </div>
   );
-}
+};
 
 export default Profile;

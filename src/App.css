@@ -1,18 +1,8 @@
-/* Navbar and Footer Size */
-.navbar {
-  height: 8vh; /* Use fixed pixels instead of vh */
-  background-color: #333;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2rem;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-}
+
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
+
 
 .footer {
   height: 15vh; /* Use fixed pixels */
@@ -24,9 +14,9 @@
   width: 100%;
 }
 
-/* Main Content */
 .main-content {
   min-height: calc(100vh - 8vh - 15vh); /* Full viewport - navbar - footer */
  
   box-sizing: border-box;
 }
+

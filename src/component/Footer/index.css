@@ -61,10 +61,11 @@
     margin-top: 20px;
     p {
       margin: 0;
+      font-size: 0.8em;
     }
   }
   .icon {
-    font-size: 50px;
+    font-size: 40px;
     .icon-con {
       padding: 0px 10px;
       color: aliceblue;
